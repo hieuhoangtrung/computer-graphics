@@ -11,13 +11,13 @@ var n = 36;
 
 //Setup the Scene
 function setupScene() {
-  scene = new THREE.Scene( );
+  scene = new THREE.Scene();
   var ratio = window.innerWidth / window.innerHeight;
   camera = new THREE.PerspectiveCamera(45, ratio, 0.1, 1000);
   camera.position.set(0, 0, 15);
   camera.lookAt(0, 0, 1);
 
-  renderer = new THREE.WebGLRenderer( );
+  renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
@@ -31,7 +31,7 @@ function setupScene() {
 setupScene();
 
 //Animate the Geometries
-var animateGeometries = function ( )
+var animateGeometries = function ()
 {
   renderer.render(scene, camera);
   controls.update();
@@ -40,7 +40,7 @@ var animateGeometries = function ( )
 requestAnimationFrame(animateGeometries);
 
 //Resize the Scene with the window
-var resizeScene = function ( )
+var resizeScene = function ()
 {
   var width = window.innerWidth;
   var height = window.innerHeight;
@@ -67,7 +67,7 @@ function addLight() {
 addLight();
 
 //Lab 4 - Create a sphere to the scene
-function createSphere(){
+function createSphere() {
   var sphere_color = new THREE.Color(0.8,1,1);
   var sphere_geometry = new THREE.SphereGeometry(2,32,32);
   var sphere_material = new THREE.MeshPhongMaterial();
