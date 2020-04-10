@@ -1,4 +1,4 @@
-import './OrbitControls';
+import '../shared/OrbitControls';
 
 //create the scene
 const scene = new THREE.Scene();
@@ -140,3 +140,10 @@ camera.position.set(2, 3, 5);
 camera.lookAt(scene.position);
 render();
 
+function createSphere() {
+  var sphere_color = new THREE.Color(0.8, 1, 1);
+  var sphere_geo = new THREE.SphereGeometry(2, 32, 32);
+  var sphere_material = new THREE.MeshPhongMaterial();
+  sphere_material.color =sphere_color;
+
+}
