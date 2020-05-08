@@ -38,7 +38,8 @@ module.exports = {
   devtool: 'inline-source-map',
   module: {
     rules: [
-      {test: /\.css$/,
+      {
+        test: /\.css$/,
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
@@ -48,8 +49,16 @@ module.exports = {
           },
           'css-loader',
         ],
+      },
+      {
+        test: /\.(jpe?g|gif|png|svg|woff|ttf|wav|mp3|fbx|obj)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
       }
-    ]
+    ],
   },
   plugins: [
     new CleanWebpackPlugin(),
