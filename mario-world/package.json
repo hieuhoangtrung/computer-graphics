@@ -4,7 +4,7 @@
     "description": "Mario World - Computer Graphics Final Project",
     "private": true,
     "scripts": {
-        "start": "webpack && webpack-dev-server --open --config webpack.dev.js",
+        "start": "webpack-dev-server --open --config webpack.dev.js",
         "build": "webpack --config webpack.prod.js",
         "lint": "eslint src",
         "lint:fix": "eslint src --fix",

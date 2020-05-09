@@ -1,5 +1,5 @@
-import grassGround from '../../peter-lab/images/grasslight-big.jpg';
-import Stats from '../../peter-lab/src/shared/stats.module';
+import grassGround from './images/grasslight-big.jpg';
+import Stats from './shared/stats.module';
 import { loadModels } from './loader';
 import './shared/OrbitControls';
 
