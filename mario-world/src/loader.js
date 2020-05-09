@@ -27,7 +27,7 @@ function loadModels({ scene, camera }, worldObject) {
     const ScaleFact = 10;
 
     sca.makeScale(ScaleFact, ScaleFact, ScaleFact);
-    tra.makeTranslation(185, 50, 25);
+    tra.makeTranslation(185, 60, 25);
     object.applyMatrix(sca);
     object.applyMatrix(tra);
 
