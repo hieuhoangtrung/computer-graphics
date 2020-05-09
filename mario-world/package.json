@@ -4,10 +4,11 @@
     "description": "Mario World - Computer Graphics Final Project",
     "private": true,
     "scripts": {
-        "start": "webpack && webpack-dev-server --open",
-        "build": "webpack",
+        "start": "webpack && webpack-dev-server --open --config webpack.dev.js",
+        "build": "webpack --config webpack.prod.js",
         "lint": "eslint src",
-        "lint:fix": "eslint src --fix"
+        "lint:fix": "eslint src --fix",
+        "now-build": "webpack --config webpack.prod.js"
     },
     "dependencies": {
         "three": "~0.114.0"
@@ -25,6 +26,7 @@
         "webpack": "~4.42.0",
         "webpack-cli": "~3.3.11",
         "webpack-dev-server": "~3.10.3",
-        "webpack-fix-style-only-entries": "^0.4.0"
+        "webpack-fix-style-only-entries": "^0.4.0",
+        "webpack-merge": "^4.2.2"
     }
 }
