@@ -15,6 +15,7 @@ const animate = ({ camera, clock, renderer, stats, scene }, worldObject) => {
   const delta = clock.getDelta();
   if (worldObject.marioAnimation) worldObject.marioAnimation.update(delta);
   if (worldObject.castle) worldObject.castle.update(delta);
+  //if (worldObject.star) worldObject.star.update(delta);
   // Always set camera follow mario
   // if (worldObject.mario) {
   //   const temp = new THREE.Vector3();
