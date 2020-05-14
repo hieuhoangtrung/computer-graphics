@@ -55,12 +55,9 @@ function loadModels({ scene, camera }, worldObject) {
     camera.lookAt(object.position);
   });
 
-
-
-
   loader.load(Star, function (object) {
-    mixers = object.mixer = new THREE.AnimationMixer(object);
-    var action = object.mixer.clipAction(object.animations[0]);
+    const animation = new THREE.AnimationMixer(object);
+    var action = animation.clipAction(object.animations[0]);
     action.play();
 
     object.traverse(function (child) {
@@ -76,22 +73,21 @@ function loadModels({ scene, camera }, worldObject) {
     scene.add(object);
   });
 
-
   loader.load(ExtraLife, function (object) {
-    mixer = new THREE.AnimationMixer( object );
+    const mixer = new THREE.AnimationMixer(object);
 
-    var action = mixer.clipAction( object.animations[ 0 ] );
+    var action = mixer.clipAction(object.animations[ 0 ]);
     action.play();
 
-    object.traverse( function ( child ) {
+    object.traverse(function (child) {
 
-      if ( child.isMesh ) {
+      if (child.isMesh) {
         child.castShadow = true;
         child.receiveShadow = true;
       }
-    } );
+    });
     object.scale.set(5, 5, 5);
-    scene.add( object );
+    scene.add(object);
   });
 }
 

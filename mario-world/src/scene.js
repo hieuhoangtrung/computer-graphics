@@ -60,7 +60,7 @@ const init = () => {
   camera.position.set(100, 200, 300);
 
   scene.background = new THREE.Color(0x87ceeb);
-  // scene.fog = new THREE.Fog(0xa0a0a0, 200, 1000);
+  scene.fog = new THREE.Fog(0xa0a0a0, 200, 1000);
 
   const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x444444);
   hemisphereLight.position.set(0, 200, 0);
@@ -77,10 +77,10 @@ const init = () => {
   // scene.add( new CameraHelper( light.shadow.camera ) );
 
   // ground
-  // var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2000, 2000), new THREE.MeshPhongMaterial({ color: 0x999999, depthWrite: false }));
-  // mesh.rotation.x = - Math.PI / 2;
-  // mesh.receiveShadow = true;
-  // scene.add(mesh);
+  var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2000, 2000), new THREE.MeshPhongMaterial({ color: 0x999999, depthWrite: false }));
+  mesh.rotation.x = - Math.PI / 2;
+  mesh.receiveShadow = true;
+  scene.add(mesh);
 
   var texttureLoader = new THREE.TextureLoader();
   var groundTexture = texttureLoader.load(grassGround);
