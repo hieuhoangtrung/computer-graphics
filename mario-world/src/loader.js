@@ -29,7 +29,7 @@ function loadModels({ scene, camera }, worldObject) {
     const ScaleFact = 10;
 
     sca.makeScale(ScaleFact, ScaleFact, ScaleFact);
-    tra.makeTranslation(185, 60, 25);
+    tra.makeTranslation(185, 50, 25);
     object.applyMatrix(sca);
     object.applyMatrix(tra);
 
@@ -56,10 +56,6 @@ function loadModels({ scene, camera }, worldObject) {
   });
 
   loader.load(star, function (object) {
-    const animation = new THREE.AnimationMixer(object);
-    var action = animation.clipAction(object.animations[0]);
-    action.play();
-
     object.traverse(function (child) {
 
       if (child.isMesh) {
@@ -68,17 +64,16 @@ function loadModels({ scene, camera }, worldObject) {
         child.receiveShadow = true;
       }
     });
-    object.scale.set(5, 5, 5);
-    object.position.set(100, 120, 30);
+    object.scale.set(1/20, 1/20, 1/20);
+    object.position.set(170, 50, 25);
     scene.add(object);
+        const temp = new THREE.Vector3();
+    temp.set(object.position.x, object.position.y + 20, object.position.z - 50);
+    camera.position.lerp(temp, 1);
+    camera.lookAt(object.position);
   });
 
   loader.load(extraLife, function (object) {
-    const mixer = new THREE.AnimationMixer(object);
-
-    var action = mixer.clipAction(object.animations[ 0 ]);
-    action.play();
-
     object.traverse(function (child) {
 
       if (child.isMesh) {
@@ -86,7 +81,8 @@ function loadModels({ scene, camera }, worldObject) {
         child.receiveShadow = true;
       }
     });
-    object.scale.set(5, 5, 5);
+    object.scale.set(1/3, 1/3, 1/3);
+    object.position.set(150, 45, 25);
     scene.add(object);
   });
 }
