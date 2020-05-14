@@ -1,8 +1,8 @@
 import {FBXLoader} from './shared/FBXLoader';
 import yoshiSchool from './models/yoshi4school.fbx';
 import marioMesh from './models/mario/animations/Run.fbx';
-import Star from './models/Star.fbx';
-import ExtraLife from './models/Extra_Life.fbx';
+import star from './models/Star.fbx';
+import extraLife from './models/Extra_Life.fbx';
 
 function loadModels({ scene, camera }, worldObject) {
   const loader = new FBXLoader();
@@ -55,7 +55,7 @@ function loadModels({ scene, camera }, worldObject) {
     camera.lookAt(object.position);
   });
 
-  loader.load(Star, function (object) {
+  loader.load(star, function (object) {
     const animation = new THREE.AnimationMixer(object);
     var action = animation.clipAction(object.animations[0]);
     action.play();
@@ -73,7 +73,7 @@ function loadModels({ scene, camera }, worldObject) {
     scene.add(object);
   });
 
-  loader.load(ExtraLife, function (object) {
+  loader.load(extraLife, function (object) {
     const mixer = new THREE.AnimationMixer(object);
 
     var action = mixer.clipAction(object.animations[ 0 ]);
