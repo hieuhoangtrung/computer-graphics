@@ -5,7 +5,7 @@ import star from './models/Star.fbx';
 import extraLife from './models/Extra_Life.fbx';
 import boo from './models/Boo.fbx';
 import fireflower from "./models/FireFlower.fbx";
-import Goomba from './models/Goomba.fbx';
+import goomba from './models/Goomba.fbx';
 import qmark from './models/Question_Mark_Block.fbx';
 import brickblock from './models/BrickBlock/source/Brick Block.fbx';
 import smallCastle from './models/Castle/Castle_Small.fbx';
@@ -94,7 +94,7 @@ function loadModels({ scene, camera }, worldObject) {
   });
 
 
-  loader.load(Goomba, function (object) {
+  loader.load(goomba, function (object) {
     object.traverse(function (child) {
       if (child.isMesh) {
         child.castShadow = true;
