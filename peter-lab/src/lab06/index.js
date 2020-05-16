@@ -5,6 +5,9 @@ import { FBXLoader } from '../shared/FBXLoader.js';
 import marioMesh from '../models/mario/animations/Run.fbx';
 import yoshiSchool from '../models/yoshi4school.fbx';
 import grassGround from '../../images/grasslight-big.jpg';
+import '../shared/ColladaLoader.js';
+import goombaFile from "../lab08/models/goomba.dae";
+import mushroomFile from "../lab08/models/mushroom.dae";
 
 var container, stats, controls;
 var camera, scene, renderer, light;
@@ -15,6 +18,8 @@ var marioAnimation;
 var castle;
 var mario;
 var temp = new THREE.Vector3;
+var goomba;
+var mushroom;
 
 init();
 animate();
@@ -85,7 +90,7 @@ function init() {
             }
         });
 
-        scene.add(object);
+        // scene.add(object);
     });
 
     loader.load(marioMesh, function (object) {
@@ -119,6 +124,9 @@ function init() {
         camera.lookAt(mario.position);
         // controls.update();
     });
+
+    addEnemies();
+    addFellows();
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -203,6 +211,21 @@ function onDocumentKeyDown(event) {
     animate();
 };
 
+function addEnemies() {
+    var loader = new THREE.ColladaLoader();
+    loader.options.convertUpAxis = true;
+    loader.load(goombaFile, function (collada) {
+        goomba = collada.scene;
+        // var x = Math.floor(Math.random() * maxBounding) - maxBounding;
+        // var z = Math.floor(Math.random() * maxBounding) - maxBounding;
+        goomba.scale.set(1/5, 1/5, 1/5);
+        goomba.position.set(170, 50, 25);
+        scene.add(goomba);
+        // var goombaDirection = new THREE.Vector3(0.015, 0, 0.025);
+        // lookAtDirection(goomba, goombaDirection);
+    });
+}
+
 // //Apply control on mouse-select
 // var raycaster = new THREE.Raycaster();
 // var selectedObj = false;
@@ -237,3 +260,22 @@ function onDocumentKeyDown(event) {
 //     }
 // }
 // document.addEventListener('mousedown', onDocumentMouseDown, false);
+
+function lookAtDirection(object, vector) {
+    var lookAt = new THREE.Vector3();
+    lookAt.addVectors(vector, object.position);
+    object.lookAt(lookAt);
+}
+
+function addFellows() {
+    var loader = new THREE.ColladaLoader();
+    loader.options.convertUpAxis = true;
+    loader.load(mushroomFile, function (collada) {
+        mushroom = collada.scene;
+        // var x = Math.floor(Math.random() * maxBounding) - maxBounding;
+        // var z = Math.floor(Math.random() * maxBounding) - maxBounding;
+        mushroom.scale.set(1/5, 1/5, 1/5);
+        mushroom.position.set(150, 50, 25);
+        scene.add(mushroom);
+    });
+}
