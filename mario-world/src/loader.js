@@ -9,7 +9,7 @@ import goomba from "./models/Goomba.fbx";
 import qmark from "./models/Question_Mark_Block.fbx";
 import brickblock from "./models/BrickBlock/source/Brick Block.fbx";
 import smallCastle from "./models/Castle/Castle_Small.fbx";
-import mushroom from "./models/mushroom.FBX";
+import mushroom from "./models/mushroom.fbx";
 // import trees from './models/Cartoon_trees.fbx';
 
 function loadModels({ scene, camera }, worldObject) {
