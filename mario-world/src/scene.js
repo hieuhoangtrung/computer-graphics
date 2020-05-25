@@ -14,17 +14,12 @@ const onWindowResize = ({ camera, renderer }) => {
 
 }
 
-<<<<<<< HEAD
 const animate = ({ camera, clock, renderer, stats, scene , labelRenderer, dirLight, sun}, worldObject) => 
 {
     requestAnimationFrame(() => animate({ 
       camera, clock, renderer, stats, scene, labelRenderer, dirLight, sun
     }, worldObject));
-=======
 
-const animate = ({ camera, clock, renderer, stats, scene, labelRenderer, dirLight }, worldObject) => {
-  requestAnimationFrame(() => animate({ camera, clock, renderer, stats, scene, labelRenderer, dirLight}, worldObject));
->>>>>>> 1e4fe99ce6b771da8dacc5ae88339a5b50b80f17
 
   const delta = clock.getDelta();
   if (worldObject.marioAnimation) worldObject.marioAnimation.update(delta);
