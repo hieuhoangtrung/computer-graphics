@@ -3,3 +3,4 @@
 /.idea
 npm-debug.log
 .DS_Store
+mario-world/src/scene-1.js
