@@ -2,6 +2,7 @@ import grassGround from './images/grasslight-big.jpg';
 import Stats from './shared/stats.module';
 import { loadModels } from './loader';
 import './shared/OrbitControls';
+import { CSS2DRenderer, CSS2DObject } from  './shared/CSS2DRenderer'
 
 const onWindowResize = ({ camera, renderer }) => {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -10,8 +11,8 @@ const onWindowResize = ({ camera, renderer }) => {
 
 }
 
-const animate = ({ camera, clock, renderer, stats, scene }, worldObject) => {
-  requestAnimationFrame(() => animate({ camera, clock, renderer, stats, scene }, worldObject));
+const animate = ({ camera, clock, renderer, stats, scene,labelRenderer }, worldObject) => {
+  requestAnimationFrame(() => animate({ camera, clock, renderer, stats, scene ,labelRenderer}, worldObject));
   const delta = clock.getDelta();
   if (worldObject.marioAnimation) worldObject.marioAnimation.update(delta);
   if (worldObject.castle) worldObject.castle.update(delta);
@@ -25,7 +26,7 @@ const animate = ({ camera, clock, renderer, stats, scene }, worldObject) => {
   // }
 
   renderer.render(scene, camera);
-
+  labelRenderer.render( scene, camera );
   stats.update();
 
 }
@@ -40,7 +41,12 @@ const init = () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
   // renderer.shadowMap.enabled = true;
-
+  var labelRenderer = new CSS2DRenderer();
+  labelRenderer.setSize( window.innerWidth, window.innerHeight );
+  labelRenderer.domElement.style.position = 'absolute';
+  labelRenderer.domElement.style.top = '0px';
+  document.body.appendChild( labelRenderer.domElement );
+  var controls2 = new THREE.OrbitControls( camera, labelRenderer.domElement );
   const container = document.createElement('div');
 
   const globalObject = {
@@ -50,6 +56,8 @@ const init = () => {
     clock,
     renderer,
     stats,
+    labelRenderer,
+    controls2,
   };
 
   const worldObject= {};
