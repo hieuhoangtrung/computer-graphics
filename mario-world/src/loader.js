@@ -19,7 +19,7 @@ import './shared/OrbitControls';
 function loadModels({ scene, camera }, worldObject) {
   self.threeOnEvent = new THREE.onEvent(scene,camera);
   const loader = new FBXLoader();
-  loader.load(yoshiSchool, function (object) {
+  /*loader.load(yoshiSchool, function (object) {
     const sca = new THREE.Matrix4();
     sca.makeScale(2, 2, 2);
     object.applyMatrix(sca);
@@ -34,7 +34,7 @@ function loadModels({ scene, camera }, worldObject) {
     });
     scene.add(object);
     worldObject.castle = castleAnimation;
-  });
+  });*/
 
   loader.load(marioMesh, function (object) {
     const sca = new THREE.Matrix4();
