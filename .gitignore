@@ -5,3 +5,4 @@ npm-debug.log
 .DS_Store
 
 .vercel
+mario-world/src/scene-1.js

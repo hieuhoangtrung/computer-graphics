@@ -3,6 +3,8 @@ import Stats from './shared/stats.module';
 import { loadModels } from './loader';
 import './shared/OrbitControls';
 import { DirectionalLightHelper } from 'three';
+import { CSS2DRenderer, CSS2DObject } from  './shared/CSS2DRenderer'
+
 
 const onWindowResize = ({ camera, renderer }) => {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -11,11 +13,10 @@ const onWindowResize = ({ camera, renderer }) => {
 
 }
 
-const animate = ({ camera, clock, renderer, stats, scene ,dirLight}, worldObject) => 
-{
-    requestAnimationFrame(() => animate({ 
-      camera, clock, renderer, stats, scene, dirLight
-    }, worldObject));
+
+const animate = ({ camera, clock, renderer, stats, scene, labelRenderer, dirLight }, worldObject) => {
+  requestAnimationFrame(() => animate({ camera, clock, renderer, stats, scene, labelRenderer, dirLight}, worldObject));
+
   const delta = clock.getDelta();
   if (worldObject.marioAnimation) worldObject.marioAnimation.update(delta);
   if (worldObject.castle) worldObject.castle.update(delta);
@@ -32,7 +33,7 @@ const animate = ({ camera, clock, renderer, stats, scene ,dirLight}, worldObject
   dirLight.position.z = Math.cos( time ) * 100 + 100;
 
   renderer.render(scene, camera);
-
+  labelRenderer.render( scene, camera );
   stats.update();
 
 }
@@ -46,8 +47,15 @@ const init = () => {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
+
   renderer.shadowMap.enabled = true;
   renderer.toneMapping = THREE.ReinhardToneMapping;
+  var labelRenderer = new CSS2DRenderer();
+  labelRenderer.setSize( window.innerWidth, window.innerHeight );
+  labelRenderer.domElement.style.position = 'absolute';
+  labelRenderer.domElement.style.top = '0px';
+  document.body.appendChild( labelRenderer.domElement );
+  var controls2 = new THREE.OrbitControls( camera, labelRenderer.domElement );
 
   const container = document.createElement('div');
 
@@ -58,6 +66,8 @@ const init = () => {
     clock,
     renderer,
     stats,
+    labelRenderer,
+    controls2,
   };
 
   const worldObject= {};
