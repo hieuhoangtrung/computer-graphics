@@ -1,8 +1,11 @@
 import grassGround from './images/grasslight-big.jpg';
+import sunSurface from './images/sun.jpg';
 import Stats from './shared/stats.module';
 import { loadModels } from './loader';
 import './shared/OrbitControls';
 import { DirectionalLightHelper } from 'three';
+import { CSS2DRenderer, CSS2DObject } from  './shared/CSS2DRenderer'
+
 
 const onWindowResize = ({ camera, renderer }) => {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -11,11 +14,12 @@ const onWindowResize = ({ camera, renderer }) => {
 
 }
 
-const animate = ({ camera, clock, renderer, stats, scene ,dirLight}, worldObject) => 
+const animate = ({ camera, clock, renderer, stats, scene , labelRenderer, dirLight, sun}, worldObject) => 
 {
     requestAnimationFrame(() => animate({ 
-      camera, clock, renderer, stats, scene, dirLight
+      camera, clock, renderer, stats, scene, labelRenderer, dirLight, sun
     }, worldObject));
+
   const delta = clock.getDelta();
   if (worldObject.marioAnimation) worldObject.marioAnimation.update(delta);
   if (worldObject.castle) worldObject.castle.update(delta);
@@ -28,11 +32,18 @@ const animate = ({ camera, clock, renderer, stats, scene ,dirLight}, worldObject
   //   camera.lookAt(worldObject.mario.position);
   // }
 
-  var time = Date.now() * 0.005;
-  dirLight.position.z = Math.cos( time ) * 100 + 100;
+  var time = Date.now() * 0.0000001;
+  if (dirLight.position.z <= 3000) {
+    dirLight.position.z +=  Math.cos( time )
+    sun.position.z +=  Math.cos( time )
+  }
+  else {
+    dirLight.position.z = -3000
+    sun.position.z =  -3000
+  }
 
   renderer.render(scene, camera);
-
+  labelRenderer.render( scene, camera );
   stats.update();
 
 }
@@ -46,8 +57,15 @@ const init = () => {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
+
   renderer.shadowMap.enabled = true;
   renderer.toneMapping = THREE.ReinhardToneMapping;
+  var labelRenderer = new CSS2DRenderer();
+  labelRenderer.setSize( window.innerWidth, window.innerHeight );
+  labelRenderer.domElement.style.position = 'absolute';
+  labelRenderer.domElement.style.top = '0px';
+  document.body.appendChild( labelRenderer.domElement );
+  var controls2 = new THREE.OrbitControls( camera, labelRenderer.domElement );
 
   const container = document.createElement('div');
 
@@ -58,6 +76,8 @@ const init = () => {
     clock,
     renderer,
     stats,
+    labelRenderer,
+    controls2,
   };
 
   const worldObject= {};
@@ -70,12 +90,12 @@ const init = () => {
   // scene.fog = new THREE.Fog(0xa0a0a0, 200, 1000);
 
 
-//Light
+  //Light
   var hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
   scene.add( hemiLight );
 
   var dirLight = new THREE.DirectionalLight( 0xFFEE88, 5 );
-  dirLight.position.set( -50, 75, 0 );
+  dirLight.position.set( 0, 300, 0 );
 
   scene.add( dirLight );
 
@@ -93,46 +113,25 @@ const init = () => {
   // dirLight.shadowBias = -0.0001;
   dirLight.shadowDarkness = 100;
   globalObject.dirLight = dirLight;
-  var lighthelper = new DirectionalLightHelper(dirLight, 50, 0xff0000);
-  scene.add(lighthelper)
 
+//Sun
+  var texttureLoader = new THREE.TextureLoader();
+  var sunTexture = texttureLoader.load(sunSurface);
 
-/*
   var sunGeometry = new THREE.SphereBufferGeometry(20, 16, 8);
-  var sunMat = new THREE.MeshStandardMaterial({
-    emissive: 0xffee88,
-    emissiveIntensity: 1,
-    color: 0xffee88
+  var sunMat = new THREE.MeshPhysicalMaterial({
+    emissive: 0xff0000,
+    emissiveIntensity: 5,
+    map: sunTexture
   });
   var sun = new THREE.Mesh(sunGeometry, sunMat);
-  var sunlight = new THREE.PointLight(0xffee88,1,100000000,1);
-
-  sunlight.add( sun );
-  sunlight.power = 400;
-  sunlight.shadowDarknes = 10;
-  sunlight.position.set( 0, 400, 20 );
-  sunlight.castShadow = true;
-
-  sunlight.shadow.mapSize.width = 2048;
-  sunlight.shadow.mapSize.height = 2048;
-  sunlight.shadow.camera.near = 0.5;
-  sunlight.shadow.camera.far = 1000;
-  // sunlight.shadow.bias = - 0.005;
-
-  scene.add( sunlight );
-
-  const sunhelper = new THREE.CameraHelper( sunlight.shadow.camera );
-  scene.add( sunhelper );
-  */
+  sun.position.set( 0, 500, 0 );
+  sun.castShadow = false;
+  sun.receiveShadow = false;
+  globalObject.sun = sun;
+  scene.add( sun )
 
   // ground
-  /*
-  var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2000, 2000), new THREE.MeshPhongMaterial({ color: 0x999999, depthWrite: false }));
-  mesh.rotation.x = - Math.PI / 2;
-  mesh.receiveShadow = true;
-  scene.add(mesh);
-  */
-  var texttureLoader = new THREE.TextureLoader();
   var groundTexture = texttureLoader.load(grassGround);
   groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
   groundTexture.repeat.set(25, 25);
