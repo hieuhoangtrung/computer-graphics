@@ -35,15 +35,13 @@ const animate = ({ camera, clock, renderer, stats, scene , labelRenderer, dirLig
   //   camera.lookAt(worldObject.mario.position);
   // }
 
-  var time = Date.now() * 0.0000001;
-  if (dirLight.position.z <= 3000) {
-    dirLight.position.z +=  Math.cos( time ) * 0.09
-    sun.position.z +=  Math.cos( time ) * 0.09
-  }
-  else {
-    dirLight.position.z = -3000
-    sun.position.z =  -3000
-  }
+  var time = Date.now() * 0.00001;
+  var sunx = 400 * Math.sin(time)
+  var sunz = 400 * Math.cos(time)
+  
+  dirLight.position.set(sunx, 500, sunz)
+  sun.position.set(sunx, 500, sunz)
+  
 
   renderer.render(scene, camera);
   labelRenderer.render( scene, camera );
@@ -52,7 +50,7 @@ const animate = ({ camera, clock, renderer, stats, scene , labelRenderer, dirLig
 }
 
 const init = () => {
-  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
+  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 3000);
   const scene = new THREE.Scene();
   const stats = new Stats();
   const clock = new THREE.Clock();
@@ -105,7 +103,7 @@ const init = () => {
   dirLight.castShadow = true;
   dirLight.shadowMapWidth = dirLight.shadowMapHeight = 1024*2;
 
-  var d = 300;
+  var d = 500;
 
   dirLight.shadowCameraLeft = -d;
   dirLight.shadowCameraRight = d;
@@ -203,9 +201,9 @@ const init = () => {
   brigeTexture.encoding = THREE.sRGBEncoding;
 
   var bridgeMaterial = new THREE.MeshLambertMaterial({ map: brigeTexture });
-  var bridgeGeoMetry1 = new THREE.PlaneBufferGeometry(100, 150);
-  var bridgeGeoMetry2 = new THREE.PlaneBufferGeometry(100, 350);
-  var bridgeGeoMetry3 = new THREE.PlaneBufferGeometry(100, 220);
+  var bridgeGeoMetry1 = new THREE.BoxBufferGeometry(100, 0.1, 150);
+  var bridgeGeoMetry2 = new THREE.BoxBufferGeometry(100, 0.1, 350);
+  var bridgeGeoMetry3 = new THREE.BoxBufferGeometry(100, 0.1, 220);
   var bridge1 = new THREE.Mesh(bridgeGeoMetry1, bridgeMaterial);
   var bridge2 = new THREE.Mesh(bridgeGeoMetry1, bridgeMaterial);
   var bridge3 = new THREE.Mesh(bridgeGeoMetry2, bridgeMaterial);
@@ -216,51 +214,42 @@ const init = () => {
   var bridge8 = new THREE.Mesh(bridgeGeoMetry1, bridgeMaterial);
   var bridge9 = new THREE.Mesh(bridgeGeoMetry1, bridgeMaterial);
   
-  bridge1.rotation.x = THREE.Math.degToRad( 270 );
   bridge1.position.set(700, 50.2, 250);
   bridge1.receiveShadow = true;
   bridge1.castShadow = true;
 
-  bridge2.rotation.x = THREE.Math.degToRad( 270 );
-  bridge2.rotation.z = THREE.Math.degToRad( 90 );
+  bridge2.rotation.y = THREE.Math.degToRad( 90 );
   bridge2.position.set(550, 50.2, -700);
   bridge2.receiveShadow = true;
   bridge2.castShadow = true;
 
-  bridge3.rotation.x = THREE.Math.degToRad( 270 );
-  bridge3.rotation.z = THREE.Math.degToRad( 150 );
+  bridge3.rotation.y = THREE.Math.degToRad( 150 );
   bridge3.position.set(270, 50.2, -500);
   bridge3.receiveShadow = true;
   bridge3.castShadow = true;
 
-  bridge4.rotation.x = THREE.Math.degToRad( 270 );
   bridge4.position.set(0, 50.2, 280);
   bridge4.receiveShadow = true;
   bridge4.castShadow = true;
 
-  bridge5.rotation.x = THREE.Math.degToRad( 270 );
   bridge5.position.set(0, 50.2, -500);
   bridge5.receiveShadow = true;
   bridge5.castShadow = true;
   
-  bridge6.rotation.x = THREE.Math.degToRad( 270 );
-  bridge6.rotation.z = THREE.Math.degToRad( 90 );
+  bridge6.rotation.y = THREE.Math.degToRad( 90 );
   bridge6.position.set(-250, 50.2, 700);
   bridge6.receiveShadow = true;
   bridge6.castShadow = true;
 
-  bridge7.rotation.x = THREE.Math.degToRad( 270 );
-  bridge7.rotation.z = THREE.Math.degToRad( 90 );
+  bridge7.rotation.y = THREE.Math.degToRad( 90 );
   bridge7.position.set(-500, 50.2, 0);
   bridge7.receiveShadow = true;
   bridge7.castShadow = true;
 
-  bridge8.rotation.x = THREE.Math.degToRad( 270 );
   bridge8.position.set(-700, 50.2, -250);
   bridge8.receiveShadow = true;
   bridge8.castShadow = true;
 
-  bridge9.rotation.x = THREE.Math.degToRad( 270 );
   bridge9.position.set(700, 50.2, 550);
   bridge9.receiveShadow = true;
   bridge9.castShadow = true;
