@@ -36,8 +36,8 @@ const animate = ({ camera, clock, renderer, stats, scene , labelRenderer, dirLig
   // }
 
   var time = Date.now() * 0.00001;
-  var sunx = 400 * Math.sin(time)
-  var sunz = 400 * Math.cos(time)
+  var sunx = 1500 * Math.sin(time)
+  var sunz = 1500 * Math.cos(time)
   
   dirLight.position.set(sunx, 500, sunz)
   sun.position.set(sunx, 500, sunz)
@@ -50,7 +50,7 @@ const animate = ({ camera, clock, renderer, stats, scene , labelRenderer, dirLig
 }
 
 const init = () => {
-  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 3000);
+  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 5000);
   const scene = new THREE.Scene();
   const stats = new Stats();
   const clock = new THREE.Clock();
@@ -103,7 +103,7 @@ const init = () => {
   dirLight.castShadow = true;
   dirLight.shadowMapWidth = dirLight.shadowMapHeight = 1024*2;
 
-  var d = 500;
+  var d = 1500;
 
   dirLight.shadowCameraLeft = -d;
   dirLight.shadowCameraRight = d;
