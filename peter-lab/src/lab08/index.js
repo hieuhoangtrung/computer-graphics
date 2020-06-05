@@ -7,10 +7,12 @@ import boxFile from './img/box.png';
 import coinFile from './models/coin.dae';
 import '../shared/ColladaLoader.js';
 import '../shared/OrbitControls';
+import grassGround from '../../images/grasslight-big.jpg';
+import fontFace from "../shared/helvetiker_regular.typeface.json";
 
 
 var MOVE_SPEED = 1;
-
+var container, light;
 
 // var isVr = window.location.hash === '#VR';
 
@@ -59,30 +61,91 @@ var leftRotateMatrix = new THREE.Matrix4().makeRotationAxis(new THREE.Vector3( 0
 var goombaDirection;
 
 function onLoad() {
-    renderer = new THREE.WebGLRenderer({antialias: true});
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
-
-    // getMoving();
-    loadSounds();
+    container = document.createElement('div');
+    document.body.appendChild(container);
 
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x87ceeb);
+    scene.fog = new THREE.Fog(0xa0a0a0, 200, 1000);
+    // add light
+    // light = new THREE.HemisphereLight(0xffffff, 0x444444);
+    // light.position.set(0, 200, 0);
+    // scene.add(light);
+    // light = new THREE.DirectionalLight(0xffffff);
+    // light.position.set(0, 200, 100);
+    // light.castShadow = true;
+    // light.shadow.camera.top = 180;
+    // light.shadow.camera.bottom = - 100;
+    // light.shadow.camera.left = - 120;
+    // light.shadow.camera.right = 120;
+    // scene.add(light);
+
+    // var texttureLoader = new THREE.TextureLoader();
+    // var groundTexture = texttureLoader.load( grassGround );
+    // groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
+    // groundTexture.repeat.set( 25, 25 );
+    // groundTexture.anisotropy = 16;
+    // groundTexture.encoding = THREE.sRGBEncoding;
+    // var groundMaterial = new THREE.MeshLambertMaterial( { map: groundTexture } );
+    // var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 20000, 20000 ), groundMaterial );
+    // mesh.position.y = - 250;
+    // mesh.rotation.x = - Math.PI / 2;
+    // mesh.receiveShadow = true;
+    // scene.add(mesh);
+
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
+    container.appendChild(renderer.domElement);
+
+    // getMoving();
+    loadSounds();
     setCamera();
-    // addLights();
+    addLights();
     addSceneElements();
     addEnemies();
-    // addFellows();
-    // addScoreCounter();
+    addFellows();
+    addScoreCounter();
 
     // initWebVR();
 
-    window.addEventListener('resize', onResize, true);
-    window.addEventListener('vrdisplaypresentchange', onResize, true);
-    window.addEventListener('keydown', moveOnKeydown, false);
-    window.addEventListener('keyup', stopOnKeyup, false);
+    // window.addEventListener('resize', onResize, true);
+    // window.addEventListener('vrdisplaypresentchange', onResize, true);
+    // window.addEventListener('keydown', moveOnKeydown, false);
+    // window.addEventListener('keyup', stopOnKeyup, false);
+    window.addEventListener('resize', onWindowResize, false);
+    animate();
 }
+
+function onWindowResize() {
+
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+}
+
+// function animate() {
+
+//     requestAnimationFrame(animate);
+
+//     // var delta = clock.getDelta();
+
+//     // if (marioAnimation) marioAnimation.update(delta);
+//     // if (castle) castle.update(delta);
+//     // if (mario) {
+//     //     // temp.set(mario.position.x, mario.position.y + 20, mario.position.z - 50);
+//     //     // camera.position.lerp(temp, 1);
+//     //     // camera.lookAt( mario.position );
+//     // }
+
+//     renderer.render(scene, camera);
+
+//     // stats.update();
+
+// }
 
 // function getMoving() {
 //     if (isVr) {
@@ -99,13 +162,14 @@ function onLoad() {
 
 function setCamera() {
     var aspect = window.innerWidth / window.innerHeight;
-    camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 10000);
+    camera = new THREE.PerspectiveCamera(20, aspect, 1, 1000);
+    camera.position.set(100, 200, 300);
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.standing = true;
+    // controls.standing = true;
     controls.target.set(0, 100, 0);
     controls.update();
-    camera.position.y = controls.userHeight;
+    // camera.position.y = controls.userHeight;
 
     dollyCam = new THREE.Group();
     dollyCam.position.set( 0, 0, 0 );
@@ -121,9 +185,11 @@ function addSceneElements() {
     var loader = new THREE.ColladaLoader();
     loader.options.convertUpAxis = true;
     loader.load(coinFile, function (collada) {
+        console.log('load coin');
         coin = collada.scene;
-        coin.position.set(0, controls.userHeight, -1);
+        coin.position.set(0, 0, -1);
         scene.add(coin);
+        camera.lookAt(coin.position);
     });
 }
 
@@ -265,7 +331,7 @@ function addSkybox(texture) {
 
 function addScoreCounter() {
     var loader = new THREE.FontLoader();
-    loader.load( 'node_modules/three/examples/fonts/helvetiker_regular.typeface.json', function ( f ) {
+    loader.load(fontFace, function ( f ) {
         font = f;
         updateScore();
     });
@@ -293,17 +359,19 @@ function updateScore() {
 
 // Request animation frame loop function
 function animate(timestamp) {
-    updatePosition();
+    // updatePosition();
     var delta = Math.min(timestamp - lastRenderTime, 500);
     lastRenderTime = timestamp;
 
     // Apply rotation to coin
-    coin.rotation.y += delta * 0.0006 * 5;
+    if (coin) {
+        coin.rotation.y += delta * 0.0006 * 5;
+    }
 
-    handleGetCoin();
-    handleEnemyWallCollision();
-    handleCollisionWithEnemy();
-    handleGetMushroom();
+    // handleGetCoin();
+    // handleEnemyWallCollision();
+    // handleCollisionWithEnemy();
+    // handleGetMushroom();
 
     // Only update controls if we're presenting.
     // if (vrButton.isPresenting()) {
@@ -311,13 +379,14 @@ function animate(timestamp) {
     // }
     // Render the scene.
     // effect.render(scene, camera);
-
+    renderer.render(scene, camera);
     requestAnimationFrame(animate);
+
 }
 
 function handleGetCoin() {
     var dist = 1.61;
-    if( dollyCam.position.distanceTo(coin.position) < dist) {
+    if( dollyCam && coin && dollyCam.position.distanceTo(coin.position) < dist) {
         var x = Math.floor(Math.random() * maxBounding) - maxBounding;
         var z = Math.floor(Math.random() * maxBounding) - maxBounding;
         coin.position.set(x, controls.userHeight, z);
