@@ -11,10 +11,12 @@
         "now-build": "webpack --config webpack.prod.js"
     },
     "dependencies": {
+        "dat.gui": "^0.7.7",
         "three": "~0.114.0"
     },
     "devDependencies": {
         "clean-webpack-plugin": "~3.0.0",
+        "copy-webpack-plugin": "^6.0.1",
         "css-loader": "^3.4.2",
         "eslint": "~6.8.0",
         "eslint-loader": "~3.0.3",
@@ -25,7 +27,7 @@
         "terser-webpack-plugin": "^2.3.5",
         "webpack": "~4.42.0",
         "webpack-cli": "~3.3.11",
-        "webpack-dev-server": "~3.10.3",
+        "webpack-dev-server": "^3.11.0",
         "webpack-fix-style-only-entries": "^0.4.0",
         "webpack-merge": "^4.2.2"
     }

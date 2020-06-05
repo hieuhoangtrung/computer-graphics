@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const FixStyleOnlyEntriesPlugin = require("webpack-fix-style-only-entries");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const TerserJSPlugin = require('terser-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const webpack = require('webpack');
 const path = require('path');
@@ -51,7 +52,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(jpe?g|gif|png|svg|woff|ttf|wav|mp3|fbx|obj|p3d|gmax|max)$/i,
+        test: /\.(jpe?g|gif|png|svg|woff|ttf|wav|mp3|fbx|obj|p3d|gmax|max|dae|gltf)$/i,
         use: [
           {
             loader: 'file-loader',
@@ -61,7 +62,7 @@ module.exports = {
     ],
   },
   plugins: [
-    new CleanWebpackPlugin(),
+    // new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       minify: true,
       template: resolveAppPath('index.html'),
@@ -72,7 +73,14 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({filename: "[name].css"}),
     new FixStyleOnlyEntriesPlugin(),
-    new OptimizeCSSAssetsPlugin({})
+    new OptimizeCSSAssetsPlugin({}),
+    new CopyPlugin({
+      patterns: [
+        { from: 'src/public_files/**/*',
+        to: "temp/"
+      },
+      ],
+    }),
   ],
   optimization: {
     minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
