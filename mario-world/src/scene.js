@@ -34,14 +34,32 @@ const animate = ({ camera, clock, renderer, stats, scene , labelRenderer, dirLig
   //   camera.position.lerp(temp, 1);
   //   camera.lookAt(worldObject.mario.position);
   // }
+  var time = Date.now() * 0.000003;
+  
+  var wall1x = + 50 * Math.sin(time * 150);
+  var wall2x = - 50 * Math.sin(time * 150);
 
-  var time = Date.now() * 0.00001;
-  var sunx = 1500 * Math.sin(time)
-  var sunz = 1500 * Math.cos(time)
+  worldObject.moveingwall1.position.set(-700 + wall1x, 33, 100);
+  worldObject.moveingwall2.position.set(-700 + wall2x, 33, 350);
+  worldObject.moveingwall3.position.set(-700 + wall1x, 33, 600);
+  worldObject.moveingbox1.position.set(352 + wall1x, 220, 700);
+  worldObject.moveingbox2.position.set(325 + wall1x, 220, 700);
+  worldObject.moveingbox3.position.set(175 + wall2x, 220, 700);
+  worldObject.moveingbox4.position.set(148 + wall2x, 220, 700);
+
+  var boxx = 390 * Math.sin(time * 100);
+  var boxz = 390 * Math.cos(time * 100);
+
+  worldObject.moveingbox5.position.set(boxx, 43, boxz);
+  worldObject.moveingbox6.position.set(boxx, 70, -boxz);
+  worldObject.moveingbox7.position.set(-boxx, 97, boxz);
+  worldObject.moveingbox8.position.set(-boxx, 124, -boxz);
+
+  var sunx = Math.sin(time);
+  var sunz = Math.cos(time);
   
-  dirLight.position.set(sunx, 500, sunz)
-  sun.position.set(sunx, 500, sunz)
-  
+  dirLight.position.set(1500 * sunx, 500, 1500 * sunz);
+  sun.position.set(1500 * sunx, 500, 1500 * sunz);
 
   renderer.render(scene, camera);
   labelRenderer.render( scene, camera );
