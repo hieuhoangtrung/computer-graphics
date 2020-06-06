@@ -4,3 +4,12 @@
 npm-debug.log
 .DS_Store
 mario-world/src/scene-1.js
+
+template/src/three.module.js
+template/src/PointerLockControls.js
+template/src/main.js
+template/package.json
+template/package.json
+template/package-lock.json
+template/index.html
+template/index.html
