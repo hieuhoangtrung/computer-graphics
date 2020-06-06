@@ -1180,7 +1180,29 @@ function loadModels({ scene, camera }, worldObject) {
     
   });
 
-  //monsters
+  //monsters on the brick
+  loader.load(goomba, function (object) {
+    object.traverse(function (child) {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+    object.scale.set(1/3, 1/3 , 1/3);
+    //object.position.set(700, 63, 50);
+    object.rotation.z = THREE.Math.degToRad( 0 );
+
+    worldObject.movingMonster1 = object;
+    scene.add(object); 
+    
+    var mushroomLabel = createDesc("monster",55)
+    object.on('hover',function(m) {
+      object.add( mushroomLabel );
+    },function(m) {
+      object.remove(mushroomLabel)
+    });
+  });
+
   loader.load(goomba, function (object) {
     object.traverse(function (child) {
       if (child.isMesh) {
@@ -1190,12 +1212,11 @@ function loadModels({ scene, camera }, worldObject) {
     });
     object.scale.set(1/3, 1/3 , 1/3);
     object.position.set(700, 63, 50);
-    object.rotation.z = Math.PI/ -2;
+    object.rotation.z = THREE.Math.degToRad( 180 );
 
-    worldObject.movingMonster1 = object;
+    worldObject.movingMonster2 = object;
     scene.add(object);
     
-    //description
     var mushroomLabel = createDesc("monster",55)
     object.on('hover',function(m) {
       object.add( mushroomLabel );
@@ -1204,7 +1225,90 @@ function loadModels({ scene, camera }, worldObject) {
     });
   });
 
-  
+  //monster on the floor
+  loader.load(goomba, function (object) {
+    object.traverse(function (child) {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+    object.scale.set(1/3, 1/3 , 1/3);
+    object.rotation.z = THREE.Math.degToRad( 270 );
+
+    worldObject.movingMonster3 = object;
+    scene.add(object); 
+
+    var mushroomLabel = createDesc("monster",55)
+    object.on('hover',function(m) {
+      object.add( mushroomLabel );
+    },function(m) {
+      object.remove(mushroomLabel)
+    });
+  });
+
+  loader.load(goomba, function (object) {
+    object.traverse(function (child) {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+    object.scale.set(1/3, 1/3 , 1/3);
+    object.rotation.z = THREE.Math.degToRad( 270 );
+
+    worldObject.movingMonster4 = object;
+    scene.add(object); 
+
+    var mushroomLabel = createDesc("monster",55)
+    object.on('hover',function(m) {
+      object.add( mushroomLabel );
+    },function(m) {
+      object.remove(mushroomLabel)
+    });
+  });
+
+  loader.load(goomba, function (object) {
+    object.traverse(function (child) {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+    object.scale.set(1/3, 1/3 , 1/3);
+    object.rotation.z = THREE.Math.degToRad( 90 );
+
+    worldObject.movingMonster5 = object;
+    scene.add(object); 
+
+    var mushroomLabel = createDesc("monster",55)
+    object.on('hover',function(m) {
+      object.add( mushroomLabel );
+    },function(m) {
+      object.remove(mushroomLabel)
+    });
+  });
+
+  loader.load(goomba, function (object) {
+    object.traverse(function (child) {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+    object.scale.set(1/3, 1/3 , 1/3);
+    object.rotation.z = THREE.Math.degToRad( 270 );
+
+    worldObject.movingMonster6 = object;
+    scene.add(object); 
+
+    var mushroomLabel = createDesc("monster",55)
+    object.on('hover',function(m) {
+      object.add( mushroomLabel );
+    },function(m) {
+      object.remove(mushroomLabel)
+    });
+  });
 
   //trees have a blank board, it might cannot add in our project
   // loader.load(trees, function (object) {
@@ -1220,7 +1324,7 @@ function loadModels({ scene, camera }, worldObject) {
   //   scene.add(object);
   // });
 
-  //the small ghost
+  //ghost
   loader.load(boo, function (object) {
     object.traverse(function (child) {
       if (child.isMesh) {
@@ -1230,9 +1334,13 @@ function loadModels({ scene, camera }, worldObject) {
         child.receiveShadow = true;
       }
     });
-    object.scale.set(1 / 20, 1 / 20, 1 / 20);
-    object.position.set(0, 55, 0);
+    object.scale.set(1 / 10, 1 / 10, 1 / 10);
+    object.position.set(350, 85, 700);
+    object.rotation.y = THREE.Math.degToRad( 90 );
+    worldObject.movingGhost1 = object;
+
     scene.add(object);
+
     var mushroomLabel = createDesc("boo",130)
     object.on('hover',function(m) {
       object.add( mushroomLabel );
@@ -1245,6 +1353,8 @@ function loadModels({ scene, camera }, worldObject) {
 
 }
 
+
+//description
 function createDesc(objName, objHeight){
   var objDiv = document.createElement( 'div' );
   objDiv.className = 'label';
