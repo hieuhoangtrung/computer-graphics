@@ -1,3 +1,4 @@
+//import * as THREE from "./shared/three.module";
 import grassGround from './images/grasslight-big.jpg';
 import sunSurface from './images/sun.jpg';
 import seaSurface from './images/seaTextyure.jpg';
@@ -8,8 +9,8 @@ import './shared/OrbitControls';
 import { DirectionalLightHelper, Vector3 } from 'three';
 import { CSS2DRenderer, CSS2DObject } from  './shared/CSS2DRenderer';
 import "three/examples/fonts/helvetiker_regular.typeface.json";
-
-
+import { DragControls } from 'three/examples/jsm/controls/DragControls';
+//import { DragControls } from "https://cdn.jsdelivr.net/npm/three@0.114/examples/jsm/controls/DragControls.js";
 
 const onWindowResize = ({ camera, renderer }) => {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -100,9 +101,6 @@ const animate = ({ camera, clock, renderer, stats, scene , labelRenderer, dirLig
 
 //ghost moving
   //var GhostPosX = worldObject.movingGhost1.position.x
-
-
-
   worldObject.movingGhost1.position.x += GhostMove;
   //console.log(GhostMove);
   if(worldObject.movingGhost1.position.x >= 701 || worldObject.movingGhost1.position.x <= -701){
@@ -148,6 +146,7 @@ const init = () => {
   document.body.appendChild( labelRenderer.domElement );
   document.body.appendChild( renderer.domElement );
   var controls2 = new THREE.OrbitControls( camera, labelRenderer.domElement );
+  
   var scoreCounter;
   var texttureLoader = new THREE.TextureLoader();
 
@@ -162,6 +161,7 @@ const init = () => {
     stats,
     labelRenderer,
     controls2,
+    Dragcontrols,
     GhostMove,
     scoreCounter,
   };
@@ -169,6 +169,15 @@ const init = () => {
   const worldObject= {};
 
   document.body.appendChild(container);
+
+  //dragControl
+  var Dragcontrols = new DragControls ( worldObject , camera, renderer.domElement );
+  Dragcontrols.addEventListener( 'drag', function render() {
+    renderer.render( scene, camera );
+  } );
+  document.addEventListener( 'click', onClick, false );
+  window.addEventListener( 'keydown', onKeyDown, false );
+  window.addEventListener( 'keyup', onKeyUp, false );
 
   // camera.position.set(100, 200, 300);
 
@@ -193,6 +202,7 @@ const init = () => {
 
   container.appendChild(stats.dom);
   animate(globalObject, worldObject);
+
 }
 
 export { init }
@@ -387,5 +397,70 @@ function loadSea(scene,texttureLoader){
   sea.rotation.x = - Math.PI / 2;
   sea.receiveShadow = true;
   scene.add(sea);
+
+}
+
+//mouse listener
+function onKeyDown( event ) {
+  //orbitcontrol unable
+  controls2.enabled = false;
+  enableSelection = ( event.keyCode === 16 ) ? true : false;
+
+}
+
+function onKeyUp() {
+
+  controls2.enabled = true;
+  enableSelection = false;
+
+}
+
+function onClick( event ) {
+
+  event.preventDefault();
+
+  if ( enableSelection === true ) {
+
+      var draggableObjects = Dragcontrols.getObjects();
+      draggableObjects.length = 0;
+
+      mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+      mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+      raycaster.setFromCamera( mouse, camera );
+
+      var intersections = raycaster.intersectObjects( objects, true );
+
+      if ( intersections.length > 0 ) {
+
+          var object = intersections[ 0 ].object;
+
+          if ( group.children.includes( object ) === true ) {
+
+              object.material.emissive.set( 0x000000 );
+              scene.attach( object );
+
+          } else {
+
+              object.material.emissive.set( 0xaaaaaa );
+              group.attach( object );
+
+          }
+
+          Dragcontrols.transformGroup = true;
+          draggableObjects.push( group );
+
+      }
+
+      if ( group.children.length === 0 ) {
+
+          Dragcontrols.transformGroup = false;
+          draggableObjects.push( ...objects );
+
+      }
+
+  }
+
+  renderer.render( scene, camera );
 
 }

@@ -1,3 +1,4 @@
+
 import * as THREE from '../build/three.module.js';
 
 import { DragControls } from './jsm/controls/DragControls.js';
@@ -14,24 +15,26 @@ init();
 
 function init() {
 
-<<<<<<< HEAD
+
     document.body.appendChild( container );
 
-=======
-    container = document.createElement( 'div' );
-    document.body.appendChild( container );
+    camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 5000 );
+    camera.position.z = 1000;
 
 
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFShadowMap;
 
->>>>>>> clickNmove
+    renderer.setPixelRatio( window.devicePixelRatio );
+    renderer.setSize( window.innerWidth, window.innerHeight );
+
     container.appendChild( renderer.domElement );
 
     controls = new DragControls( [ ... objects ], camera, renderer.domElement );
     controls.addEventListener( 'drag', render );
 
-//
+    //
+
+    window.addEventListener( 'resize', onWindowResize, false );
+
     document.addEventListener( 'click', onClick, false );
     window.addEventListener( 'keydown', onKeyDown, false );
     window.addEventListener( 'keyup', onKeyUp, false );
@@ -42,15 +45,19 @@ function init() {
 
 
 function onKeyDown( event ) {
+
     enableSelection = ( event.keyCode === 16 ) ? true : false;
+
 }
 
 function onKeyUp() {
+
     enableSelection = false;
+
 }
 
 function onClick( event ) {
-    
+
     event.preventDefault();
 
     if ( enableSelection === true ) {

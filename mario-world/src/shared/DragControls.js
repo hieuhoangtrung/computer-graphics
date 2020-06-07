@@ -5,7 +5,6 @@
  */
 
 import {
-<<<<<<< HEAD
     EventDispatcher,
     Matrix4,
     Plane,
@@ -271,7 +270,7 @@ var DragControls = function (_objects, _camera, _domElement) {
 };
 
 DragControls.prototype = Object.create(EventDispatcher.prototype);
-=======
+
 	EventDispatcher,
 	Matrix4,
 	Plane,
