@@ -16,10 +16,10 @@ const onWindowResize = ({ camera, renderer }) => {
 
 }
 
-const animate = ({ camera, clock, renderer, stats, scene , labelRenderer, dirLight, sun}, worldObject) => 
+const animate = ({ camera, clock, renderer, stats, scene , labelRenderer, dirLight, sun, GhostMove}, worldObject) => 
 {
     requestAnimationFrame(() => animate({ 
-      camera, clock, renderer, stats, scene, labelRenderer, dirLight, sun
+      camera, clock, renderer, stats, scene, labelRenderer, dirLight, sun, GhostMove
     }, worldObject));
 
 
@@ -97,49 +97,20 @@ const animate = ({ camera, clock, renderer, stats, scene , labelRenderer, dirLig
   }
 
 //ghost moving
-  var GhostPosX = worldObject.movingGhost1.position.x
-  var GhostMove = 5;
+  //var GhostPosX = worldObject.movingGhost1.position.x
 
-  if(GhostPosX <= 700){
-    worldObject.movingGhost1.position.x += GhostMove;
-    if(GhostPosX == 700 || GhostPosX == -700){
+
+
+  worldObject.movingGhost1.position.x += GhostMove;
+  //console.log(GhostMove);
+  if(worldObject.movingGhost1.position.x >= 701 || worldObject.movingGhost1.position.x <= -701){
       GhostMove = -GhostMove
-      console.log(GhostMove);
-    }
-  }
-
-
-  /*
-  
-  var timer = null; //定时器id
-
-  function move(end, step) {
-
-    clearInterval(timer);
-    var start = parseInt(getStyle(ele, 'left'));
-    //处理步长 判断向前 向后
-    if (end > start) {
-      step = step;
-    } else if (end < start) {
-      step = -step;
-    }
-
-    timer = setInterval(function() {
-      start += step;
-      //重点结束
-      if (start >= end && step > 0) {
-        //正向移动
-        start = end;
-        clearInterval(timer);
-      } else if (start <= end && step < 0) {
-        //负方向移动
-        start = end;
-        clearInterval(timer);
+      if(GhostMove > 0){
+        worldObject.movingGhost1.rotation.y = THREE.Math.degToRad( 90 );
+      }else{
+        worldObject.movingGhost1.rotation.y = THREE.Math.degToRad( 270 );
       }
-      ele.style.left = start + 'px';
-    }, 20);
   }
-  */
 
   var sunx = Math.sin(time);
   var sunz = Math.cos(time);
@@ -155,6 +126,8 @@ const animate = ({ camera, clock, renderer, stats, scene , labelRenderer, dirLig
 }
 
 const init = () => {
+  var GhostMove = 5;
+
   const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 5000);
   const scene = new THREE.Scene();
   const stats = new Stats();
@@ -184,6 +157,7 @@ const init = () => {
     stats,
     labelRenderer,
     controls2,
+    GhostMove,
   };
 
   const worldObject= {};
