@@ -99,21 +99,35 @@ const animate = ({ camera, clock, renderer, stats, scene , labelRenderer, dirLig
 //ghost moving
   var GhostMove = 1;
   var GhostPosX = worldObject.movingGhost1.position.x
+  var timer = null; //定时器id
 
-  console.log(GhostPosX);
+  function move(end, step) {
 
-  if (GhostPosX = 700){
-    GhostPosX -= GhostMove;
-    //worldObject.movingGhost1.position.x = 700
-    //worldObject.movingGhost1.rotation.y = THREE.Math.degToRad( 270 );
+    clearInterval(timer);
+    var start = parseInt(getStyle(ele, 'left'));
+    //处理步长 判断向前 向后
+    if (end > start) {
+      step = step;
+    } else if (end < start) {
+      step = -step;
+    }
+
+    timer = setInterval(function() {
+      start += step;
+      //重点结束
+      if (start >= end && step > 0) {
+        //正向移动
+        start = end;
+        clearInterval(timer);
+      } else if (start <= end && step < 0) {
+        //负方向移动
+        start = end;
+        clearInterval(timer);
+      }
+      ele.style.left = start + 'px';
+    }, 20);
   }
-  if (moveSpeed + 0.01 > 700 ){
-    //worldObject.movingGhost1.position.x = -700
-    worldObject.movingGhost1.position.x -= GhostMove;
-    //worldObject.movingGhost1.rotation.y = THREE.Math.degToRad( 90 );
-  }
-  //worldObject.movingMonster4.position.set(705  + moveSpeed * 1.5, 61, 400);
-
+  
 
   var sunx = Math.sin(time);
   var sunz = Math.cos(time);
