@@ -4,7 +4,6 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { DDSLoader } from 'three/examples/jsm/loaders/DDSLoader.js';
 
 import marioAnimatedFile from "./models/mario/scene.gltf";
-import marioMesh from "./models/mario/animations/Run.fbx";
 import star from "./models/Star.fbx";
 import extraLife from "./models/Extra_Life.fbx";
 import boo from "./models/Boo.fbx";
@@ -16,7 +15,7 @@ import smallCastle from "./models/Castle/Castle_Small.fbx";
 import mushroom from "./models/mushroom.fbx";
 import { CSS2DObject } from  './shared/CSS2DRenderer'
 
-import { scene, camera, globalObject, worldObject } from './scene';
+import { scene, camera, globalObject, worldObject, score } from './scene';
 import {ColladaLoader} from 'three/examples/jsm/loaders/ColladaLoader';
 import coinFile from '../../peter-lab/src/lab08/models/coin.dae';
 
@@ -35,21 +34,22 @@ function addAnimatedMario() {
 
   loader.setDDSLoader(new DDSLoader());
   loader.load(marioAnimatedFile, function (data) {
-      worldObject.marioMain =  data.scene;
-      worldObject.marioMain.traverse(function (node) {
-          if (node.isMesh || node.isLight) node.castShadow = true;
-      });
-      globalObject.marioAnimations = data.animations;
-      if (globalObject.marioAnimations.length) {
-        globalObject.marioAnimatioMixer = new THREE.AnimationMixer(worldObject.marioMain);
-          const animation = globalObject.marioAnimations[4]; // stand
-          const action = globalObject.marioAnimatioMixer.clipAction(animation);
-          action.play();
-      }
-      worldObject.marioMain.scale.set(1/2, 1/2, 1/2);
-      worldObject.marioMain.position.set(0,-1,-3);
-      worldObject.marioMain.rotation.y += Math.PI;
-      camera.add(worldObject.marioMain);
+    worldObject.marioMain = data.scene;
+    worldObject.marioMain.traverse(function (node) {
+      if (node.isMesh || node.isLight) node.castShadow = true;
+    });
+    globalObject.marioAnimations = data.animations;
+    if (globalObject.marioAnimations.length) {
+      globalObject.marioAnimatioMixer = new THREE.AnimationMixer(worldObject.marioMain);
+      const animation = globalObject.marioAnimations[4]; // stand
+      const action = globalObject.marioAnimatioMixer.clipAction(animation);
+      action.play();
+    }
+    worldObject.marioMain.scale.set(1 / 2, 1 / 2, 1 / 2);
+    worldObject.marioMain.position.set(0, -1, -3);
+    worldObject.marioMain.rotation.y += Math.PI;
+    camera.add(worldObject.marioMain);
+    updateScore() /// needd to check here
   });
 }
 
@@ -1162,7 +1162,7 @@ function loadModels() {
     });
   });
 
-//extraLife
+//extraLife-mushroom
 
   loader.load(extraLife, function (object) {
     object.traverse(function (child) {
@@ -1182,6 +1182,26 @@ function loadModels() {
     });
   });
 
+  loader.load(mushroom, function (object) {
+    object.traverse(function (child) {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+    object.scale.set(1 / 2, 1 / 2, 1 / 2);
+    object.position.set(240, 40, 25);
+    scene.add(object);
+    var mushroomLabel = createDesc("extraLife",55 )
+    object.on('hover',function(m) {
+      object.add( mushroomLabel );
+    },function(m) {
+      object.remove(mushroomLabel)
+    });
+
+  });
+
+  //monsters on the brick
   loader.load(goomba, function (object) {
     object.traverse(function (child) {
       if (child.isMesh) {
@@ -1189,10 +1209,14 @@ function loadModels() {
         child.receiveShadow = true;
       }
     });
-    object.scale.set(1 / 5, 1 / 5, 1 / 5);
-    object.position.set(90, 60, 25);
+    object.scale.set(1/3, 1/3 , 1/3);
+    //object.position.set(700, 63, 50);
+    object.rotation.z = THREE.Math.degToRad( 0 );
+
+    worldObject.movingMonster1 = object;
     scene.add(object);
-    var mushroomLabel = createDesc("goomba",60)
+
+    var mushroomLabel = createDesc("monster",55)
     object.on('hover',function(m) {
       object.add( mushroomLabel );
     },function(m) {
@@ -1200,7 +1224,112 @@ function loadModels() {
     });
   });
 
+  loader.load(goomba, function (object) {
+    object.traverse(function (child) {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+    object.scale.set(1/3, 1/3 , 1/3);
+    object.position.set(700, 63, 50);
+    object.rotation.z = THREE.Math.degToRad( 180 );
 
+    worldObject.movingMonster2 = object;
+    scene.add(object);
+
+    var mushroomLabel = createDesc("monster",55)
+    object.on('hover',function(m) {
+      object.add( mushroomLabel );
+    },function(m) {
+      object.remove(mushroomLabel)
+    });
+  });
+
+  //monster on the floor
+  loader.load(goomba, function (object) {
+    object.traverse(function (child) {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+    object.scale.set(1/3, 1/3 , 1/3);
+    object.rotation.z = THREE.Math.degToRad( 270 );
+
+    worldObject.movingMonster3 = object;
+    scene.add(object);
+
+    var mushroomLabel = createDesc("monster",55)
+    object.on('hover',function(m) {
+      object.add( mushroomLabel );
+    },function(m) {
+      object.remove(mushroomLabel)
+    });
+  });
+
+  loader.load(goomba, function (object) {
+    object.traverse(function (child) {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+    object.scale.set(1/3, 1/3 , 1/3);
+    object.rotation.z = THREE.Math.degToRad( 270 );
+
+    worldObject.movingMonster4 = object;
+    scene.add(object);
+
+    var mushroomLabel = createDesc("monster",55)
+    object.on('hover',function(m) {
+      object.add( mushroomLabel );
+    },function(m) {
+      object.remove(mushroomLabel)
+    });
+  });
+
+  loader.load(goomba, function (object) {
+    object.traverse(function (child) {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+    object.scale.set(1/3, 1/3 , 1/3);
+    object.rotation.z = THREE.Math.degToRad( 90 );
+
+    worldObject.movingMonster5 = object;
+    scene.add(object);
+
+    var mushroomLabel = createDesc("monster",55)
+    object.on('hover',function(m) {
+      object.add( mushroomLabel );
+    },function(m) {
+      object.remove(mushroomLabel)
+    });
+  });
+
+  loader.load(goomba, function (object) {
+    object.traverse(function (child) {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+    object.scale.set(1/3, 1/3 , 1/3);
+    object.rotation.z = THREE.Math.degToRad( 270 );
+
+    worldObject.movingMonster6 = object;
+    scene.add(object);
+
+    var mushroomLabel = createDesc("monster",55)
+    object.on('hover',function(m) {
+      object.add( mushroomLabel );
+    },function(m) {
+      object.remove(mushroomLabel)
+    });
+  });
 
   //trees have a blank board, it might cannot add in our project
   // loader.load(trees, function (object) {
@@ -1216,7 +1345,7 @@ function loadModels() {
   //   scene.add(object);
   // });
 
-  //the small ghost
+  //ghost
   loader.load(boo, function (object) {
     object.traverse(function (child) {
       if (child.isMesh) {
@@ -1231,8 +1360,15 @@ function loadModels() {
     object.position.set(700, 70, 150);
     worldObject.boo = object;
     worldObject.boo.rotation.y += Math.PI;
+      // add one more boo here
+    object.scale.set(1 / 10, 1 / 10, 1 / 10);
+    object.position.set(-700, 85, 700);
+    object.rotation.y = THREE.Math.degToRad( 90 );
+    worldObject.movingGhost1 = object;
+
     scene.add(object);
-    var mushroomLabel = createDesc("boo",130)
+
+    var mushroomLabel = createDesc("ghost",130)
     object.on('hover',function(m) {
       object.add( mushroomLabel );
     },function(m) {
@@ -1263,6 +1399,8 @@ function loadModels() {
   });
 }
 
+
+//description
 function createDesc(objName, objHeight){
   var objDiv = document.createElement( 'div' );
   objDiv.className = 'label';
@@ -1279,4 +1417,26 @@ var getObjectHalfSize = function(obj) {
   return objectBox.max.clone().sub(objectBox.min).divideScalar(2);
 };
 
-export { loadModels, addAnimatedMario, updateMarioAnimation, addCoins };
+function updateScore(){
+  var loader = new THREE.FontLoader();
+    loader.load('helvetiker_regular.typeface.json', function (f) {
+    var font = f;
+    if (globalObject.scoreCounter) {
+      scene.remove(globalObject.scoreCounter);
+    }
+    var geometry = new THREE.TextGeometry('SCORE: ' + score, {
+        font: font,
+        size: 10, // font size
+        height: 0.1, // how much extrusion (how thick / deep are the letters)
+    });
+    geometry.computeBoundingBox();
+    var material = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0xffffff });
+      globalObject.scoreCounter = new THREE.Mesh(geometry, material);
+      globalObject.scoreCounter.position.set(-1.5, 2, -10);
+      globalObject.scoreCounter.scale.set(1/20, 1/20, 1/20);
+
+    camera.add(globalObject.scoreCounter);
+  });
+}
+
+export { loadModels, addAnimatedMario, updateMarioAnimation, addCoins, updateScore };

@@ -38,6 +38,10 @@ const moveLeft = false;
 const moveRight = false;
 const canJump = false;
 
+let GhostMove = 5;
+let score = 0;
+let isLoading = true;
+
 const globalObject = {
   velocity,
   direction,
@@ -50,14 +54,9 @@ const globalObject = {
 
 const worldObject = {};
 
-const animate = (
-  globalObject,
-  worldObject
-) => {
-  requestAnimationFrame(() =>
-    animate(globalObject,
-      worldObject
-    )
+const animate = () => {
+  requestAnimationFrame(
+    animate
   );
 
   const {
@@ -122,35 +121,97 @@ const animate = (
     handleGetCoin();
     handleGetMushroom();
   }
-  var time = Date.now() * 0.000003;
 
-  var wall1x = +50 * Math.sin(time * 150);
-  var wall2x = -50 * Math.sin(time * 150);
+  if (!isLoading) {
+    var time = Date.now() * 0.000003;
 
-  if (worldObject.moveingwall1) {
-    worldObject.moveingwall1.position.set(-700 + wall1x, 33, 100);
+    var wall1x = +50 * Math.sin(time * 150);
+    var wall2x = -50 * Math.sin(time * 150);
+
+    if (worldObject.moveingwall1) {
+      worldObject.moveingwall1.position.set(-700 + wall1x, 33, 100);
+    }
+
+    worldObject.moveingwall2.position.set(-700 + wall2x, 33, 350);
+    worldObject.moveingwall3.position.set(-700 + wall1x, 33, 600);
+    worldObject.moveingbox1.position.set(352 + wall1x, 220, 700);
+    worldObject.moveingbox2.position.set(325 + wall1x, 220, 700);
+    worldObject.moveingbox3.position.set(175 + wall2x, 220, 700);
+    worldObject.moveingbox4.position.set(148 + wall2x, 220, 700);
+
+    var boxx = 390 * Math.sin(time * 100);
+    var boxz = 390 * Math.cos(time * 100);
+
+    worldObject.moveingbox5.position.set(boxx, 43, boxz);
+    worldObject.moveingbox6.position.set(boxx, 70, -boxz);
+    worldObject.moveingbox7.position.set(-boxx, 97, boxz);
+    worldObject.moveingbox8.position.set(-boxx, 124, -boxz);
+
+//monsters moving
+    var moveSpeed = + 55 * Math.sin(time * 200);
+    worldObject.movingMonster1.position.set(700 , 267, -144 + moveSpeed);
+    worldObject.movingMonster2.position.set(700 , 168, 50 + moveSpeed * -1);
+    worldObject.movingMonster3.position.set(705  + moveSpeed * -1.5, 61, 50);
+    worldObject.movingMonster4.position.set(705  + moveSpeed * 1.5, 61, 400);
+    worldObject.movingMonster5.position.set(-705  + moveSpeed * -1.5, 61, 225);
+    worldObject.movingMonster6.position.set(-705  + moveSpeed * 1.5, 61, 475);
+    //type I, z, forwards
+    if (moveSpeed + 0.01 > 55){
+      worldObject.movingMonster1.rotation.z = THREE.Math.degToRad( 180 );
+    }
+    if (moveSpeed -0.01 < -55){
+      worldObject.movingMonster1.rotation.z = THREE.Math.degToRad( 0 );
+    }
+    //type II (reverse), z, backwards
+    if (moveSpeed + 0.01 > 55){
+      worldObject.movingMonster2.rotation.z = THREE.Math.degToRad( 0 );
+    }
+    if (moveSpeed -0.01 < -55){
+      worldObject.movingMonster2.rotation.z = THREE.Math.degToRad( 180 );
+    }
+    //type III, x, right
+    if (moveSpeed + 0.01 > 55){
+      worldObject.movingMonster3.rotation.z = THREE.Math.degToRad( 90 );
+      worldObject.movingMonster5.rotation.z = THREE.Math.degToRad( 90 );
+    }
+    if (moveSpeed -0.01 < -55){
+      worldObject.movingMonster3.rotation.z = THREE.Math.degToRad( 270 );
+      worldObject.movingMonster5.rotation.z = THREE.Math.degToRad( 270 );
+    }
+    //type IV, x, left
+    if (moveSpeed + 0.01 > 55){
+      worldObject.movingMonster4.rotation.z = THREE.Math.degToRad( 270 );
+      worldObject.movingMonster6.rotation.z = THREE.Math.degToRad( 270 );
+    }
+    if (moveSpeed -0.01 < -55){
+      worldObject.movingMonster4.rotation.z = THREE.Math.degToRad( 90 );
+      worldObject.movingMonster6.rotation.z = THREE.Math.degToRad( 90 );
+    }
+
+//ghost moving
+    //var GhostPosX = worldObject.movingGhost1.position.x
+
+
+
+    worldObject.movingGhost1.position.x += GhostMove;
+    //console.log(GhostMove);
+    if(worldObject.movingGhost1.position.x >= 701 || worldObject.movingGhost1.position.x <= -701){
+      GhostMove = -GhostMove
+      if(GhostMove > 0){
+        worldObject.movingGhost1.rotation.y = THREE.Math.degToRad( 90 );
+      }else{
+        worldObject.movingGhost1.rotation.y = THREE.Math.degToRad( 270 );
+      }
+    }
   }
 
-  // worldObject.moveingwall2.position.set(-700 + wall2x, 33, 350);
-  // worldObject.moveingwall3.position.set(-700 + wall1x, 33, 600);
-  // worldObject.moveingbox1.position.set(352 + wall1x, 220, 700);
-  // worldObject.moveingbox2.position.set(325 + wall1x, 220, 700);
-  // worldObject.moveingbox3.position.set(175 + wall2x, 220, 700);
-  // worldObject.moveingbox4.position.set(148 + wall2x, 220, 700);
-
-  var boxx = 390 * Math.sin(time * 100);
-  var boxz = 390 * Math.cos(time * 100);
-
-  // worldObject.moveingbox5.position.set(boxx, 43, boxz);
-  // worldObject.moveingbox6.position.set(boxx, 70, -boxz);
-  // worldObject.moveingbox7.position.set(-boxx, 97, boxz);
-  // worldObject.moveingbox8.position.set(-boxx, 124, -boxz);
 
   var sunx = Math.sin(time);
   var sunz = Math.cos(time);
 
   dirLight.position.set(1500 * sunx, 500, 1500 * sunz);
   sun.position.set(1500 * sunx, 500, 1500 * sunz);
+
 
   renderer.render(scene, camera);
   stats.update();
@@ -164,10 +225,34 @@ const init = () => {
   renderer.shadowMap.enabled = true;
   renderer.toneMapping = THREE.ReinhardToneMapping;
   scene.add(controls.getObject());
+
+  document.body.appendChild( renderer.domElement );
+  var texttureLoader = new THREE.TextureLoader();
+
   scene.background = new THREE.Color(0x87ceeb);
   const container = document.createElement("div");
   document.body.appendChild(container);
 
+  loadDirLight(scene,globalObject);
+  loadSun(scene,globalObject,texttureLoader);
+  loadGround(scene,texttureLoader);
+  loadBridge(scene,texttureLoader);
+  loadSea(scene,texttureLoader);
+  loadModels();
+  addAnimatedMario();
+  addCoins();
+  registerEvents();
+  loadSounds();
+
+  container.appendChild(renderer.domElement);
+  container.appendChild(stats.dom);
+  animate();
+  setTimeout(() => {
+    isLoading = false
+  }, 500);
+}
+
+function loadDirLight(scene,globalObject){
   //Light
   var hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
   scene.add(hemiLight);
@@ -191,9 +276,10 @@ const init = () => {
   // dirLight.shadowBias = -0.0001;
   dirLight.shadowDarkness = 100;
   globalObject.dirLight = dirLight;
+}
 
+function loadSun(scene,globalObject,texttureLoader){
   //Sun
-  var texttureLoader = new THREE.TextureLoader();
   var sunTexture = texttureLoader.load(sunSurface);
 
   var sunGeometry = new THREE.SphereBufferGeometry(20, 16, 8);
@@ -208,7 +294,9 @@ const init = () => {
   sun.receiveShadow = false;
   globalObject.sun = sun;
   scene.add(sun);
+}
 
+function loadGround(scene,texttureLoader){
   //grounds
   var groundTexture = texttureLoader.load(grassGround);
   groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
@@ -290,6 +378,9 @@ const init = () => {
     ground10
   );
 
+}
+
+function loadBridge(scene,texttureLoader){
   //bridge
   var brigeTexture = texttureLoader.load(bridgeSurface);
   brigeTexture.wrapS = brigeTexture.wrapT = THREE.RepeatWrapping;
@@ -372,6 +463,9 @@ const init = () => {
     bridge9
   );
 
+}
+
+function loadSea(scene,texttureLoader){
   // sea
   var seaTexture = texttureLoader.load(seaSurface);
   seaTexture.wrapS = seaTexture.wrapT = THREE.RepeatWrapping;
@@ -389,17 +483,6 @@ const init = () => {
   sea.receiveShadow = true;
   worldObject.sea = sea;
   scene.add(sea);
+}
 
-  loadModels();
-  addAnimatedMario();
-  addCoins();
-  registerEvents();
-  loadSounds();
-
-  container.appendChild(renderer.domElement);
-
-  container.appendChild(stats.dom);
-  animate(globalObject, worldObject);
-};
-
-export { init, scene, camera, renderer, controls, globalObject, worldObject };
+export { init, scene, camera, renderer, controls, globalObject, worldObject, score };
