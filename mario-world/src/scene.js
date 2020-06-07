@@ -5,9 +5,13 @@ import bridgeSurface from "./images/bridge.jpg";
 import Stats from "./shared/stats.module";
 import { loadModels, addAnimatedMario, addCoins } from "./loader";
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls";
-import { registerEvents } from './registerEvent';
-import { handleCollisionWithEnemy, handleGetCoin, handleGetMushroom } from './collision';
-import { loadSounds } from './loadSounds';
+import { registerEvents } from "./registerEvent";
+import {
+  handleCollisionWithEnemy,
+  handleGetCoin,
+  handleGetMushroom,
+} from "./collision";
+import { loadSounds } from "./loadSounds";
 
 // main three js objects
 const camera = new THREE.PerspectiveCamera(
@@ -55,9 +59,7 @@ const globalObject = {
 const worldObject = {};
 
 const animate = () => {
-  requestAnimationFrame(
-    animate
-  );
+  requestAnimationFrame(animate);
 
   const {
     dirLight,
@@ -74,7 +76,9 @@ const animate = () => {
   if (controls.isLocked) {
     raycaster.ray.origin.copy(controls.getObject().position);
     raycaster.ray.origin.y -= 10;
-    const intersections = raycaster.intersectObjects(Object.values(worldObject));
+    const intersections = raycaster.intersectObjects(
+      Object.values(worldObject)
+    );
     // console.log(intersections, 'intersections');
     const onObject = intersections.length > 0;
     // var delta = (time - prevTime) / 100;
@@ -147,71 +151,70 @@ const animate = () => {
     worldObject.moveingbox7.position.set(-boxx, 97, boxz);
     worldObject.moveingbox8.position.set(-boxx, 124, -boxz);
 
-//monsters moving
-    var moveSpeed = + 55 * Math.sin(time * 200);
-    worldObject.movingMonster1.position.set(700 , 267, -144 + moveSpeed);
-    worldObject.movingMonster2.position.set(700 , 168, 50 + moveSpeed * -1);
-    worldObject.movingMonster3.position.set(705  + moveSpeed * -1.5, 61, 50);
-    worldObject.movingMonster4.position.set(705  + moveSpeed * 1.5, 61, 400);
-    worldObject.movingMonster5.position.set(-705  + moveSpeed * -1.5, 61, 225);
-    worldObject.movingMonster6.position.set(-705  + moveSpeed * 1.5, 61, 475);
+    //monsters moving
+    var moveSpeed = +55 * Math.sin(time * 200);
+    worldObject.movingMonster1.position.set(700, 267, -144 + moveSpeed);
+    worldObject.movingMonster2.position.set(700, 168, 50 + moveSpeed * -1);
+    worldObject.movingMonster3.position.set(705 + moveSpeed * -1.5, 61, 50);
+    worldObject.movingMonster4.position.set(705 + moveSpeed * 1.5, 61, 400);
+    worldObject.movingMonster5.position.set(-705 + moveSpeed * -1.5, 61, 225);
+    worldObject.movingMonster6.position.set(-705 + moveSpeed * 1.5, 61, 475);
     //type I, z, forwards
-    if (moveSpeed + 0.01 > 55){
-      worldObject.movingMonster1.rotation.z = THREE.Math.degToRad( 180 );
+    if (moveSpeed + 0.01 > 55) {
+      worldObject.movingMonster1.rotation.z = THREE.Math.degToRad(180);
     }
-    if (moveSpeed -0.01 < -55){
-      worldObject.movingMonster1.rotation.z = THREE.Math.degToRad( 0 );
+    if (moveSpeed - 0.01 < -55) {
+      worldObject.movingMonster1.rotation.z = THREE.Math.degToRad(0);
     }
     //type II (reverse), z, backwards
-    if (moveSpeed + 0.01 > 55){
-      worldObject.movingMonster2.rotation.z = THREE.Math.degToRad( 0 );
+    if (moveSpeed + 0.01 > 55) {
+      worldObject.movingMonster2.rotation.z = THREE.Math.degToRad(0);
     }
-    if (moveSpeed -0.01 < -55){
-      worldObject.movingMonster2.rotation.z = THREE.Math.degToRad( 180 );
+    if (moveSpeed - 0.01 < -55) {
+      worldObject.movingMonster2.rotation.z = THREE.Math.degToRad(180);
     }
     //type III, x, right
-    if (moveSpeed + 0.01 > 55){
-      worldObject.movingMonster3.rotation.z = THREE.Math.degToRad( 90 );
-      worldObject.movingMonster5.rotation.z = THREE.Math.degToRad( 90 );
+    if (moveSpeed + 0.01 > 55) {
+      worldObject.movingMonster3.rotation.z = THREE.Math.degToRad(90);
+      worldObject.movingMonster5.rotation.z = THREE.Math.degToRad(90);
     }
-    if (moveSpeed -0.01 < -55){
-      worldObject.movingMonster3.rotation.z = THREE.Math.degToRad( 270 );
-      worldObject.movingMonster5.rotation.z = THREE.Math.degToRad( 270 );
+    if (moveSpeed - 0.01 < -55) {
+      worldObject.movingMonster3.rotation.z = THREE.Math.degToRad(270);
+      worldObject.movingMonster5.rotation.z = THREE.Math.degToRad(270);
     }
     //type IV, x, left
-    if (moveSpeed + 0.01 > 55){
-      worldObject.movingMonster4.rotation.z = THREE.Math.degToRad( 270 );
-      worldObject.movingMonster6.rotation.z = THREE.Math.degToRad( 270 );
+    if (moveSpeed + 0.01 > 55) {
+      worldObject.movingMonster4.rotation.z = THREE.Math.degToRad(270);
+      worldObject.movingMonster6.rotation.z = THREE.Math.degToRad(270);
     }
-    if (moveSpeed -0.01 < -55){
-      worldObject.movingMonster4.rotation.z = THREE.Math.degToRad( 90 );
-      worldObject.movingMonster6.rotation.z = THREE.Math.degToRad( 90 );
+    if (moveSpeed - 0.01 < -55) {
+      worldObject.movingMonster4.rotation.z = THREE.Math.degToRad(90);
+      worldObject.movingMonster6.rotation.z = THREE.Math.degToRad(90);
     }
 
-//ghost moving
+    //ghost moving
     //var GhostPosX = worldObject.movingGhost1.position.x
-
-
 
     worldObject.movingGhost1.position.x += GhostMove;
     //console.log(GhostMove);
-    if(worldObject.movingGhost1.position.x >= 701 || worldObject.movingGhost1.position.x <= -701){
-      GhostMove = -GhostMove
-      if(GhostMove > 0){
-        worldObject.movingGhost1.rotation.y = THREE.Math.degToRad( 90 );
-      }else{
-        worldObject.movingGhost1.rotation.y = THREE.Math.degToRad( 270 );
+    if (
+      worldObject.movingGhost1.position.x >= 701 ||
+      worldObject.movingGhost1.position.x <= -701
+    ) {
+      GhostMove = -GhostMove;
+      if (GhostMove > 0) {
+        worldObject.movingGhost1.rotation.y = THREE.Math.degToRad(90);
+      } else {
+        worldObject.movingGhost1.rotation.y = THREE.Math.degToRad(270);
       }
     }
   }
-
 
   var sunx = Math.sin(time);
   var sunz = Math.cos(time);
 
   dirLight.position.set(1500 * sunx, 500, 1500 * sunz);
   sun.position.set(1500 * sunx, 500, 1500 * sunz);
-
 
   renderer.render(scene, camera);
   stats.update();
@@ -226,18 +229,18 @@ const init = () => {
   renderer.toneMapping = THREE.ReinhardToneMapping;
   scene.add(controls.getObject());
 
-  document.body.appendChild( renderer.domElement );
+  document.body.appendChild(renderer.domElement);
   var texttureLoader = new THREE.TextureLoader();
 
   scene.background = new THREE.Color(0x87ceeb);
   const container = document.createElement("div");
   document.body.appendChild(container);
 
-  loadDirLight(scene,globalObject);
-  loadSun(scene,globalObject,texttureLoader);
-  loadGround(scene,texttureLoader);
-  loadBridge(scene,texttureLoader);
-  loadSea(scene,texttureLoader);
+  loadDirLight(scene, globalObject);
+  loadSun(scene, globalObject, texttureLoader);
+  loadGround(scene, texttureLoader);
+  loadBridge(scene, texttureLoader);
+  loadSea(scene, texttureLoader);
   loadModels();
   addAnimatedMario();
   addCoins();
@@ -248,11 +251,11 @@ const init = () => {
   container.appendChild(stats.dom);
   animate();
   setTimeout(() => {
-    isLoading = false
+    isLoading = false;
   }, 500);
-}
+};
 
-function loadDirLight(scene,globalObject){
+function loadDirLight(scene, globalObject) {
   //Light
   var hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
   scene.add(hemiLight);
@@ -278,7 +281,7 @@ function loadDirLight(scene,globalObject){
   globalObject.dirLight = dirLight;
 }
 
-function loadSun(scene,globalObject,texttureLoader){
+function loadSun(scene, globalObject, texttureLoader) {
   //Sun
   var sunTexture = texttureLoader.load(sunSurface);
 
@@ -296,7 +299,7 @@ function loadSun(scene,globalObject,texttureLoader){
   scene.add(sun);
 }
 
-function loadGround(scene,texttureLoader){
+function loadGround(scene, texttureLoader) {
   //grounds
   var groundTexture = texttureLoader.load(grassGround);
   groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
@@ -377,10 +380,9 @@ function loadGround(scene,texttureLoader){
     ground9,
     ground10
   );
-
 }
 
-function loadBridge(scene,texttureLoader){
+function loadBridge(scene, texttureLoader) {
   //bridge
   var brigeTexture = texttureLoader.load(bridgeSurface);
   brigeTexture.wrapS = brigeTexture.wrapT = THREE.RepeatWrapping;
@@ -462,10 +464,9 @@ function loadBridge(scene,texttureLoader){
     bridge8,
     bridge9
   );
-
 }
 
-function loadSea(scene,texttureLoader){
+function loadSea(scene, texttureLoader) {
   // sea
   var seaTexture = texttureLoader.load(seaSurface);
   seaTexture.wrapS = seaTexture.wrapT = THREE.RepeatWrapping;
@@ -485,4 +486,13 @@ function loadSea(scene,texttureLoader){
   scene.add(sea);
 }
 
-export { init, scene, camera, renderer, controls, globalObject, worldObject, score };
+export {
+  init,
+  scene,
+  camera,
+  renderer,
+  controls,
+  globalObject,
+  worldObject,
+  score,
+};

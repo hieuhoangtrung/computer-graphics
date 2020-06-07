@@ -1,7 +1,7 @@
 import { FBXLoader } from "./shared/FBXLoader";
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
-import { DDSLoader } from 'three/examples/jsm/loaders/DDSLoader.js';
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+import { DDSLoader } from "three/examples/jsm/loaders/DDSLoader.js";
 
 import marioAnimatedFile from "./models/mario/scene.gltf";
 import star from "./models/Star.fbx";
@@ -13,11 +13,11 @@ import qmark from "./models/Question_Mark_Block.fbx";
 import brickblock from "./models/BrickBlock/source/Brick Block.fbx";
 import smallCastle from "./models/Castle/Castle_Small.fbx";
 import mushroom from "./models/mushroom.fbx";
-import { CSS2DObject } from  './shared/CSS2DRenderer'
+import { CSS2DObject } from "./shared/CSS2DRenderer";
 
-import { scene, camera, globalObject, worldObject, score } from './scene';
-import {ColladaLoader} from 'three/examples/jsm/loaders/ColladaLoader';
-import coinFile from '../../peter-lab/src/lab08/models/coin.dae';
+import { scene, camera, globalObject, worldObject, score } from "./scene";
+import { ColladaLoader } from "three/examples/jsm/loaders/ColladaLoader";
+import coinFile from "./models/coin.dae";
 
 /*
 note:
@@ -29,7 +29,7 @@ function addAnimatedMario() {
   var loader = new GLTFLoader();
 
   var dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath('js/libs/draco/gltf/');
+  dracoLoader.setDecoderPath("js/libs/draco/gltf/");
   loader.setDRACOLoader(dracoLoader);
 
   loader.setDDSLoader(new DDSLoader());
@@ -40,7 +40,9 @@ function addAnimatedMario() {
     });
     globalObject.marioAnimations = data.animations;
     if (globalObject.marioAnimations.length) {
-      globalObject.marioAnimatioMixer = new THREE.AnimationMixer(worldObject.marioMain);
+      globalObject.marioAnimatioMixer = new THREE.AnimationMixer(
+        worldObject.marioMain
+      );
       const animation = globalObject.marioAnimations[4]; // stand
       const action = globalObject.marioAnimatioMixer.clipAction(animation);
       action.play();
@@ -49,7 +51,7 @@ function addAnimatedMario() {
     worldObject.marioMain.position.set(0, -1, -3);
     worldObject.marioMain.rotation.y += Math.PI;
     camera.add(worldObject.marioMain);
-    updateScore() /// needd to check here
+    updateScore(); /// needd to check here
   });
 }
 
@@ -63,7 +65,7 @@ function addCoins() {
   loader.load(coinFile, function (collada) {
     worldObject.coin = collada.scene;
     worldObject.coin.position.set(700, 70, 50);
-    worldObject.coin.scale.set(1/5, 1/5, 1/5);
+    worldObject.coin.scale.set(1 / 5, 1 / 5, 1 / 5);
   });
 }
 
@@ -90,35 +92,35 @@ function loadModels() {
       worldObject[name] = object;
       scene.add(object);
     });
-  }
+  };
 
-  loadBrickBlocks('brick_1', 700, 120, 100);
-  loadBrickBlocks('brick_1', 700, 120, 73);
-  loadBrickBlocks('brick_2', 700, 120, 46);
-  loadBrickBlocks('brick_3', 700, 120, 19);
-  loadBrickBlocks('brick_4', 700, 120, -8);
-  loadBrickBlocks('brick_5', 700, 220, -98);
-  loadBrickBlocks('brick_6', 700, 220, -125);
-  loadBrickBlocks('brick_7', 700, 220, -152);
-  loadBrickBlocks('brick_8', 700, 220, -179);
-  loadBrickBlocks('brick_9', 700, 220, -206);
-  loadBrickBlocks('brick_10', 646, 120, -700);
-  loadBrickBlocks('brick_11', 700, 120, -646);
-  loadBrickBlocks('brick_12', 754, 120, -592);
-  loadBrickBlocks('brick_13', 0, 220, -700);
-  loadBrickBlocks('brick_14', -90, 120, -700);
-//brickblock
-//   loader.5oad(brickblock, function (object) {
-//     object.traverse(function (child) {
-//       if (child.isMesh) {
-//         child.castShadow = true;
-//         child.receiveShadow = true;
-//       }
-//     });
-//     object.scale.set(1 / 30, 1 / 30, 1 / 30);
-//     object.position.set(700, 120, 100);
-//     scene.add(object);
-//   });
+  loadBrickBlocks("brick_1", 700, 120, 100);
+  loadBrickBlocks("brick_1", 700, 120, 73);
+  loadBrickBlocks("brick_2", 700, 120, 46);
+  loadBrickBlocks("brick_3", 700, 120, 19);
+  loadBrickBlocks("brick_4", 700, 120, -8);
+  loadBrickBlocks("brick_5", 700, 220, -98);
+  loadBrickBlocks("brick_6", 700, 220, -125);
+  loadBrickBlocks("brick_7", 700, 220, -152);
+  loadBrickBlocks("brick_8", 700, 220, -179);
+  loadBrickBlocks("brick_9", 700, 220, -206);
+  loadBrickBlocks("brick_10", 646, 120, -700);
+  loadBrickBlocks("brick_11", 700, 120, -646);
+  loadBrickBlocks("brick_12", 754, 120, -592);
+  loadBrickBlocks("brick_13", 0, 220, -700);
+  loadBrickBlocks("brick_14", -90, 120, -700);
+  //brickblock
+  //   loader.5oad(brickblock, function (object) {
+  //     object.traverse(function (child) {
+  //       if (child.isMesh) {
+  //         child.castShadow = true;
+  //         child.receiveShadow = true;
+  //       }
+  //     });
+  //     object.scale.set(1 / 30, 1 / 30, 1 / 30);
+  //     object.position.set(700, 120, 100);
+  //     scene.add(object);
+  //   });
 
   // loader.load(brickblock, function (object) {
   //   object.traverse(function (child) {
@@ -382,12 +384,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(-270, 120, -700);
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -400,12 +406,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(-360, 220, -700);
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -418,12 +428,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(-387, 220, -700);
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -436,12 +450,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(-477, 220, -700);
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -454,12 +472,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(-477, 220, -673);
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -472,12 +494,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(-567, 220, -673);
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -490,12 +516,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(-567, 120, -727);
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -508,12 +538,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(-657, 220, -727);
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -526,12 +560,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(-700, 120, -550);
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -544,12 +582,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(-700, 120, -400);
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -558,19 +600,22 @@ function loadModels() {
         child.castShadow = true;
         child.receiveShadow = true;
       }
-
     });
     object.scale.set(1 / 10, 1 / 10, 1 / 30);
     object.position.set(-700, 33, 100);
 
     worldObject.moveingwall1 = object;
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -579,19 +624,22 @@ function loadModels() {
         child.castShadow = true;
         child.receiveShadow = true;
       }
-
     });
     object.scale.set(1 / 10, 1 / 10, 1 / 30);
     object.position.set(-700, 33, 350);
 
     worldObject.moveingwall2 = object;
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -600,19 +648,22 @@ function loadModels() {
         child.castShadow = true;
         child.receiveShadow = true;
       }
-
     });
     object.scale.set(1 / 10, 1 / 10, 1 / 30);
     object.position.set(-700, 33, 600);
 
     worldObject.moveingwall3 = object;
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -625,12 +676,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(600, 120, 700);
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -643,12 +698,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(542, 120, 700);
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -661,12 +720,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(452, 220, 700);
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -681,12 +744,16 @@ function loadModels() {
 
     worldObject.moveingbox1 = object;
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -701,12 +768,16 @@ function loadModels() {
 
     worldObject.moveingbox2 = object;
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -721,12 +792,16 @@ function loadModels() {
 
     worldObject.moveingbox3 = object;
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -741,12 +816,16 @@ function loadModels() {
 
     worldObject.moveingbox4 = object;
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -759,12 +838,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(48, 220, 700);
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -779,12 +862,16 @@ function loadModels() {
 
     worldObject.moveingbox5 = object;
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -799,12 +886,16 @@ function loadModels() {
 
     worldObject.moveingbox6 = object;
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -819,12 +910,16 @@ function loadModels() {
 
     worldObject.moveingbox7 = object;
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(brickblock, function (object) {
@@ -839,15 +934,19 @@ function loadModels() {
 
     worldObject.moveingbox8 = object;
     scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("brickblock", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
-//qmark
+  //qmark
 
   loader.load(qmark, function (object) {
     object.traverse(function (child) {
@@ -859,12 +958,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(700, 225, 51);
     scene.add(object);
-    var mushroomLabel = createDesc("qmark",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("qmark", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(qmark, function (object) {
@@ -877,12 +980,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(700, 125, -147);
     scene.add(object);
-    var mushroomLabel = createDesc("qmark",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("qmark", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(qmark, function (object) {
@@ -895,12 +1002,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(673, 125, -667);
     scene.add(object);
-    var mushroomLabel = createDesc("qmark",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("qmark", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(qmark, function (object) {
@@ -913,12 +1024,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(727, 125, -613);
     scene.add(object);
-    var mushroomLabel = createDesc("qmark",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("qmark", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(qmark, function (object) {
@@ -931,12 +1046,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(-180, 225, -700);
     scene.add(object);
-    var mushroomLabel = createDesc("qmark",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("qmark", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(qmark, function (object) {
@@ -949,12 +1068,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(-567, 225, -722);
     scene.add(object);
-    var mushroomLabel = createDesc("qmark",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("qmark", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(qmark, function (object) {
@@ -967,12 +1090,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(-700, 225, -395);
     scene.add(object);
-    var mushroomLabel = createDesc("qmark",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("qmark", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(qmark, function (object) {
@@ -985,12 +1112,16 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(-700, 125, 705);
     scene.add(object);
-    var mushroomLabel = createDesc("qmark",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("qmark", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(qmark, function (object) {
@@ -1003,16 +1134,19 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(571, 125, 705);
     scene.add(object);
-    var mushroomLabel = createDesc("qmark",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("qmark", 1000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
-
-//star
+  //star
 
   loader.load(star, function (object) {
     object.traverse(function (child) {
@@ -1024,12 +1158,16 @@ function loadModels() {
     object.scale.set(1 / 10, 1 / 10, 1 / 5);
     object.position.set(48, 320, 700);
     scene.add(object);
-    var mushroomLabel = createDesc("star",300)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("star", 300);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(star, function (object) {
@@ -1042,12 +1180,16 @@ function loadModels() {
     object.scale.set(1 / 10, 1 / 10, 1 / 5);
     object.position.set(700, 320, -300);
     scene.add(object);
-    var mushroomLabel = createDesc("star",300)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("star", 300);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(star, function (object) {
@@ -1060,12 +1202,16 @@ function loadModels() {
     object.scale.set(1 / 10, 1 / 10, 1 / 5);
     object.position.set(-700, 320, -700);
     scene.add(object);
-    var mushroomLabel = createDesc("star",300)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("star", 300);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(star, function (object) {
@@ -1078,12 +1224,16 @@ function loadModels() {
     object.scale.set(1 / 10, 1 / 10, 1 / 5);
     object.position.set(-700, 220, 700);
     scene.add(object);
-    var mushroomLabel = createDesc("star",300)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("star", 300);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   //smallCastle
@@ -1098,15 +1248,19 @@ function loadModels() {
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(0, 50, -140);
     scene.add(object);
-    var mushroomLabel = createDesc("smallCastle",2000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("smallCastle", 2000);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
-//fireflower
+  //fireflower
 
   loader.load(fireflower, function (object) {
     object.traverse(function (child) {
@@ -1118,12 +1272,16 @@ function loadModels() {
     object.scale.set(1 / 20, 1 / 20, 1 / 20);
     object.position.set(700, 255, 50);
     scene.add(object);
-    var mushroomLabel = createDesc("fireflower",300)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("fireflower", 300);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(fireflower, function (object) {
@@ -1136,12 +1294,16 @@ function loadModels() {
     object.scale.set(1 / 20, 1 / 20, 1 / 20);
     object.position.set(-180, 255, -700);
     scene.add(object);
-    var mushroomLabel = createDesc("fireflower",300)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("fireflower", 300);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(fireflower, function (object) {
@@ -1154,15 +1316,19 @@ function loadModels() {
     object.scale.set(1 / 20, 1 / 20, 1 / 20);
     object.position.set(-700, 155, -545);
     scene.add(object);
-    var mushroomLabel = createDesc("fireflower",300)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("fireflower", 300);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
-//extraLife-mushroom
+  //extraLife-mushroom
 
   loader.load(extraLife, function (object) {
     object.traverse(function (child) {
@@ -1174,12 +1340,16 @@ function loadModels() {
     object.scale.set(1 / 3, 1 / 3, 1 / 3);
     object.position.set(150, 45, 25);
     scene.add(object);
-    var mushroomLabel = createDesc("extraLife",60)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("extraLife", 60);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(mushroom, function (object) {
@@ -1192,13 +1362,16 @@ function loadModels() {
     object.scale.set(1 / 2, 1 / 2, 1 / 2);
     object.position.set(240, 40, 25);
     scene.add(object);
-    var mushroomLabel = createDesc("extraLife",55 )
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
-
+    var mushroomLabel = createDesc("extraLife", 55);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   //monsters on the brick
@@ -1209,19 +1382,23 @@ function loadModels() {
         child.receiveShadow = true;
       }
     });
-    object.scale.set(1/3, 1/3 , 1/3);
+    object.scale.set(1 / 3, 1 / 3, 1 / 3);
     //object.position.set(700, 63, 50);
-    object.rotation.z = THREE.Math.degToRad( 0 );
+    object.rotation.z = THREE.Math.degToRad(0);
 
     worldObject.movingMonster1 = object;
     scene.add(object);
 
-    var mushroomLabel = createDesc("monster",55)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("monster", 55);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(goomba, function (object) {
@@ -1231,19 +1408,23 @@ function loadModels() {
         child.receiveShadow = true;
       }
     });
-    object.scale.set(1/3, 1/3 , 1/3);
+    object.scale.set(1 / 3, 1 / 3, 1 / 3);
     object.position.set(700, 63, 50);
-    object.rotation.z = THREE.Math.degToRad( 180 );
+    object.rotation.z = THREE.Math.degToRad(180);
 
     worldObject.movingMonster2 = object;
     scene.add(object);
 
-    var mushroomLabel = createDesc("monster",55)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("monster", 55);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   //monster on the floor
@@ -1254,18 +1435,22 @@ function loadModels() {
         child.receiveShadow = true;
       }
     });
-    object.scale.set(1/3, 1/3 , 1/3);
-    object.rotation.z = THREE.Math.degToRad( 270 );
+    object.scale.set(1 / 3, 1 / 3, 1 / 3);
+    object.rotation.z = THREE.Math.degToRad(270);
 
     worldObject.movingMonster3 = object;
     scene.add(object);
 
-    var mushroomLabel = createDesc("monster",55)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("monster", 55);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(goomba, function (object) {
@@ -1275,18 +1460,22 @@ function loadModels() {
         child.receiveShadow = true;
       }
     });
-    object.scale.set(1/3, 1/3 , 1/3);
-    object.rotation.z = THREE.Math.degToRad( 270 );
+    object.scale.set(1 / 3, 1 / 3, 1 / 3);
+    object.rotation.z = THREE.Math.degToRad(270);
 
     worldObject.movingMonster4 = object;
     scene.add(object);
 
-    var mushroomLabel = createDesc("monster",55)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("monster", 55);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(goomba, function (object) {
@@ -1296,18 +1485,22 @@ function loadModels() {
         child.receiveShadow = true;
       }
     });
-    object.scale.set(1/3, 1/3 , 1/3);
-    object.rotation.z = THREE.Math.degToRad( 90 );
+    object.scale.set(1 / 3, 1 / 3, 1 / 3);
+    object.rotation.z = THREE.Math.degToRad(90);
 
     worldObject.movingMonster5 = object;
     scene.add(object);
 
-    var mushroomLabel = createDesc("monster",55)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("monster", 55);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   loader.load(goomba, function (object) {
@@ -1317,18 +1510,22 @@ function loadModels() {
         child.receiveShadow = true;
       }
     });
-    object.scale.set(1/3, 1/3 , 1/3);
-    object.rotation.z = THREE.Math.degToRad( 270 );
+    object.scale.set(1 / 3, 1 / 3, 1 / 3);
+    object.rotation.z = THREE.Math.degToRad(270);
 
     worldObject.movingMonster6 = object;
     scene.add(object);
 
-    var mushroomLabel = createDesc("monster",55)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("monster", 55);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 
   //trees have a blank board, it might cannot add in our project
@@ -1360,22 +1557,25 @@ function loadModels() {
     object.position.set(700, 70, 150);
     worldObject.boo = object;
     worldObject.boo.rotation.y += Math.PI;
-      // add one more boo here
+    // add one more boo here
     object.scale.set(1 / 10, 1 / 10, 1 / 10);
     object.position.set(-700, 85, 700);
-    object.rotation.y = THREE.Math.degToRad( 90 );
+    object.rotation.y = THREE.Math.degToRad(90);
     worldObject.movingGhost1 = object;
 
     scene.add(object);
 
-    var mushroomLabel = createDesc("ghost",130)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+    var mushroomLabel = createDesc("ghost", 130);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
-
 
   loader.load(mushroom, function (object) {
     object.traverse(function (child) {
@@ -1389,54 +1589,65 @@ function loadModels() {
     object.position.set(700, 70, 80);
     worldObject.mushroom = object;
     scene.add(object);
-    var mushroomLabel = createDesc("mushroom",55 )
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
-
+    var mushroomLabel = createDesc("mushroom", 55);
+    object.on(
+      "hover",
+      function (m) {
+        object.add(mushroomLabel);
+      },
+      function (m) {
+        object.remove(mushroomLabel);
+      }
+    );
   });
 }
 
-
 //description
-function createDesc(objName, objHeight){
-  var objDiv = document.createElement( 'div' );
-  objDiv.className = 'label';
+function createDesc(objName, objHeight) {
+  var objDiv = document.createElement("div");
+  objDiv.className = "label";
   objDiv.textContent = objName;
-  objDiv.style.marginTop = '-1em';
-  var objLabel = new CSS2DObject( objDiv );
-  objLabel.position.set( 10,objHeight,0);
+  objDiv.style.marginTop = "-1em";
+  var objLabel = new CSS2DObject(objDiv);
+  objLabel.position.set(10, objHeight, 0);
   return objLabel;
 }
 
-var getObjectHalfSize = function(obj) {
+var getObjectHalfSize = function (obj) {
   var objectBox = new THREE.Box3();
   objectBox.setFromObject(obj);
   return objectBox.max.clone().sub(objectBox.min).divideScalar(2);
 };
 
-function updateScore(){
+function updateScore() {
   var loader = new THREE.FontLoader();
-    loader.load('helvetiker_regular.typeface.json', function (f) {
+  loader.load("helvetiker_regular.typeface.json", function (f) {
     var font = f;
     if (globalObject.scoreCounter) {
       scene.remove(globalObject.scoreCounter);
     }
-    var geometry = new THREE.TextGeometry('SCORE: ' + score, {
-        font: font,
-        size: 10, // font size
-        height: 0.1, // how much extrusion (how thick / deep are the letters)
+    var geometry = new THREE.TextGeometry("SCORE: " + score, {
+      font: font,
+      size: 10, // font size
+      height: 0.1, // how much extrusion (how thick / deep are the letters)
     });
     geometry.computeBoundingBox();
-    var material = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0xffffff });
-      globalObject.scoreCounter = new THREE.Mesh(geometry, material);
-      globalObject.scoreCounter.position.set(-1.5, 2, -10);
-      globalObject.scoreCounter.scale.set(1/20, 1/20, 1/20);
+    var material = new THREE.MeshPhongMaterial({
+      color: 0xffffff,
+      specular: 0xffffff,
+    });
+    globalObject.scoreCounter = new THREE.Mesh(geometry, material);
+    globalObject.scoreCounter.position.set(-1.5, 2, -10);
+    globalObject.scoreCounter.scale.set(1 / 20, 1 / 20, 1 / 20);
 
     camera.add(globalObject.scoreCounter);
   });
 }
 
-export { loadModels, addAnimatedMario, updateMarioAnimation, addCoins, updateScore };
+export {
+  loadModels,
+  addAnimatedMario,
+  updateMarioAnimation,
+  addCoins,
+  updateScore,
+};
