@@ -5,9 +5,10 @@ import bridgeSurface from './images/bridge.jpg';
 import Stats from './shared/stats.module';
 import { loadModels,updateScore } from './loader';
 import './shared/OrbitControls';
-import { DirectionalLightHelper } from 'three';
+import { DirectionalLightHelper, Vector3 } from 'three';
 import { CSS2DRenderer, CSS2DObject } from  './shared/CSS2DRenderer';
 import "three/examples/fonts/helvetiker_regular.typeface.json";
+
 
 
 const onWindowResize = ({ camera, renderer }) => {
@@ -35,7 +36,7 @@ const animate = ({ camera, clock, renderer, stats, scene , labelRenderer, dirLig
   //   camera.position.lerp(temp, 1);
   //   camera.lookAt(worldObject.mario.position);
   // }
-  var time = Date.now() * 0.000003;
+  var time =8 * 0.000003;
   
   var wall1x = + 50 * Math.sin(time * 150);
   var wall2x = - 50 * Math.sin(time * 150);
@@ -56,11 +57,33 @@ const animate = ({ camera, clock, renderer, stats, scene , labelRenderer, dirLig
   worldObject.moveingbox7.position.set(-boxx, 97, boxz);
   worldObject.moveingbox8.position.set(-boxx, 124, -boxz);
 
+//monsters moving
+  var moveSpeed = + 55 * Math.sin(time * 90);
+  worldObject.movingMonster1.position.set(700 , 267, -143 + moveSpeed);
+  //console.log(Math.sin(time));
+  //if (Math.sin(time) + 0.01 > 55){
+    //console.log("forward");
+    //worldObject.movingMonster1.rotation.z = Math.PI /2;
+  //}
+
+  /*
+  function move(speed) {
+    console.log("pass");
+    var pos_ = Vector3(700, 260, -150);
+    var d = worldObject.movingMonster1.position - pos_;
+    if (worldObject.movingMonster1.position > pos_) {
+      worldObject.movingMonster1.position -= Math.min( speed, d );
+    }
+  }
+*/
+
+
   var sunx = Math.sin(time);
   var sunz = Math.cos(time);
   
   dirLight.position.set(1500 * sunx, 500, 1500 * sunz);
   sun.position.set(1500 * sunx, 500, 1500 * sunz);
+
 
   renderer.render(scene, camera);
   labelRenderer.render( scene, camera );
