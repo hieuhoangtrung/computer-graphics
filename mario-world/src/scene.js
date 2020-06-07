@@ -98,13 +98,14 @@ const animate = ({ camera, clock, renderer, stats, scene , labelRenderer, dirLig
 
 //ghost moving
   var GhostPosX = worldObject.movingGhost1.position.x
-  var GhostMove = 1;
+  var GhostMove = 5;
 
   if(GhostPosX <= 700){
     worldObject.movingGhost1.position.x += GhostMove;
-    console.log(GhostPosX);
-  }else{
-
+    if(GhostPosX == 700 || GhostPosX == -700){
+      GhostMove = -GhostMove
+      console.log(GhostMove);
+    }
   }
 
 
