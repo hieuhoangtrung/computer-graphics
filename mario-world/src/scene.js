@@ -97,8 +97,19 @@ const animate = ({ camera, clock, renderer, stats, scene , labelRenderer, dirLig
   }
 
 //ghost moving
-  var GhostMove = 1;
   var GhostPosX = worldObject.movingGhost1.position.x
+  var GhostMove = 1;
+
+  if(GhostPosX <= 700){
+    worldObject.movingGhost1.position.x += GhostMove;
+    console.log(GhostPosX);
+  }else{
+
+  }
+
+
+  /*
+  
   var timer = null; //定时器id
 
   function move(end, step) {
@@ -127,7 +138,7 @@ const animate = ({ camera, clock, renderer, stats, scene , labelRenderer, dirLig
       ele.style.left = start + 'px';
     }, 20);
   }
-  
+  */
 
   var sunx = Math.sin(time);
   var sunz = Math.cos(time);
