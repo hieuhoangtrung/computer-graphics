@@ -14,8 +14,18 @@ init();
 
 function init() {
 
+<<<<<<< HEAD
     document.body.appendChild( container );
 
+=======
+    container = document.createElement( 'div' );
+    document.body.appendChild( container );
+
+
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
+
+>>>>>>> clickNmove
     container.appendChild( renderer.domElement );
 
     controls = new DragControls( [ ... objects ], camera, renderer.domElement );
