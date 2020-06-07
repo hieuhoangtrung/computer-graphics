@@ -2,6 +2,9 @@ import grassGround from './images/grasslight-big.jpg';
 import Stats from './shared/stats.module';
 import { loadModels } from './loader';
 import './shared/OrbitControls';
+import './shared/DragControls';
+
+
 
 const onWindowResize = ({ camera, renderer }) => {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -39,8 +42,9 @@ const init = () => {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  const DragControl = new THREE.DragControls( camera, renderer.domElement );
   // renderer.shadowMap.enabled = true;
-
+   
   const container = document.createElement('div');
 
   const globalObject = {
@@ -103,9 +107,79 @@ const init = () => {
   controls.update();
 
   window.addEventListener('resize', () => onWindowResize({camera, renderer }), false);
+  
+  //dragging listener
+ 
+  DragControl.addEventListener( 'drag', render );
+
+  document.addEventListener( 'click', onClick, false );
+  window.addEventListener( 'keydown', onKeyDown, false );
+  window.addEventListener( 'keyup', onKeyUp, false );
 
   container.appendChild(stats.dom);
   animate(globalObject, worldObject);
 }
 
 export { init }
+
+
+
+function onKeyDown( event ) {
+  enableSelection = ( event.keyCode === 16 ) ? true : false;
+}
+
+function onKeyUp() {
+  enableSelection = false;
+}
+
+function onClick( event ) {
+  
+  event.preventDefault();
+  var mouse = new THREE.Vector2(), raycaster = new THREE.Raycaster();
+ 
+
+  if ( enableSelection === true ) {
+
+      var draggableObjects = DragControl.getObjects();
+      draggableObjects.length = 0;
+
+      mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+      mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+      raycaster.setFromCamera( mouse, camera );
+
+      var intersections = raycaster.intersectObjects( objects, true );
+
+      if ( intersections.length > 0 ) {
+
+          var object = intersections[ 0 ].object;
+
+          if ( group.children.includes( object ) === true ) {
+
+              object.material.emissive.set( 0x000000 );
+              scene.attach( object );
+
+          } else {
+
+              object.material.emissive.set( 0xaaaaaa );
+              group.attach( object );
+
+          }
+
+          DragControl.transformGroup = true;
+          draggableObjects.push( group );
+
+      }
+
+      if ( group.children.length === 0 ) {
+
+        DragControl.transformGroup = false;
+          draggableObjects.push( ...objects );
+
+      }
+
+  }
+
+  renderer.render( scene, camera );
+
+}
