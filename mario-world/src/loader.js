@@ -1140,7 +1140,7 @@ function loadModels({ scene, camera }, worldObject) {
     });
   });
 
-//extraLife
+//extraLife-mushroom
 
   loader.load(extraLife, function (object) {
     object.traverse(function (child) {
@@ -1160,6 +1160,26 @@ function loadModels({ scene, camera }, worldObject) {
     });
   });
 
+  loader.load(mushroom, function (object) {
+    object.traverse(function (child) {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+    object.scale.set(1 / 2, 1 / 2, 1 / 2);
+    object.position.set(240, 40, 25);
+    scene.add(object);
+    var mushroomLabel = createDesc("extraLife",55 )
+    object.on('hover',function(m) {
+      object.add( mushroomLabel );
+    },function(m) {
+      object.remove(mushroomLabel)
+    });
+    
+  });
+
+  //monsters
   loader.load(goomba, function (object) {
     object.traverse(function (child) {
       if (child.isMesh) {
@@ -1167,10 +1187,15 @@ function loadModels({ scene, camera }, worldObject) {
         child.receiveShadow = true;
       }
     });
-    object.scale.set(1 / 5, 1 / 5, 1 / 5);
-    object.position.set(90, 60, 25);
+    object.scale.set(1/3, 1/3 , 1/3);
+    object.position.set(700, 63, 50);
+    object.rotation.z = Math.PI/ -2;
+
+    worldObject.movingMonster1 = object;
     scene.add(object);
-    var mushroomLabel = createDesc("goomba",60)
+    
+    //description
+    var mushroomLabel = createDesc("monster",55)
     object.on('hover',function(m) {
       object.add( mushroomLabel );
     },function(m) {
@@ -1205,7 +1230,7 @@ function loadModels({ scene, camera }, worldObject) {
       }
     });
     object.scale.set(1 / 20, 1 / 20, 1 / 20);
-    object.position.set(130, 55, 25);
+    object.position.set(0, 55, 0);
     scene.add(object);
     var mushroomLabel = createDesc("boo",130)
     object.on('hover',function(m) {
@@ -1216,24 +1241,7 @@ function loadModels({ scene, camera }, worldObject) {
   });
 
 
-  loader.load(mushroom, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 2, 1 / 2, 1 / 2);
-    object.position.set(240, 40, 25);
-    scene.add(object);
-    var mushroomLabel = createDesc("mushroom",55 )
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
-    
-  });
+
 }
 
 function createDesc(objName, objHeight){
