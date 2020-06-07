@@ -3,10 +3,11 @@ import sunSurface from './images/sun.jpg';
 import seaSurface from './images/seaTextyure.jpg';
 import bridgeSurface from './images/bridge.jpg';
 import Stats from './shared/stats.module';
-import { loadModels } from './loader';
+import { loadModels,updateScore } from './loader';
 import './shared/OrbitControls';
 import { DirectionalLightHelper } from 'three';
-import { CSS2DRenderer, CSS2DObject } from  './shared/CSS2DRenderer'
+import { CSS2DRenderer, CSS2DObject } from  './shared/CSS2DRenderer';
+import "three/examples/fonts/helvetiker_regular.typeface.json";
 
 
 const onWindowResize = ({ camera, renderer }) => {
@@ -75,7 +76,7 @@ const init = () => {
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  // const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
   renderer.shadowMap.enabled = true;
   renderer.toneMapping = THREE.ReinhardToneMapping;
@@ -84,29 +85,35 @@ const init = () => {
   labelRenderer.domElement.style.position = 'absolute';
   labelRenderer.domElement.style.top = '0px';
   document.body.appendChild( labelRenderer.domElement );
+  document.body.appendChild( renderer.domElement );
   var controls2 = new THREE.OrbitControls( camera, labelRenderer.domElement );
+  var scoreCounter;
+  var score = 0;
+  var font;
 
   const container = document.createElement('div');
 
   const globalObject = {
     camera,
     scene,
-    controls,
+    // controls,
     clock,
     renderer,
     stats,
     labelRenderer,
     controls2,
+    scoreCounter,
   };
 
   const worldObject= {};
 
   document.body.appendChild(container);
 
-  camera.position.set(100, 200, 300);
+  // camera.position.set(100, 200, 300);
 
   scene.background = new THREE.Color(0x87ceeb);
   // scene.fog = new THREE.Fog(0xa0a0a0, 200, 1000);
+
 
 
   //Light
@@ -292,8 +299,8 @@ const init = () => {
 
   container.appendChild(renderer.domElement);
 
-  controls.target.set(0, 100, 0);
-  controls.update();
+  // controls.target.set(0, 100, 0);
+  // controls.update();
 
   window.addEventListener('resize', () => onWindowResize({camera, renderer }), false);
 

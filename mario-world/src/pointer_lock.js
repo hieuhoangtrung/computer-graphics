@@ -245,11 +245,11 @@ function updateScore() {
     var material = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0xffffff });
     scoreCounter = new THREE.Mesh(geometry, material);
     scoreCounter.position.x =  - geometry.boundingBox.max.x / 2;
-    scoreCounter.position.y = maxBounding / 2;
-    scoreCounter.position.z = -(maxBounding + 1);
+    scoreCounter.position.y = 10;
+    scoreCounter.position.z = -55;
     scoreCounter.castShadow = true;
     scoreCounter.receiveShadow = true;
-    scene.add(scoreCounter);
+    camera.add(scoreCounter);
 }
 
 function addScoreCounter() {

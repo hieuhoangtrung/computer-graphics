@@ -24,6 +24,8 @@ brickblock: scale:1/40 d: 16
 function loadModels({ scene, camera }, worldObject) {
   self.threeOnEvent = new THREE.onEvent(scene,camera);
   const loader = new FBXLoader();
+  var scoreCounter;
+  var score = 0;
   /*loader.load(yoshiSchool, function (object) {
     const sca = new THREE.Matrix4();
     sca.makeScale(2, 2, 2);
@@ -67,15 +69,12 @@ function loadModels({ scene, camera }, worldObject) {
 
     // move camera to mario:
     const temp = new THREE.Vector3();
-    temp.set(object.position.x, object.position.y + 20, object.position.z - 50);
+    temp.set(object.position.x, object.position.y + 20, object.position.z - 200);
     camera.position.lerp(temp, 1);
     camera.lookAt(object.position);
-    var mushroomLabel = createDesc("Mario",60)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
+
+   
+    updateScore(scene,camera,score,scoreCounter,object.position)
   });
 
 //brickblocks
@@ -1253,4 +1252,31 @@ var getObjectHalfSize = function(obj) {
   return objectBox.max.clone().sub(objectBox.min).divideScalar(2);
 };
 
-export { loadModels };
+export { loadModels, updateScore };
+
+function updateScore(scene, camera,score,scoreCounter,marioPosition){
+  var loader = new THREE.FontLoader();
+    loader.load('helvetiker_regular.typeface.json', function (f) {
+    var font = f;
+    if (scoreCounter) {
+      scene.remove(scoreCounter);
+    }
+    var geometry = new THREE.TextGeometry('SCORE: ' + score, {
+        font: font,
+        size: 10, // font size
+        height: 0.1, // how much extrusion (how thick / deep are the letters)
+    });
+    geometry.computeBoundingBox();
+    var material = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0xffffff });
+    scoreCounter = new THREE.Mesh(geometry, material);
+    scoreCounter.position.x = marioPosition.x;
+    scoreCounter.position.y = marioPosition.y + 50;
+    scoreCounter.position.z = marioPosition.z;
+    // scoreCounter.position.set(700, 100, -206);
+    // scoreCounter.castShadow = true;
+    // scoreCounter.receiveShadow = true;
+    // console.log(geometry.boundingBox.max.x)
+    scoreCounter.rotateY(Math.PI)
+    scene.add(scoreCounter);
+  });
+}
