@@ -99,6 +99,7 @@ const registerEvents = () => {
   document.addEventListener("keyup", onKeyUp, false);
 
   const onWindowResize = () => {
+    console.log('window is resizing');
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
