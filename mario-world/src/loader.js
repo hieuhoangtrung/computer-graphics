@@ -1335,13 +1335,13 @@ function loadModels({ scene, camera }, worldObject) {
       }
     });
     object.scale.set(1 / 10, 1 / 10, 1 / 10);
-    object.position.set(350, 85, 700);
+    object.position.set(-700, 85, 700);
     object.rotation.y = THREE.Math.degToRad( 90 );
     worldObject.movingGhost1 = object;
 
     scene.add(object);
 
-    var mushroomLabel = createDesc("boo",130)
+    var mushroomLabel = createDesc("ghost",130)
     object.on('hover',function(m) {
       object.add( mushroomLabel );
     },function(m) {
