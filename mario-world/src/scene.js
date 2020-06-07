@@ -36,7 +36,7 @@ const animate = ({ camera, clock, renderer, stats, scene , labelRenderer, dirLig
   //   camera.position.lerp(temp, 1);
   //   camera.lookAt(worldObject.mario.position);
   // }
-  var time =8 * 0.000003;
+  var time = Date.now() * 0.000003;
   
   var wall1x = + 50 * Math.sin(time * 150);
   var wall2x = - 50 * Math.sin(time * 150);
@@ -111,8 +111,7 @@ const init = () => {
   document.body.appendChild( renderer.domElement );
   var controls2 = new THREE.OrbitControls( camera, labelRenderer.domElement );
   var scoreCounter;
-  var score = 0;
-  var font;
+  var texttureLoader = new THREE.TextureLoader();
 
   const container = document.createElement('div');
 
@@ -138,6 +137,28 @@ const init = () => {
   // scene.fog = new THREE.Fog(0xa0a0a0, 200, 1000);
 
 
+  loadDirLight(scene,globalObject);
+  loadSun(scene,globalObject,texttureLoader);
+  loadGround(scene,texttureLoader);
+  loadBridge(scene,texttureLoader);
+  loadSea(scene,texttureLoader);
+  
+  loadModels(globalObject, worldObject);
+
+  container.appendChild(renderer.domElement);
+
+  // controls.target.set(0, 100, 0);
+  // controls.update();
+
+  window.addEventListener('resize', () => onWindowResize({camera, renderer }), false);
+
+  container.appendChild(stats.dom);
+  animate(globalObject, worldObject);
+}
+
+export { init }
+
+function loadDirLight(scene,globalObject){
 
   //Light
   var hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
@@ -162,9 +183,11 @@ const init = () => {
   // dirLight.shadowBias = -0.0001;
   dirLight.shadowDarkness = 100;
   globalObject.dirLight = dirLight;
+}
 
-//Sun
-  var texttureLoader = new THREE.TextureLoader();
+function loadSun(scene,globalObject,texttureLoader){
+  //Sun
+  
   var sunTexture = texttureLoader.load(sunSurface);
 
   var sunGeometry = new THREE.SphereBufferGeometry(20, 16, 8);
@@ -180,7 +203,9 @@ const init = () => {
   globalObject.sun = sun;
   scene.add( sun )
 
+}
 
+function loadGround(scene,texttureLoader){
   //grounds
   var groundTexture = texttureLoader.load(grassGround);
   groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
@@ -241,6 +266,9 @@ const init = () => {
 
   scene.add(ground1, ground2, ground3, ground4, ground5, ground6, ground7, ground8, ground9, ground10);
 
+}
+
+function loadBridge(scene,texttureLoader){
   //bridge
   var brigeTexture = texttureLoader.load(bridgeSurface);
   brigeTexture.wrapS = brigeTexture.wrapT = THREE.RepeatWrapping;
@@ -304,6 +332,9 @@ const init = () => {
 
   scene.add(bridge1, bridge2, bridge3, bridge4, bridge5, bridge6, bridge7, bridge8, bridge9);
 
+}
+
+function loadSea(scene,texttureLoader){
   // sea
   var seaTexture = texttureLoader.load(seaSurface);
   seaTexture.wrapS = seaTexture.wrapT = THREE.RepeatWrapping;
@@ -318,17 +349,4 @@ const init = () => {
   sea.receiveShadow = true;
   scene.add(sea);
 
-  loadModels(globalObject, worldObject);
-
-  container.appendChild(renderer.domElement);
-
-  // controls.target.set(0, 100, 0);
-  // controls.update();
-
-  window.addEventListener('resize', () => onWindowResize({camera, renderer }), false);
-
-  container.appendChild(stats.dom);
-  animate(globalObject, worldObject);
 }
-
-export { init }
