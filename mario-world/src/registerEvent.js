@@ -1,5 +1,5 @@
-import {camera, controls, renderer, worldObject, globalObject } from './scene';
-import { updateMarioAnimation } from './loader';
+import { camera, controls, renderer, worldObject, globalObject } from "./scene";
+import { updateMarioAnimation } from "./loader";
 
 const registerEvents = () => {
   const onKeyDown = function (event) {
@@ -104,11 +104,7 @@ const registerEvents = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
   };
 
-  window.addEventListener(
-    "resize",
-    onWindowResize,
-    false
-  );
+  window.addEventListener("resize", onWindowResize, false);
 };
 
 export { registerEvents };
