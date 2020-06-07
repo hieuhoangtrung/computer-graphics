@@ -14,6 +14,7 @@ import mushroom from "./models/mushroom.fbx";
 import { CSS2DRenderer, CSS2DObject } from  './shared/CSS2DRenderer'
 import './shared/onEvent.js';
 import './shared/OrbitControls';
+import { DragControls } from './shared/DragControls'
 
 /*
 note:
