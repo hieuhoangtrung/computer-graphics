@@ -1,9 +1,12 @@
-import { camera, worldObject, scene, globalObject } from './scene';
+import { camera, worldObject, scene, globalObject } from "./scene";
 
 const dist = 10;
 
 function handleCollisionWithEnemy() {
-  if (worldObject.boo && camera.position.distanceTo(worldObject.boo.position) < dist) {
+  if (
+    worldObject.boo &&
+    camera.position.distanceTo(worldObject.boo.position) < dist
+  ) {
     scene.remove(worldObject.boo);
     globalObject.powerdownAudio.play();
     delete worldObject.boo;
@@ -11,7 +14,10 @@ function handleCollisionWithEnemy() {
 }
 
 function handleGetCoin() {
-  if (worldObject.coin && camera.position.distanceTo(worldObject.coin.position) < dist) {
+  if (
+    worldObject.coin &&
+    camera.position.distanceTo(worldObject.coin.position) < dist
+  ) {
     scene.remove(worldObject.coin);
     globalObject.coinAudio.play();
     delete worldObject.coin;
@@ -20,7 +26,10 @@ function handleGetCoin() {
 
 function handleGetMushroom() {
   const distance = 15;
-  if (worldObject.mushroom && camera.position.distanceTo(worldObject.mushroom.position) < distance) {
+  if (
+    worldObject.mushroom &&
+    camera.position.distanceTo(worldObject.mushroom.position) < distance
+  ) {
     scene.remove(worldObject.mushroom);
     globalObject.powerupAudio.play();
     delete worldObject.mushroom;
