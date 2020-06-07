@@ -1,5 +1,9 @@
 import { FBXLoader } from "./shared/FBXLoader";
-import yoshiSchool from "./models/yoshi4school.fbx";
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { DDSLoader } from 'three/examples/jsm/loaders/DDSLoader.js';
+
+import marioAnimatedFile from "./models/mario/scene.gltf";
 import marioMesh from "./models/mario/animations/Run.fbx";
 import star from "./models/Star.fbx";
 import extraLife from "./models/Extra_Life.fbx";
@@ -10,10 +14,11 @@ import qmark from "./models/Question_Mark_Block.fbx";
 import brickblock from "./models/BrickBlock/source/Brick Block.fbx";
 import smallCastle from "./models/Castle/Castle_Small.fbx";
 import mushroom from "./models/mushroom.fbx";
-// import trees from './models/Cartoon_trees.fbx';
-import { CSS2DRenderer, CSS2DObject } from  './shared/CSS2DRenderer'
-import './shared/onEvent.js';
-import './shared/OrbitControls';
+import { CSS2DObject } from  './shared/CSS2DRenderer'
+
+import { scene, camera, globalObject, worldObject } from './scene';
+import {ColladaLoader} from 'three/examples/jsm/loaders/ColladaLoader';
+import coinFile from '../../peter-lab/src/lab08/models/coin.dae';
 
 /*
 note:
@@ -21,334 +26,351 @@ brickblock: scale:1/40 d: 16
 
 */
 
-function loadModels({ scene, camera }, worldObject) {
-  self.threeOnEvent = new THREE.onEvent(scene,camera);
+function addAnimatedMario() {
+  var loader = new GLTFLoader();
+
+  var dracoLoader = new DRACOLoader();
+  dracoLoader.setDecoderPath('js/libs/draco/gltf/');
+  loader.setDRACOLoader(dracoLoader);
+
+  loader.setDDSLoader(new DDSLoader());
+  loader.load(marioAnimatedFile, function (data) {
+      worldObject.marioMain =  data.scene;
+      worldObject.marioMain.traverse(function (node) {
+          if (node.isMesh || node.isLight) node.castShadow = true;
+      });
+      globalObject.marioAnimations = data.animations;
+      if (globalObject.marioAnimations.length) {
+        globalObject.marioAnimatioMixer = new THREE.AnimationMixer(worldObject.marioMain);
+          const animation = globalObject.marioAnimations[4]; // stand
+          const action = globalObject.marioAnimatioMixer.clipAction(animation);
+          action.play();
+      }
+      worldObject.marioMain.scale.set(1/2, 1/2, 1/2);
+      worldObject.marioMain.position.set(0,-1,-3);
+      worldObject.marioMain.rotation.y += Math.PI;
+      camera.add(worldObject.marioMain);
+  });
+}
+
+function addCoins() {
+  var loadingManager = new THREE.LoadingManager(function () {
+    scene.add(worldObject.coin);
+  });
+
+  var loader = new ColladaLoader(loadingManager);
+  loader.options.convertUpAxis = true;
+  loader.load(coinFile, function (collada) {
+    worldObject.coin = collada.scene;
+    worldObject.coin.position.set(700, 70, 50);
+    worldObject.coin.scale.set(1/5, 1/5, 1/5);
+  });
+}
+
+function updateMarioAnimation(index) {
+  const animation = globalObject.marioAnimations[index];
+  const updatedAction = globalObject.marioAnimatioMixer.clipAction(animation);
+  updatedAction.play();
+}
+
+function loadModels() {
+  // self.threeOnEvent = new THREE.onEvent(scene,camera);
   const loader = new FBXLoader();
-  /*loader.load(yoshiSchool, function (object) {
-    const sca = new THREE.Matrix4();
-    sca.makeScale(2, 2, 2);
-    object.applyMatrix(sca);
-    const castleAnimation = new THREE.AnimationMixer(object);
-    const action = castleAnimation.clipAction(object.animations[0]);
-    action.play();
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    scene.add(object);
-    worldObject.castle = castleAnimation;
-  });*/
 
-  loader.load(marioMesh, function (object) {
-    const sca = new THREE.Matrix4();
-    const tra = new THREE.Matrix4();
-    const ScaleFact = 30;
+  const loadBrickBlocks = (name, x, y, z) => {
+    loader.load(brickblock, function (object) {
+      object.traverse(function (child) {
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+        }
+      });
+      object.scale.set(1 / 30, 1 / 30, 1 / 30);
+      object.position.set(x, y, z);
+      worldObject[name] = object;
+      scene.add(object);
+    });
+  }
 
-    sca.makeScale(ScaleFact, ScaleFact, ScaleFact);
-    tra.makeTranslation(700, 50, 100);
-    object.applyMatrix(sca);
-    object.applyMatrix(tra);
+  loadBrickBlocks('brick_1', 700, 120, 100);
+  loadBrickBlocks('brick_1', 700, 120, 73);
+  loadBrickBlocks('brick_2', 700, 120, 46);
+  loadBrickBlocks('brick_3', 700, 120, 19);
+  loadBrickBlocks('brick_4', 700, 120, -8);
+  loadBrickBlocks('brick_5', 700, 220, -98);
+  loadBrickBlocks('brick_6', 700, 220, -125);
+  loadBrickBlocks('brick_7', 700, 220, -152);
+  loadBrickBlocks('brick_8', 700, 220, -179);
+  loadBrickBlocks('brick_9', 700, 220, -206);
+  loadBrickBlocks('brick_10', 646, 120, -700);
+  loadBrickBlocks('brick_11', 700, 120, -646);
+  loadBrickBlocks('brick_12', 754, 120, -592);
+  loadBrickBlocks('brick_13', 0, 220, -700);
+  loadBrickBlocks('brick_14', -90, 120, -700);
+//brickblock
+//   loader.5oad(brickblock, function (object) {
+//     object.traverse(function (child) {
+//       if (child.isMesh) {
+//         child.castShadow = true;
+//         child.receiveShadow = true;
+//       }
+//     });
+//     object.scale.set(1 / 30, 1 / 30, 1 / 30);
+//     object.position.set(700, 120, 100);
+//     scene.add(object);
+//   });
 
-    const animation = new THREE.AnimationMixer(object);
-    const action = animation.clipAction(object.animations[0]);
-    action.play();
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
+  // loader.load(brickblock, function (object) {
+  //   object.traverse(function (child) {
+  //     if (child.isMesh) {
+  //       child.castShadow = true;
+  //       child.receiveShadow = true;
+  //     }
+  //   });
+  //   object.scale.set(1 / 30, 1 / 30, 1 / 30);
+  //   object.position.set(700, 120, 73);
+  //   scene.add(object);
+  //   var mushroomLabel = createDesc("brickblock",1000)
+  //   object.on('hover',function(m) {
+  //     object.add( mushroomLabel );
+  //   },function(m) {
+  //     object.remove(mushroomLabel)
+  //   });
+  // });
 
-    worldObject.mario = object;
-    worldObject.marioAnimation = animation;
-    scene.add(object);
+  // loader.load(brickblock, function (object) {
+  //   object.traverse(function (child) {
+  //     if (child.isMesh) {
+  //       child.castShadow = true;
+  //       child.receiveShadow = true;
+  //     }
+  //   });
+  //   object.scale.set(1 / 30, 1 / 30, 1 / 30);
+  //   object.position.set(700, 120, 46);
+  //   scene.add(object);
+  //   var mushroomLabel = createDesc("brickblock",1000)
+  //   object.on('hover',function(m) {
+  //     object.add( mushroomLabel );
+  //   },function(m) {
+  //     object.remove(mushroomLabel)
+  //   });
+  // });
 
-    // move camera to mario:
-    const temp = new THREE.Vector3();
-    temp.set(object.position.x, object.position.y + 20, object.position.z - 50);
-    camera.position.lerp(temp, 1);
-    camera.lookAt(object.position);
-    var mushroomLabel = createDesc("Mario",60)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
-  });
+  // loader.load(brickblock, function (object) {
+  //   object.traverse(function (child) {
+  //     if (child.isMesh) {
+  //       child.castShadow = true;
+  //       child.receiveShadow = true;
+  //     }
+  //   });
+  //   object.scale.set(1 / 30, 1 / 30, 1 / 30);
+  //   object.position.set(700, 120, 19);
+  //   scene.add(object);
+  //   var mushroomLabel = createDesc("brickblock",1000)
+  //   object.on('hover',function(m) {
+  //     object.add( mushroomLabel );
+  //   },function(m) {700, 120, -646
+  //     object.remove(mushroomLabel)
+  //   });
+  // });
 
-//brickblocks
+  // loader.load(brickblock, function (object) {
+  //   object.traverse(function (child) {
+  //     if (child.isMesh) {
+  //       child.castShadow = true;
+  //       child.receiveShadow = true;
+  //     }
+  //   });
+  //   object.scale.set(1 / 30, 1 / 30, 1 / 30);
+  //   object.position.set(700, 120, -8);
+  //   scene.add(object);
+  //   var mushroomLabel = createDesc("brickblock",1000)
+  //   object.on('hover',function(m) {
+  //     object.add( mushroomLabel );
+  //   },function(m) {
+  //     object.remove(mushroomLabel)
+  //   });
+  // });
 
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(700, 120, 100);
-    scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
-  });
+  // loader.load(brickblock, function (object) {
+  //   object.traverse(function (child) {
+  //     if (child.isMesh) {
+  //       child.castShadow = true;
+  //       child.receiveShadow = true;
+  //     }
+  //   });
+  //   object.scale.set(1 / 30, 1 / 30, 1 / 30);
+  //   object.position.set(700, 220, -98);
+  //   scene.add(object);
+  //   var mushroomLabel = createDesc("brickblock",1000)
+  //   object.on('hover',function(m) {
+  //     object.add( mushroomLabel );
+  //   },function(m) {
+  //     object.remove(mushroomLabel)
+  //   });
+  // });
 
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(700, 120, 73);
-    scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
-  });
+  // loader.load(brickblock, function (object) {
+  //   object.traverse(function (child) {
+  //     if (child.isMesh) {
+  //       child.castShadow = true;
+  //       child.receiveShadow = true;
+  //     }
+  //   });
+  //   object.scale.set(1 / 30, 1 / 30, 1 / 30);
+  //   object.position.set(700, 220, -125);
+  //   scene.add(object);
+  //   var mushroomLabel = createDesc("brickblock",1000)
+  //   object.on('hover',function(m) {
+  //     object.add( mushroomLabel );
+  //   },function(m) {
+  //     object.remove(mushroomLabel)
+  //   });
+  // });
 
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(700, 120, 46);
-    scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
-  });
+  // loader.load(brickblock, function (object) {
+  //   object.traverse(function (child) {
+  //     if (child.isMesh) {
+  //       child.castShadow = true;
+  //       child.receiveShadow = true;
+  //     }
+  //   });
+  //   object.scale.set(1 / 30, 1 / 30, 1 / 30);
+  //   object.position.set(700, 220, -152);
+  //   scene.add(object);
+  //   var mushroomLabel = createDesc("brickblock",1000)
+  //   object.on('hover',function(m) {
+  //     object.add( mushroomLabel );
+  //   },function(m) {
+  //     object.remove(mushroomLabel)
+  //   });
+  // });
 
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(700, 120, 19);
-    scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
-  });
+  // loader.load(brickblock, function (object) {
+  //   object.traverse(function (child) {
+  //     if (child.isMesh) {
+  //       child.castShadow = true;
+  //       child.receiveShadow = true;
+  //     }
+  //   });
+  //   object.scale.set(1 / 30, 1 / 30, 1 / 30);
+  //   object.position.set(700, 220, -179);
+  //   scene.add(object);
+  //   var mushroomLabel = createDesc("brickblock",1000)
+  //   object.on('hover',function(m) {
+  //     object.add( mushroomLabel );
+  //   },function(m) {
+  //     object.remove(mushroomLabel)
+  //   });
+  // });
 
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(700, 120, -8);
-    scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
-  });
+  // loader.load(brickblock, function (object) {
+  //   object.traverse(function (child) {
+  //     if (child.isMesh) {
+  //       child.castShadow = true;
+  //       child.receiveShadow = true;
+  //     }
+  //   });
+  //   object.scale.set(1 / 30, 1 / 30, 1 / 30);
+  //   object.position.set(700, 220, -206);
+  //   scene.add(object);
+  //   var mushroomLabel = createDesc("brickblock",1000)
+  //   object.on('hover',function(m) {
+  //     object.add( mushroomLabel );
+  //   },function(m) {
+  //     object.remove(mushroomLabel)
+  //   });
+  // });
 
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(700, 220, -98);
-    scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
-  });
+  // loader.load(brickblock, function (object) {
+  //   object.traverse(function (child) {
+  //     if (child.isMesh) {
+  //       child.castShadow = true;
+  //       child.receiveShadow = true;
+  //     }
+  //   });
+  //   object.scale.set(1 / 30, 1 / 30, 1 / 30);
+  //   object.position.set(646, 120, -700);
+  //   scene.add(object);
+  //   var mushroomLabel = createDesc("brickblock",1000)
+  //   object.on('hover',function(m) {
+  //     object.add( mushroomLabel );
+  //   },function(m) {
+  //     object.remove(mushroomLabel)
+  //   });
+  // });
 
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(700, 220, -125);
-    scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
-  });
+  // loader.load(brickblock, function (object) {
+  //   object.traverse(function (child) {
+  //     if (child.isMesh) {
+  //       child.castShadow = true;
+  //       child.receiveShadow = true;
+  //     }
+  //   });
+  //   object.scale.set(1 / 30, 1 / 30, 1 / 30);
+  //   object.position.set(700, 120, -646);
+  //   scene.add(object);
+  //   var mushroomLabel = createDesc("brickblock",1000)
+  //   object.on('hover',function(m) {
+  //     object.add( mushroomLabel );
+  //   },function(m) {
+  //     object.remove(mushroomLabel)
+  //   });
+  // });
+  //
+  // loader.load(brickblock, function (object) {
+  //   object.traverse(function (child) {
+  //     if (child.isMesh) {
+  //       child.castShadow = true;
+  //       child.receiveShadow = true;
+  //     }
+  //   });
+  //   object.scale.set(1 / 30, 1 / 30, 1 / 30);
+  //   object.position.set(754, 120, -592);
+  //   scene.add(object);
+  //   var mushroomLabel = createDesc("brickblock",1000)
+  //   object.on('hover',function(m) {
+  //     object.add( mushroomLabel );
+  //   },function(m) {
+  //     object.remove(mushroomLabel)
+  //   });
+  // });
 
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(700, 220, -152);
-    scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
-  });
+  // loader.load(brickblock, function (object) {
+  //   object.traverse(function (child) {
+  //     if (child.isMesh) {
+  //       child.castShadow = true;
+  //       child.receiveShadow = true;
+  //     }
+  //   });
+  //   object.scale.set(1 / 30, 1 / 30, 1 / 30);
+  //   object.position.set(0, 220, -700);
+  //   scene.add(object);
+  //   var mushroomLabel = createDesc("brickblock",1000)
+  //   object.on('hover',function(m) {
+  //     object.add( mushroomLabel );
+  //   },function(m) {
+  //     object.remove(mushroomLabel)
+  //   });
+  // });
 
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(700, 220, -179);
-    scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
-  });
-
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(700, 220, -206);
-    scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
-  });
-
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(646, 120, -700);
-    scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
-  });
-
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(700, 120, -646);
-    scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
-  });
-
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(754, 120, -592);
-    scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
-  });
-
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(0, 220, -700);
-    scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
-  });
-
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(-90, 120, -700);
-    scene.add(object);
-    var mushroomLabel = createDesc("brickblock",1000)
-    object.on('hover',function(m) {
-      object.add( mushroomLabel );
-    },function(m) {
-      object.remove(mushroomLabel)
-    });
-  });
+  // loader.load(brickblock, function (object) {
+  //   object.traverse(function (child) {
+  //     if (child.isMesh) {
+  //       child.castShadow = true;
+  //       child.receiveShadow = true;
+  //     }
+  //   });
+  //   object.scale.set(1 / 30, 1 / 30, 1 / 30);
+  //   object.position.set(-90, 120, -700);
+  //   scene.add(object);
+  //   var mushroomLabel = createDesc("brickblock",1000)
+  //   object.on('hover',function(m) {
+  //     object.add( mushroomLabel );
+  //   },function(m) {
+  //     object.remove(mushroomLabel)
+  //   });
+  // });
 
   loader.load(brickblock, function (object) {
     object.traverse(function (child) {
@@ -989,8 +1011,7 @@ function loadModels({ scene, camera }, worldObject) {
     });
   });
 
-  
-  
+
 //star
 
   loader.load(star, function (object) {
@@ -1179,7 +1200,7 @@ function loadModels({ scene, camera }, worldObject) {
     });
   });
 
-  
+
 
   //trees have a blank board, it might cannot add in our project
   // loader.load(trees, function (object) {
@@ -1206,7 +1227,10 @@ function loadModels({ scene, camera }, worldObject) {
       }
     });
     object.scale.set(1 / 20, 1 / 20, 1 / 20);
-    object.position.set(130, 55, 25);
+    // object.position.set(130, 55, 25);
+    object.position.set(700, 70, 150);
+    worldObject.boo = object;
+    worldObject.boo.rotation.y += Math.PI;
     scene.add(object);
     var mushroomLabel = createDesc("boo",130)
     object.on('hover',function(m) {
@@ -1224,8 +1248,10 @@ function loadModels({ scene, camera }, worldObject) {
         child.receiveShadow = true;
       }
     });
-    object.scale.set(1 / 2, 1 / 2, 1 / 2);
-    object.position.set(240, 40, 25);
+    object.scale.set(1 / 10, 1 / 10, 1 / 10);
+    // object.position.set(240, 40, 25);
+    object.position.set(700, 70, 80);
+    worldObject.mushroom = object;
     scene.add(object);
     var mushroomLabel = createDesc("mushroom",55 )
     object.on('hover',function(m) {
@@ -1233,7 +1259,7 @@ function loadModels({ scene, camera }, worldObject) {
     },function(m) {
       object.remove(mushroomLabel)
     });
-    
+
   });
 }
 
@@ -1253,4 +1279,4 @@ var getObjectHalfSize = function(obj) {
   return objectBox.max.clone().sub(objectBox.min).divideScalar(2);
 };
 
-export { loadModels };
+export { loadModels, addAnimatedMario, updateMarioAnimation, addCoins };
