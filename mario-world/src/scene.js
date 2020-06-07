@@ -3,10 +3,12 @@ import sunSurface from './images/sun.jpg';
 import seaSurface from './images/seaTextyure.jpg';
 import bridgeSurface from './images/bridge.jpg';
 import Stats from './shared/stats.module';
-import { loadModels } from './loader';
+import { loadModels,updateScore } from './loader';
 import './shared/OrbitControls';
 import { DirectionalLightHelper, Vector3 } from 'three';
-import { CSS2DRenderer, CSS2DObject } from  './shared/CSS2DRenderer'
+import { CSS2DRenderer, CSS2DObject } from  './shared/CSS2DRenderer';
+import "three/examples/fonts/helvetiker_regular.typeface.json";
+
 
 
 const onWindowResize = ({ camera, renderer }) => {
@@ -135,7 +137,7 @@ const init = () => {
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  // const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
   renderer.shadowMap.enabled = true;
   renderer.toneMapping = THREE.ReinhardToneMapping;
@@ -144,31 +146,58 @@ const init = () => {
   labelRenderer.domElement.style.position = 'absolute';
   labelRenderer.domElement.style.top = '0px';
   document.body.appendChild( labelRenderer.domElement );
+  document.body.appendChild( renderer.domElement );
   var controls2 = new THREE.OrbitControls( camera, labelRenderer.domElement );
+  var scoreCounter;
+  var texttureLoader = new THREE.TextureLoader();
 
   const container = document.createElement('div');
 
   const globalObject = {
     camera,
     scene,
-    controls,
+    // controls,
     clock,
     renderer,
     stats,
     labelRenderer,
     controls2,
     GhostMove,
+    scoreCounter,
   };
 
   const worldObject= {};
 
   document.body.appendChild(container);
 
-  camera.position.set(100, 200, 300);
+  // camera.position.set(100, 200, 300);
 
   scene.background = new THREE.Color(0x87ceeb);
   // scene.fog = new THREE.Fog(0xa0a0a0, 200, 1000);
 
+
+  loadDirLight(scene,globalObject);
+  loadSun(scene,globalObject,texttureLoader);
+  loadGround(scene,texttureLoader);
+  loadBridge(scene,texttureLoader);
+  loadSea(scene,texttureLoader);
+  
+  loadModels(globalObject, worldObject);
+
+  container.appendChild(renderer.domElement);
+
+  // controls.target.set(0, 100, 0);
+  // controls.update();
+
+  window.addEventListener('resize', () => onWindowResize({camera, renderer }), false);
+
+  container.appendChild(stats.dom);
+  animate(globalObject, worldObject);
+}
+
+export { init }
+
+function loadDirLight(scene,globalObject){
 
   //Light
   var hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
@@ -193,9 +222,11 @@ const init = () => {
   // dirLight.shadowBias = -0.0001;
   dirLight.shadowDarkness = 100;
   globalObject.dirLight = dirLight;
+}
 
-//Sun
-  var texttureLoader = new THREE.TextureLoader();
+function loadSun(scene,globalObject,texttureLoader){
+  //Sun
+  
   var sunTexture = texttureLoader.load(sunSurface);
 
   var sunGeometry = new THREE.SphereBufferGeometry(20, 16, 8);
@@ -211,7 +242,9 @@ const init = () => {
   globalObject.sun = sun;
   scene.add( sun )
 
+}
 
+function loadGround(scene,texttureLoader){
   //grounds
   var groundTexture = texttureLoader.load(grassGround);
   groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
@@ -272,6 +305,9 @@ const init = () => {
 
   scene.add(ground1, ground2, ground3, ground4, ground5, ground6, ground7, ground8, ground9, ground10);
 
+}
+
+function loadBridge(scene,texttureLoader){
   //bridge
   var brigeTexture = texttureLoader.load(bridgeSurface);
   brigeTexture.wrapS = brigeTexture.wrapT = THREE.RepeatWrapping;
@@ -335,6 +371,9 @@ const init = () => {
 
   scene.add(bridge1, bridge2, bridge3, bridge4, bridge5, bridge6, bridge7, bridge8, bridge9);
 
+}
+
+function loadSea(scene,texttureLoader){
   // sea
   var seaTexture = texttureLoader.load(seaSurface);
   seaTexture.wrapS = seaTexture.wrapT = THREE.RepeatWrapping;
@@ -349,17 +388,4 @@ const init = () => {
   sea.receiveShadow = true;
   scene.add(sea);
 
-  loadModels(globalObject, worldObject);
-
-  container.appendChild(renderer.domElement);
-
-  controls.target.set(0, 100, 0);
-  controls.update();
-
-  window.addEventListener('resize', () => onWindowResize({camera, renderer }), false);
-
-  container.appendChild(stats.dom);
-  animate(globalObject, worldObject);
 }
-
-export { init }

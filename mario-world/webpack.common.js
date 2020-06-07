@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const FixStyleOnlyEntriesPlugin = require("webpack-fix-style-only-entries");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const TerserJSPlugin = require('terser-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const webpack = require('webpack');
 const path = require('path');
@@ -33,7 +34,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, "public"),
-    filename: "js/bundle.js"
+    filename: "js/bundle.js",
   },
   devtool: 'inline-source-map',
   module: {
@@ -51,7 +52,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(jpe?g|gif|png|svg|woff|ttf|wav|mp3|fbx|obj|p3d|gmax|max)$/i,
+        test: /\.(jpe?g|gif|png|svg|woff|ttf|wav|mp3|fbx|obj|p3d|gmax|max|dae|gltf)$/i,
         use: [
           {
             loader: 'file-loader',
@@ -72,7 +73,16 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({filename: "[name].css"}),
     new FixStyleOnlyEntriesPlugin(),
-    new OptimizeCSSAssetsPlugin({})
+    new OptimizeCSSAssetsPlugin({}),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          // from: resolveAppPath('src/public_files'),
+          from: '**/*',
+          context: path.resolve(__dirname, 'src', 'public_files'),
+          to: resolveAppPath('public') },
+      ],
+    }),
   ],
   optimization: {
     minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
