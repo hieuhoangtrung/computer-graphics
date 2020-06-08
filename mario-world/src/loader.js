@@ -71,6 +71,10 @@ function updateMarioAnimation(index) {
   updatedAction.play();
 }
 
+function loadModels() {
+  // self.threeOnEvent = new THREE.onEvent(scene,camera);
+  const loader = new FBXLoader();
+  
   const loadBrickBlocks = (name, x, y, z) => {
     loader.load(brickblock, function (object) {
       object.traverse(function (child) {
@@ -210,10 +214,6 @@ function updateMarioAnimation(index) {
     });
     object.scale.set(1 / 30, 1 / 30, 1 / 30);
     object.position.set(148, 220, 700);
-
-    worldObject.moveingbox4 = object;
-    scene.add(object);
-  });
 
     worldObject.moveingbox4 = object;
     scene.add(object);
