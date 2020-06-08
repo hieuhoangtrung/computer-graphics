@@ -40,11 +40,11 @@ function addAnimatedMario() {
     });
     globalObject.marioAnimations = data.animations;
     if (globalObject.marioAnimations.length) {
-      globalObject.marioAnimatioMixer = new THREE.AnimationMixer(
+      globalObject.marioAnimationMixer = new THREE.AnimationMixer(
         worldObject.marioMain
       );
       const animation = globalObject.marioAnimations[4]; // stand
-      const action = globalObject.marioAnimatioMixer.clipAction(animation);
+      const action = globalObject.marioAnimationMixer.clipAction(animation);
       action.play();
     }
     worldObject.marioMain.scale.set(1 / 2, 1 / 2, 1 / 2);
