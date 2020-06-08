@@ -19,8 +19,6 @@ import { scene, camera, globalObject, worldObject, score } from "./scene";
 import { ColladaLoader } from "three/examples/jsm/loaders/ColladaLoader";
 import coinFile from "./models/coin.dae";
 
-
-
 function addAnimatedMario() {
   var loader = new GLTFLoader();
 
@@ -74,7 +72,6 @@ function updateMarioAnimation(index) {
 function loadModels() {
   // self.threeOnEvent = new THREE.onEvent(scene,camera);
   const loader = new FBXLoader();
-  
   const loadBrickBlocks = (name, x, y, z) => {
     loader.load(brickblock, function (object) {
       object.traverse(function (child) {
@@ -119,7 +116,7 @@ function loadModels() {
   loadBrickBlocks("brick_27", 600, 120, 700);
   loadBrickBlocks("brick_28", 542, 120, 700);
   loadBrickBlocks("brick_29", 452, 220, 700);
-  
+
 // moving boxs
   loader.load(brickblock, function (object) {
     object.traverse(function (child) {
