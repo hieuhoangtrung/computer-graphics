@@ -1,7 +1,3 @@
-import grassGround from "./images/grasslight-big.jpg";
-import sunSurface from "./images/sun.jpg";
-import seaSurface from "./images/seaTextyure.jpg";
-import bridgeSurface from "./images/bridge.jpg";
 import Stats from "./shared/stats.module";
 import { loadModels, addAnimatedMario, addCoins } from "./loader";
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls";
@@ -77,7 +73,7 @@ const animate = () => {
     moveRight,
     moveBackward,
     moveLeft,
-    marioAnimatioMixer,
+    marioAnimationMixer,
   } = globalObject;
 
   if (controls.isLocked) {
@@ -121,8 +117,8 @@ const animate = () => {
 
       globalObject.canJump = true;
     }
-    if (marioAnimatioMixer) {
-      marioAnimatioMixer.update(delta);
+    if (marioAnimationMixer) {
+      marioAnimationMixer.update(delta);
     }
 
     // handle collision;
@@ -137,10 +133,7 @@ const animate = () => {
     var wall1x = +50 * Math.sin(time * 150);
     var wall2x = -50 * Math.sin(time * 150);
 
-    if (worldObject.moveingwall1) {
-      worldObject.moveingwall1.position.set(-700 + wall1x, 33, 100);
-    }
-
+    worldObject.moveingwall1.position.set(-700 + wall1x, 33, 100);
     worldObject.moveingwall2.position.set(-700 + wall2x, 33, 350);
     worldObject.moveingwall3.position.set(-700 + wall1x, 33, 600);
     worldObject.moveingbox1.position.set(352 + wall1x, 220, 700);

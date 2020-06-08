@@ -28,10 +28,10 @@ const registerEvents = () => {
       case 32: // space
         if (globalObject.canJump) {
           globalObject.velocity.y += 100;
-          worldObject.marioMain.position.y += 0.2;
+          worldObject.marioMain.position.y += 1;
           setTimeout(() => {
-            worldObject.marioMain.position.y -= 0.2;
-          }, 200);
+            worldObject.marioMain.position.y -= 1;
+          }, 500);
         }
         globalObject.canJump = false;
         break;
