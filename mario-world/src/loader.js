@@ -118,161 +118,32 @@ function loadModels() {
   loadBrickBlocks("brick_29", 452, 220, 700);
 
 // moving boxs
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
+  const loadMovingBrickBlocks = (name, x, y, z, i, j, k) => {
+    loader.load(brickblock, function (object) {
+      object.traverse(function (child) {
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+        }
+      });
+      object.scale.set(i, j, k);
+      object.position.set(x, y, z);
+      worldObject[name] = object;
+      scene.add(object);
     });
-    object.scale.set(1 / 10, 1 / 10, 1 / 30);
-    object.position.set(-700, 33, 100);
+  };
 
-    worldObject.moveingwall1 = object;
-    scene.add(object);
-  });
-
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 10, 1 / 10, 1 / 30);
-    object.position.set(-700, 33, 350);
-
-    worldObject.moveingwall2 = object;
-    scene.add(object);
-  });
-
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 10, 1 / 10, 1 / 30);
-    object.position.set(-700, 33, 600);
-
-    worldObject.moveingwall3 = object;
-    scene.add(object);
-  });
-
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(352, 220, 700);
-
-    worldObject.moveingbox1 = object;
-    scene.add(object);
-  });
-
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(325, 220, 700);
-
-    worldObject.moveingbox2 = object;
-    scene.add(object);
-  });
-
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(175, 220, 700);
-
-    worldObject.moveingbox3 = object;
-    scene.add(object);
-  });
-
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(148, 220, 700);
-
-    worldObject.moveingbox4 = object;
-    scene.add(object);
-  });
-
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(285, 43, 285);
-
-    worldObject.moveingbox5 = object;
-    scene.add(object);
-  });
-
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(-285, 43, 285);
-
-    worldObject.moveingbox6 = object;
-    scene.add(object);
-  });
-
-
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(285, 43, -285);
-
-    worldObject.moveingbox7 = object;
-    scene.add(object);
-  });
-
-  loader.load(brickblock, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 30, 1 / 30, 1 / 30);
-    object.position.set(-285, 43, -285);
-
-    worldObject.moveingbox8 = object;
-    scene.add(object);
-  });
-
+  loadMovingBrickBlocks("moveingwall1", -700, 33, 100, 1 / 10, 1 / 10, 1 / 30);
+  loadMovingBrickBlocks("moveingwall2", -700, 33, 350, 1 / 10, 1 / 10, 1 / 30);
+  loadMovingBrickBlocks("moveingwall3", -700, 33, 600, 1 / 10, 1 / 10, 1 / 30);
+  loadMovingBrickBlocks("moveingbox1", 352, 220, 700, 1 / 30, 1 / 30, 1 / 30);
+  loadMovingBrickBlocks("moveingbox2", 325, 220, 700, 1 / 30, 1 / 30, 1 / 30);
+  loadMovingBrickBlocks("moveingbox3", 175, 220, 700, 1 / 30, 1 / 30, 1 / 30);
+  loadMovingBrickBlocks("moveingbox4", 148, 220, 700, 1 / 30, 1 / 30, 1 / 30);
+  loadMovingBrickBlocks("moveingbox5", 285, 43, 285, 1 / 30, 1 / 30, 1 / 30);
+  loadMovingBrickBlocks("moveingbox6", -285, 43, 285, 1 / 30, 1 / 30, 1 / 30);
+  loadMovingBrickBlocks("moveingbox7", 285, 43, -285, 1 / 30, 1 / 30, 1 / 30);
+  loadMovingBrickBlocks("moveingbox8", -285, 43, -285, 1 / 30, 1 / 30, 1 / 30);
   //qmark
 
   const loadQMarks = (name, x, y, z) => {
@@ -382,159 +253,31 @@ function loadModels() {
   });
 
   //monsters on the brick
-  loader.load(goomba, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
+  
+  const loadGoombas = (name, r) => {
+    loader.load(goomba, function (object) {
+      object.traverse(function (child) {
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+        }
+      });
+      object.scale.set(1 / 3, 1 / 3, 1 / 3);
+      object.rotation.z = THREE.Math.degToRad(r);
+  
+      worldObject[name] = object;
+      scene.add(object);
     });
-    object.scale.set(1 / 3, 1 / 3, 1 / 3);
-    //object.position.set(700, 63, 50);
-    object.rotation.z = THREE.Math.degToRad(0);
+  };
 
-    worldObject.movingMonster1 = object;
-    scene.add(object);
-
-    var mushroomLabel = createDesc("monster", 55);
-    object.on(
-      "hover",
-      function (m) {
-        object.add(mushroomLabel);
-      },
-      function (m) {
-        object.remove(mushroomLabel);
-      }
-    );
-  });
-
-  loader.load(goomba, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 3, 1 / 3, 1 / 3);
-    object.position.set(700, 63, 50);
-    object.rotation.z = THREE.Math.degToRad(180);
-
-    worldObject.movingMonster2 = object;
-    scene.add(object);
-
-    var mushroomLabel = createDesc("monster", 55);
-    object.on(
-      "hover",
-      function (m) {
-        object.add(mushroomLabel);
-      },
-      function (m) {
-        object.remove(mushroomLabel);
-      }
-    );
-  });
-
+  loadGoombas("movingMonster1", 0);
+  loadGoombas("movingMonster2", 180);
   //monster on the floor
-  loader.load(goomba, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 3, 1 / 3, 1 / 3);
-    object.rotation.z = THREE.Math.degToRad(270);
-
-    worldObject.movingMonster3 = object;
-    scene.add(object);
-
-    var mushroomLabel = createDesc("monster", 55);
-    object.on(
-      "hover",
-      function (m) {
-        object.add(mushroomLabel);
-      },
-      function (m) {
-        object.remove(mushroomLabel);
-      }
-    );
-  });
-
-  loader.load(goomba, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 3, 1 / 3, 1 / 3);
-    object.rotation.z = THREE.Math.degToRad(270);
-
-    worldObject.movingMonster4 = object;
-    scene.add(object);
-
-    var mushroomLabel = createDesc("monster", 55);
-    object.on(
-      "hover",
-      function (m) {
-        object.add(mushroomLabel);
-      },
-      function (m) {
-        object.remove(mushroomLabel);
-      }
-    );
-  });
-
-  loader.load(goomba, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 3, 1 / 3, 1 / 3);
-    object.rotation.z = THREE.Math.degToRad(90);
-
-    worldObject.movingMonster5 = object;
-    scene.add(object);
-
-    var mushroomLabel = createDesc("monster", 55);
-    object.on(
-      "hover",
-      function (m) {
-        object.add(mushroomLabel);
-      },
-      function (m) {
-        object.remove(mushroomLabel);
-      }
-    );
-  });
-
-  loader.load(goomba, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 3, 1 / 3, 1 / 3);
-    object.rotation.z = THREE.Math.degToRad(270);
-
-    worldObject.movingMonster6 = object;
-    scene.add(object);
-
-    var mushroomLabel = createDesc("monster", 55);
-    object.on(
-      "hover",
-      function (m) {
-        object.add(mushroomLabel);
-      },
-      function (m) {
-        object.remove(mushroomLabel);
-      }
-    );
-  });
-
+  loadGoombas("movingMonster3", 270);
+  loadGoombas("movingMonster4", 270);
+  loadGoombas("movingMonster5", 90);
+  loadGoombas("movingMonster6", 270);
+  
   //ghost
   loader.load(boo, function (object) {
     object.traverse(function (child) {
@@ -557,17 +300,6 @@ function loadModels() {
     worldObject.movingGhost1 = object;
 
     scene.add(object);
-
-    var mushroomLabel = createDesc("ghost", 130);
-    object.on(
-      "hover",
-      function (m) {
-        object.add(mushroomLabel);
-      },
-      function (m) {
-        object.remove(mushroomLabel);
-      }
-    );
   });
 
   loader.load(mushroom, function (object) {
@@ -582,16 +314,6 @@ function loadModels() {
     object.position.set(700, 70, 80);
     worldObject.mushroom = object;
     scene.add(object);
-    var mushroomLabel = createDesc("mushroom", 55);
-    object.on(
-      "hover",
-      function (m) {
-        object.add(mushroomLabel);
-      },
-      function (m) {
-        object.remove(mushroomLabel);
-      }
-    );
   });
 }
 
