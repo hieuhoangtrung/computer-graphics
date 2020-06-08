@@ -20,6 +20,7 @@ import { ColladaLoader } from "three/examples/jsm/loaders/ColladaLoader";
 import coinFile from "./models/coin.dae";
 
 
+
 function addAnimatedMario() {
   var loader = new GLTFLoader();
 
@@ -69,10 +70,6 @@ function updateMarioAnimation(index) {
   const updatedAction = globalObject.marioAnimatioMixer.clipAction(animation);
   updatedAction.play();
 }
-
-function loadModels() {
-  // self.threeOnEvent = new THREE.onEvent(scene,camera);
-  const loader = new FBXLoader();
 
   const loadBrickBlocks = (name, x, y, z) => {
     loader.load(brickblock, function (object) {
@@ -218,6 +215,10 @@ function loadModels() {
     scene.add(object);
   });
 
+    worldObject.moveingbox4 = object;
+    scene.add(object);
+  });
+
   loader.load(brickblock, function (object) {
     object.traverse(function (child) {
       if (child.isMesh) {
@@ -245,6 +246,7 @@ function loadModels() {
     worldObject.moveingbox6 = object;
     scene.add(object);
   });
+
 
   loader.load(brickblock, function (object) {
     object.traverse(function (child) {
