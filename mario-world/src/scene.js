@@ -195,6 +195,7 @@ const animate = () => {
 
     //ghost moving
     worldObject.movingGhost1.position.x += GhostMove;
+    
     //console.log(GhostMove);
     if (
       worldObject.movingGhost1.position.x >= 701 ||
@@ -206,6 +207,21 @@ const animate = () => {
       } else {
         worldObject.movingGhost1.rotation.y = THREE.Math.degToRad(270);
       }
+      
+      //moving cloud
+      /*
+      worldObject.movingGhost1.position.x += GhostMove;
+    //console.log(GhostMove);
+    if (
+      worldObject.movingGhost1.position.x >= 801 ||
+      worldObject.movingGhost1.position.x <= -801
+    ) {
+      GhostMove = -GhostMove;
+      if (GhostMove > 0) {
+        worldObject.movingGhost1.rotation.y = THREE.Math.degToRad(90);
+      } else {
+        worldObject.movingGhost1.rotation.y = THREE.Math.degToRad(270);
+      }*/
     }
   }
 
@@ -213,7 +229,7 @@ const animate = () => {
   var sunz = Math.cos(time);
 
   dirLight.position.set(1500 * sunx, 500, 1500 * sunz);
-  sun.position.set(1500 * sunx, 500, 1500 * sunz);
+  sun.position.set(1500 * sunx, 1000, 1500 * sunz);
 
   renderer.render(scene, camera);
   stats.update();
