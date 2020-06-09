@@ -95,12 +95,12 @@ const animate = () => {
   }
   if(globalObject.isLocked) {
     if (moveForward) {
-      worldObject.marioMain.translateZ( 1);
+      worldObject.marioMain.translateZ( 3);
       // camera.translateZ( 1);
     }
 
     if (moveBackward) {
-      worldObject.marioMain.translateZ(-1);
+      worldObject.marioMain.translateZ(-3);
       // camera.translateZ( -1);
     }
 
