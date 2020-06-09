@@ -191,8 +191,6 @@ const animate = () => {
     }
 
     //ghost moving
-    //var GhostPosX = worldObject.movingGhost1.position.x
-
     worldObject.movingGhost1.position.x += GhostMove;
     //console.log(GhostMove);
     if (

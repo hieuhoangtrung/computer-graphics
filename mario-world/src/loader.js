@@ -5,7 +5,7 @@ import { DDSLoader } from "three/examples/jsm/loaders/DDSLoader.js";
 
 import marioAnimatedFile from "./models/mario/scene.gltf";
 import star from "./models/Star.fbx";
-import extraLife from "./models/Extra_Life.fbx";
+//import extraLife from "./models/Extra_Life.fbx";
 import boo from "./models/Boo.fbx";
 import fireflower from "./models/FireFlower.fbx";
 import goomba from "./models/Goomba.fbx";
@@ -13,6 +13,11 @@ import qmark from "./models/Question_Mark_Block.fbx";
 import brickblock from "./models/BrickBlock/source/Brick Block.fbx";
 import smallCastle from "./models/Castle/Castle_Small.fbx";
 import mushroom from "./models/mushroom.fbx";
+import tree1 from "./models/Trees/tree_3.FBX";
+//import tree2 from "./models/Trees/TreeCartoon1_FBX/TreeCartoon1_FBX.fbx";
+//import cloud1 from "./models/LowPolyCloud/Treelow.fbx";
+//import cloud2 from "/models/LowPolyCloud/2/lowPolyCloud2.gltf";
+
 import { CSS2DObject } from "./shared/CSS2DRenderer";
 
 import { scene, camera, globalObject, worldObject, score } from "./scene";
@@ -226,8 +231,8 @@ function loadModels() {
   loadFlowers("flower_2", -180, 255, -700);
   loadFlowers("flower_3", -700, 155, -545);
 
+  /* not used model
   //extraLife-mushroom
-
   loader.load(extraLife, function (object) {
     object.traverse(function (child) {
       if (child.isMesh) {
@@ -251,9 +256,9 @@ function loadModels() {
     object.position.set(-657, 240, -727);
     scene.add(object);
   });
+*/
 
-  //monsters on the brick
-  
+  //monsters on the brick 
   const loadGoombas = (name, r) => {
     loader.load(goomba, function (object) {
       object.traverse(function (child) {
@@ -302,6 +307,38 @@ function loadModels() {
     scene.add(object);
   });
 
+
+  //trees 
+  loader.load(tree1, function (object) {
+    object.traverse(function (child) {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+    object.scale.set(1 / 5, 1 / 5, 1 / 5);
+    object.position.set(700, 70, 80);
+    worldObject.tree1 = object;
+    scene.add(object);
+  });
+  /*
+  //cloud
+  //var loader = new GLTFLoader();
+  loader.load(
+    // resource URL
+    '/models/LowPolyCloud/2/lowPolyCloud2.gltf',
+    // called when the resource is loaded
+    function ( gltf ) {
+      scene.add( gltf.scene );
+      gltf.animations; // Array<THREE.AnimationClip>
+      gltf.scene; // THREE.Group
+      gltf.scenes; // Array<THREE.Group>
+      gltf.cameras; // Array<THREE.Camera>
+      gltf.asset; // Object
+  
+    };*/
+
+  //mushroom
   loader.load(mushroom, function (object) {
     object.traverse(function (child) {
       if (child.isMesh) {
@@ -310,7 +347,7 @@ function loadModels() {
       }
     });
     object.scale.set(1 / 10, 1 / 10, 1 / 10);
-    // object.position.set(240, 40, 25);
+    //object.position.set(240, 40, 25);
     object.position.set(700, 70, 80);
     worldObject.mushroom = object;
     scene.add(object);
