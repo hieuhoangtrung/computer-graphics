@@ -1,4 +1,5 @@
-import { camera, worldObject, scene, globalObject } from "./scene";
+import {camera, worldObject, scene, globalObject } from "./scene";
+import {updateScore} from './loader';
 
 const dist = 10;
 
@@ -10,6 +11,8 @@ function handleCollisionWithEnemy() {
     scene.remove(worldObject.boo);
     globalObject.powerdownAudio.play();
     delete worldObject.boo;
+    globalObject.score--;
+    updateScore(globalObject.score);
   }
 }
 
@@ -21,6 +24,8 @@ function handleGetCoin() {
     scene.remove(worldObject.coin);
     globalObject.coinAudio.play();
     delete worldObject.coin;
+    globalObject.score++;
+    updateScore(globalObject.score);
   }
 }
 
@@ -33,6 +38,8 @@ function handleGetMushroom() {
     scene.remove(worldObject.mushroom);
     globalObject.powerupAudio.play();
     delete worldObject.mushroom;
+    globalObject.score++;
+    updateScore(globalObject.score);
   }
 }
 

@@ -5,7 +5,7 @@ import { DDSLoader } from "three/examples/jsm/loaders/DDSLoader.js";
 
 import marioAnimatedFile from "./models/mario/scene.gltf";
 import star from "./models/Star.fbx";
-import extraLife from "./models/Extra_Life.fbx";
+//import extraLife from "./models/Extra_Life.fbx";
 import boo from "./models/Boo.fbx";
 import fireflower from "./models/FireFlower.fbx";
 import goomba from "./models/Goomba.fbx";
@@ -13,9 +13,14 @@ import qmark from "./models/Question_Mark_Block.fbx";
 import brickblock from "./models/BrickBlock/source/Brick Block.fbx";
 import smallCastle from "./models/Castle/Castle_Small.fbx";
 import mushroom from "./models/mushroom.fbx";
+import tree1 from "./models/Trees/tree_3.FBX";
+//import tree2 from "./models/Trees/TreeCartoon1_FBX/TreeCartoon1_FBX.fbx";
+//import cloud1 from "./models/LowPolyCloud/Treelow.fbx";
+//import cloud2 from "/models/LowPolyCloud/2/lowPolyCloud2.gltf";
+
 import { CSS2DObject } from "./shared/CSS2DRenderer";
 
-import { scene, camera, globalObject, worldObject, score } from "./scene";
+import { scene, camera, globalObject, worldObject } from "./scene";
 import { ColladaLoader } from "three/examples/jsm/loaders/ColladaLoader";
 import coinFile from "./models/coin.dae";
 
@@ -37,7 +42,7 @@ function addAnimatedMario() {
       globalObject.marioAnimationMixer = new THREE.AnimationMixer(
         worldObject.marioMain
       );
-      const animation = globalObject.marioAnimations[4]; // stand
+      const animation = globalObject.marioAnimations[0]; // stand
       const action = globalObject.marioAnimationMixer.clipAction(animation);
       action.play();
     }
@@ -45,7 +50,7 @@ function addAnimatedMario() {
     worldObject.marioMain.position.set(0, -1, -3);
     worldObject.marioMain.rotation.y += Math.PI;
     camera.add(worldObject.marioMain);
-    updateScore(); /// needd to check here
+    updateScore(globalObject.score); /// need to check here
   });
 }
 
@@ -64,9 +69,15 @@ function addCoins() {
 }
 
 function updateMarioAnimation(index) {
-  const animation = globalObject.marioAnimations[index];
-  const updatedAction = globalObject.marioAnimatioMixer.clipAction(animation);
-  updatedAction.play();
+  if (index !== globalObject.marioState) {
+    globalObject.marioAnimationMixer = new THREE.AnimationMixer(
+      worldObject.marioMain
+    );
+    const animation = globalObject.marioAnimations[index];
+    const updatedAction = globalObject.marioAnimationMixer.clipAction(animation);
+    updatedAction.play();
+  }
+
 }
 
 function loadModels() {
@@ -226,8 +237,8 @@ function loadModels() {
   loadFlowers("flower_2", -180, 255, -700);
   loadFlowers("flower_3", -700, 155, -545);
 
+  /* not used model
   //extraLife-mushroom
-
   loader.load(extraLife, function (object) {
     object.traverse(function (child) {
       if (child.isMesh) {
@@ -251,9 +262,9 @@ function loadModels() {
     object.position.set(-657, 240, -727);
     scene.add(object);
   });
+*/
 
   //monsters on the brick
-  
   const loadGoombas = (name, r) => {
     loader.load(goomba, function (object) {
       object.traverse(function (child) {
@@ -264,7 +275,7 @@ function loadModels() {
       });
       object.scale.set(1 / 3, 1 / 3, 1 / 3);
       object.rotation.z = THREE.Math.degToRad(r);
-  
+
       worldObject[name] = object;
       scene.add(object);
     });
@@ -277,7 +288,7 @@ function loadModels() {
   loadGoombas("movingMonster4", 270);
   loadGoombas("movingMonster5", 90);
   loadGoombas("movingMonster6", 270);
-  
+
   //ghost
   loader.load(boo, function (object) {
     object.traverse(function (child) {
@@ -288,12 +299,13 @@ function loadModels() {
         child.receiveShadow = true;
       }
     });
-    object.scale.set(1 / 20, 1 / 20, 1 / 20);
-    // object.position.set(130, 55, 25);
-    object.position.set(700, 70, 150);
-    worldObject.boo = object;
-    worldObject.boo.rotation.y += Math.PI;
+
     // add one more boo here
+    //CANNOT rotate in proper way
+    //object.position.set(700, 70, 150);
+    //worldObject.boo = object;
+    //worldObject.boo.rotation.y += Math.PI;
+
     object.scale.set(1 / 10, 1 / 10, 1 / 10);
     object.position.set(-700, 85, 700);
     object.rotation.y = THREE.Math.degToRad(90);
@@ -302,6 +314,44 @@ function loadModels() {
     scene.add(object);
   });
 
+  const loadTrees = (name, x, y, z) => {
+    loader.load(tree1, function (object) {
+      object.traverse(function (child) {
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+        }
+      });
+      object.scale.set(5, 5, 5);
+      object.position.set(x, y, z);
+      worldObject[name] = object;
+      scene.add(object);
+    });
+  };
+
+  loadTrees("tree1", 48, 57, 700);
+  loadTrees("tree2", 700, 57, 700);
+  loadTrees("tree3", -700, 57, -700);
+  loadTrees("tree4", -700, 57, 700);
+
+  /*
+  //cloud
+  //var loader = new GLTFLoader();
+  loader.load(
+    // resource URL
+    '/models/LowPolyCloud/2/lowPolyCloud2.gltf',
+    // called when the resource is loaded
+    function ( gltf ) {
+      scene.add( gltf.scene );
+      gltf.animations; // Array<THREE.AnimationClip>
+      gltf.scene; // THREE.Group
+      gltf.scenes; // Array<THREE.Group>
+      gltf.cameras; // Array<THREE.Camera>
+      gltf.asset; // Object
+
+    };*/
+
+  //mushroom
   loader.load(mushroom, function (object) {
     object.traverse(function (child) {
       if (child.isMesh) {
@@ -310,37 +360,21 @@ function loadModels() {
       }
     });
     object.scale.set(1 / 10, 1 / 10, 1 / 10);
-    // object.position.set(240, 40, 25);
-    object.position.set(700, 70, 80);
+    //object.position.set(240, 40, 25);
+    object.position.set(700, 62, 180);
     worldObject.mushroom = object;
     scene.add(object);
   });
 }
 
-//description
-function createDesc(objName, objHeight) {
-  var objDiv = document.createElement("div");
-  objDiv.className = "label";
-  objDiv.textContent = objName;
-  objDiv.style.marginTop = "-1em";
-  var objLabel = new CSS2DObject(objDiv);
-  objLabel.position.set(10, objHeight, 0);
-  return objLabel;
-}
-
-var getObjectHalfSize = function (obj) {
-  var objectBox = new THREE.Box3();
-  objectBox.setFromObject(obj);
-  return objectBox.max.clone().sub(objectBox.min).divideScalar(2);
-};
-
-function updateScore() {
+function updateScore(score) {
   var loader = new THREE.FontLoader();
   loader.load("helvetiker_regular.typeface.json", function (f) {
     var font = f;
     if (globalObject.scoreCounter) {
-      scene.remove(globalObject.scoreCounter);
+      camera.remove(globalObject.scoreCounter);
     }
+
     var geometry = new THREE.TextGeometry("SCORE: " + score, {
       font: font,
       size: 10, // font size
@@ -352,7 +386,7 @@ function updateScore() {
       specular: 0xffffff,
     });
     globalObject.scoreCounter = new THREE.Mesh(geometry, material);
-    globalObject.scoreCounter.position.set(-1.5, 2, -10);
+    globalObject.scoreCounter.position.set(-1.5, 2, -5);
     globalObject.scoreCounter.scale.set(1 / 20, 1 / 20, 1 / 20);
 
     camera.add(globalObject.scoreCounter);

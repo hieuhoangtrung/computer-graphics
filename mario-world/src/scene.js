@@ -20,7 +20,7 @@ import { initSky,shaderSky } from "./loadShaderSky"
  
 // main three js objects
 const camera = new THREE.PerspectiveCamera(
-  45,
+  75,
   window.innerWidth / window.innerHeight,
   1,
   10000
@@ -50,6 +50,7 @@ const canJump = false;
 let GhostMove = 5;
 let score = 0;
 let isLoading = true;
+const marioState = 0;
 
 const globalObject = {
   velocity,
@@ -59,6 +60,8 @@ const globalObject = {
   moveLeft,
   moveRight,
   canJump,
+  score,
+  marioState
 };
 
 const worldObject = {};
@@ -193,9 +196,8 @@ const animate = () => {
     }
 
     //ghost moving
-    //var GhostPosX = worldObject.movingGhost1.position.x
-
     worldObject.movingGhost1.position.x += GhostMove;
+    
     //console.log(GhostMove);
     if (
       worldObject.movingGhost1.position.x >= 701 ||
@@ -207,11 +209,27 @@ const animate = () => {
       } else {
         worldObject.movingGhost1.rotation.y = THREE.Math.degToRad(270);
       }
+      
+      //moving cloud
+      /*
+      worldObject.movingGhost1.position.x += GhostMove;
+    //console.log(GhostMove);
+    if (
+      worldObject.movingGhost1.position.x >= 801 ||
+      worldObject.movingGhost1.position.x <= -801
+    ) {
+      GhostMove = -GhostMove;
+      if (GhostMove > 0) {
+        worldObject.movingGhost1.rotation.y = THREE.Math.degToRad(90);
+      } else {
+        worldObject.movingGhost1.rotation.y = THREE.Math.degToRad(270);
+      }*/
     }
   }
 
   var sunx = Math.sin(time * 30);
   var sunz = Math.cos(time * 30);
+
 
   sun.position.set(1500 * sunx, 1500*sunx, 1500 * sunz);
   dirLight.position.set(1500 * sunx, 1500*sunx, 1500 * sunz);
@@ -263,5 +281,4 @@ export {
   controls,
   globalObject,
   worldObject,
-  score,
 };

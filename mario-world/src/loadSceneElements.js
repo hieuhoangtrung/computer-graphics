@@ -36,14 +36,14 @@ function loadSun() {
   //Sun
   var sunTexture = texttureLoader.load(sunSurface);
 
-  var sunGeometry = new THREE.SphereBufferGeometry(20, 16, 8);
+  var sunGeometry = new THREE.SphereBufferGeometry(50, 16, 8);
   var sunMat = new THREE.MeshPhysicalMaterial({
     emissive: 0xff0000,
     emissiveIntensity: 5,
     map: sunTexture,
   });
   var sun = new THREE.Mesh(sunGeometry, sunMat);
-  sun.position.set(0, 500, 0);
+  //sun.position.set(0, 500, 0);
   sun.castShadow = false;
   sun.receiveShadow = false;
   globalObject.sun = sun;

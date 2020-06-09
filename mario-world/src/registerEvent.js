@@ -7,28 +7,33 @@ const registerEvents = () => {
       case 38: // up
       case 87: // w
         globalObject.moveForward = true;
+        updateMarioAnimation(2);
         globalObject.marioState = 2;
-        // updateMarioAnimation(2);
         break;
       case 37: // left
       case 65: // a
         globalObject.moveLeft = true;
+        updateMarioAnimation(2);
         globalObject.marioState = 2;
         break;
       case 40: // down
       case 83: // s
         globalObject.moveBackward = true;
+        updateMarioAnimation(2);
         globalObject.marioState = 2;
         break;
       case 39: // right
       case 68: // d
         globalObject.moveRight = true;
+        updateMarioAnimation(2);
         globalObject.marioState = 2;
         break;
       case 32: // space
         if (globalObject.canJump) {
           globalObject.velocity.y += 100;
           worldObject.marioMain.position.y += 1;
+          updateMarioAnimation(1);
+          globalObject.marioState = 1;
           setTimeout(() => {
             worldObject.marioMain.position.y -= 1;
           }, 500);
@@ -44,25 +49,40 @@ const registerEvents = () => {
       case 38: // up
       case 87: // w
         globalObject.moveForward = false;
-        globalObject.marioState = 0;
-        // updateMarioAnimation(0);
+        setTimeout(()=> {
+          updateMarioAnimation(0);
+          globalObject.marioState = 0;
+        }, 100);
         break;
       case 37: // left
       case 65: // a
         globalObject.moveLeft = false;
-        globalObject.marioState = 0;
+        setTimeout(()=> {
+          updateMarioAnimation(0);
+          globalObject.marioState = 0;
+        }, 100);
         break;
       case 40: // down
       case 83: // s
         globalObject.moveBackward = false;
-        globalObject.marioState = 0;
-
+        setTimeout(()=> {
+          updateMarioAnimation(0);
+          globalObject.marioState = 0;
+        }, 100);
         break;
       case 39: // right
       case 68: // d
         globalObject.moveRight = false;
-        globalObject.marioState = 0;
-
+        setTimeout(()=> {
+          updateMarioAnimation(0);
+          globalObject.marioState = 0;
+        }, 100);
+        break;
+      case 32:
+        setTimeout(()=> {
+          updateMarioAnimation(0);
+          globalObject.marioState = 0;
+        }, 100);
         break;
       case 13:
         controls.unlock();
