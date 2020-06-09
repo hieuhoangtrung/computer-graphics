@@ -18,7 +18,7 @@ import {
 
 // main three js objects
 const camera = new THREE.PerspectiveCamera(
-  45,
+  75,
   window.innerWidth / window.innerHeight,
   1,
   10000
@@ -48,6 +48,7 @@ const canJump = false;
 let GhostMove = 5;
 let score = 0;
 let isLoading = true;
+const marioState = 0;
 
 const globalObject = {
   velocity,
@@ -57,6 +58,8 @@ const globalObject = {
   moveLeft,
   moveRight,
   canJump,
+  score,
+  marioState
 };
 
 const worldObject = {};
@@ -256,5 +259,4 @@ export {
   controls,
   globalObject,
   worldObject,
-  score,
 };
