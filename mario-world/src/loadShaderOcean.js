@@ -1,6 +1,7 @@
 import {renderer,scene,camera} from './scene';
 
 import { Ocean } from 'three/examples/jsm/misc/Ocean';
+import { globalObject } from "./scene";
 
 var lastTime = ( new Date() ).getTime();
 
@@ -12,15 +13,15 @@ function updateSea(){
     ms_Ocean.deltaTime = ( currentTime - lastTime ) / 1000 || 0.0;
     lastTime = currentTime;
     ms_Ocean.render( ms_Ocean.deltaTime );
-    // this.ms_Ocean.overrideMaterial = this.ms_Ocean.materialOcean;
-
-    if ( ms_Ocean.changed ) {
-        console.log(1)
-        ms_Ocean.materialOcean.uniforms[ "u_size" ].value = ms_Ocean.size;
-        ms_Ocean.materialOcean.uniforms[ "u_sunDirection" ].value.set( ms_Ocean.sunDirectionX, ms_Ocean.sunDirectionY, ms_Ocean.sunDirectionZ );
-        // this.ms_Ocean.materialOcean.uniforms[ "u_exposure" ].value = this.ms_Ocean.exposure;
-        ms_Ocean.changed = false;
-    }
+    ms_Ocean.overrideMaterial = ms_Ocean.materialOcean;
+    
+    ms_Ocean.exposure = globalObject.sun.position.y * 0.5 / 1500;
+    
+    ms_Ocean.materialOcean.uniforms[ "u_size" ].value = ms_Ocean.size;
+    ms_Ocean.materialOcean.uniforms[ "u_sunDirection" ].value.set( ms_Ocean.sunDirectionX, ms_Ocean.sunDirectionY, ms_Ocean.sunDirectionZ );
+    ms_Ocean.materialOcean.uniforms[ "u_exposure" ].value = ms_Ocean.exposure;
+       
+    
 }
 
 
@@ -55,4 +56,5 @@ function initSea(){
       ms_Ocean.oceanMesh.receiveShadow = true;
       scene.add( ms_Ocean.oceanMesh );
 }
+
 export{initSea,updateSea}
