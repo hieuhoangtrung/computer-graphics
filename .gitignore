@@ -6,3 +6,4 @@ npm-debug.log
 
 .vercel
 mario-world/src/scene-1.js
+mario-world/src/sunLight.js

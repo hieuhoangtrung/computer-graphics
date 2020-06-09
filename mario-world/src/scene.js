@@ -15,7 +15,9 @@ import {
   loadSea,
   loadSun
 } from './loadSceneElements';
-
+import {initSea,updateSea} from "./loadShaderOcean";
+import { initSky,shaderSky } from "./loadShaderSky"
+ 
 // main three js objects
 const camera = new THREE.PerspectiveCamera(
   45,
@@ -208,13 +210,14 @@ const animate = () => {
     }
   }
 
-  var sunx = Math.sin(time);
-  var sunz = Math.cos(time);
+  var sunx = Math.sin(time * 30);
+  var sunz = Math.cos(time * 30);
 
-  dirLight.position.set(1500 * sunx, 500, 1500 * sunz);
-  sun.position.set(1500 * sunx, 500, 1500 * sunz);
-
+  sun.position.set(1500 * sunx, 1500*sunx, 1500 * sunz);
+  dirLight.position.set(1500 * sunx, 1500*sunx, 1500 * sunz);
+  shaderSky(sun);
   renderer.render(scene, camera);
+  updateSea();
   stats.update();
 };
 
@@ -241,6 +244,8 @@ const init = () => {
   addCoins();
   registerEvents();
   loadSounds();
+  initSea();
+  initSky();
 
   container.appendChild(renderer.domElement);
   container.appendChild(stats.dom);

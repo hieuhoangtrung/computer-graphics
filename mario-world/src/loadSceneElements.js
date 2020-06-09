@@ -47,7 +47,7 @@ function loadSun() {
   sun.castShadow = false;
   sun.receiveShadow = false;
   globalObject.sun = sun;
-  scene.add(sun);
+  // scene.add(sun);
 }
 
 function loadGround() {
