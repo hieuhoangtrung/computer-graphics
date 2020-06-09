@@ -1,7 +1,7 @@
 import {camera, worldObject, scene, globalObject } from "./scene";
 import {updateScore} from './loader';
 
-const dist = 10;
+const dist = 15;
 
 function handleCollisionWithEnemy() {
   if (

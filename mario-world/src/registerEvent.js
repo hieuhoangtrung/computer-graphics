@@ -92,8 +92,8 @@ const registerEvents = () => {
     }
   };
 
-  // const blocker = document.getElementById("blocker");
-  // const instructions = document.getElementById("instructions");
+  const blocker = document.getElementById("blocker");
+  const instructions = document.getElementById("instructions");
 
   // instructions.addEventListener(
   //   "click",

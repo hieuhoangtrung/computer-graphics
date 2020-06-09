@@ -20,7 +20,7 @@ import tree1 from "./models/Trees/tree_3.FBX";
 
 import { CSS2DObject } from "./shared/CSS2DRenderer";
 
-import { scene, camera, globalObject, worldObject, temp } from "./scene";
+import {scene, camera, globalObject, worldObject, temp, goal} from "./scene";
 import { ColladaLoader } from "three/examples/jsm/loaders/ColladaLoader";
 import coinFile from "./models/coin.dae";
 
@@ -46,10 +46,15 @@ function addAnimatedMario() {
       const action = globalObject.marioAnimationMixer.clipAction(animation);
       action.play();
     }
-    worldObject.marioMain.scale.set(5, 5, 5);
-    worldObject.marioMain.position.set(700, 62, 100);
-    // worldObject.marioMain.rotation.y += Math.PI;
-    // camera.add(worldObject.marioMain);
+    worldObject.marioMain.scale.set(10, 10, 10);
+    worldObject.marioMain.position.set(700, 50, 100);
+    // temp.set(worldObject.marioMain.position.x, worldObject.marioMain.position.y + 10, worldObject.marioMain.position.z - 30);
+    // camera.position.lerp(temp, 1);
+    // camera.lookAt( worldObject.marioMain .position );
+    // camera.position.set(0. -10, - 10);
+    // worldObject.marioMain.add(camera);
+    worldObject.marioMain.add(goal);
+    goal.position.set(0, 5, -10);
     scene.add(worldObject.marioMain);
 
     updateScore(globalObject.score); /// need to check here
@@ -65,8 +70,8 @@ function addCoins() {
   loader.options.convertUpAxis = true;
   loader.load(coinFile, function (collada) {
     worldObject.coin = collada.scene;
-    worldObject.coin.position.set(700, 70, 50);
-    worldObject.coin.scale.set(1 / 5, 1 / 5, 1 / 5);
+    worldObject.coin.position.set(700, 60, 50);
+    worldObject.coin.scale.set(1, 1 , 1);
   });
 }
 
@@ -361,9 +366,9 @@ function loadModels() {
         child.receiveShadow = true;
       }
     });
-    object.scale.set(1 / 10, 1 / 10, 1 / 10);
+    object.scale.set(1 / 2, 1 / 2, 1 / 2);
     //object.position.set(240, 40, 25);
-    object.position.set(700, 62, 180);
+    object.position.set(700, 50, 180);
     worldObject.mushroom = object;
     scene.add(object);
   });
@@ -374,7 +379,7 @@ function updateScore(score) {
   loader.load("helvetiker_regular.typeface.json", function (f) {
     var font = f;
     if (globalObject.scoreCounter) {
-      camera.remove(globalObject.scoreCounter);
+      worldObject.marioMain.remove(globalObject.scoreCounter);
     }
 
     var geometry = new THREE.TextGeometry("SCORE: " + score, {
@@ -388,10 +393,11 @@ function updateScore(score) {
       specular: 0xffffff,
     });
     globalObject.scoreCounter = new THREE.Mesh(geometry, material);
-    globalObject.scoreCounter.position.set(0, 0, 0);
-    globalObject.scoreCounter.scale.set(1, 1, 1);
+    globalObject.scoreCounter.position.set(1.5, 5, 0);
+    globalObject.scoreCounter.rotation.y += Math.PI;
+    globalObject.scoreCounter.scale.set(1/10, 1/10, 1/10);
 
-    camera.add(globalObject.scoreCounter);
+    worldObject.marioMain.add(globalObject.scoreCounter);
   });
 }
 

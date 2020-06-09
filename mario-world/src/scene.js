@@ -57,6 +57,7 @@ let GhostMove = 5;
 let score = 0;
 let isLoading = true;
 const marioState = 0;
+const goal = new THREE.Object3D;
 
 const globalObject = {
   velocity,
@@ -87,24 +88,27 @@ const animate = () => {
 
   if (worldObject.marioMain) {
     temp.set(worldObject.marioMain.position.x, worldObject.marioMain.position.y + 10, worldObject.marioMain.position.z - 30);
-    camera.position.lerp(temp, 1);
-    camera.lookAt( worldObject.marioMain .position );
+    temp.setFromMatrixPosition(goal.matrixWorld);
+    camera.position.lerp(temp, 0.2);
+    camera.lookAt(worldObject.marioMain.position );
   }
 
     if (moveForward) {
       worldObject.marioMain.translateZ( 1);
+      // camera.translateZ( 1);
     }
 
     if (moveBackward) {
       worldObject.marioMain.translateZ(-1);
+      // camera.translateZ( -1);
     }
 
     if(moveLeft) {
-      worldObject.marioMain.rotation.y += Math.PI / 10;
+      worldObject.marioMain.rotation.y += Math.PI / 15;
     }
 
     if(moveRight) {
-      worldObject.marioMain.rotation.y -= Math.PI / 10;
+      worldObject.marioMain.rotation.y -= Math.PI / 15;
     }
 
 // animation
@@ -268,4 +272,5 @@ export {
   globalObject,
   worldObject,
   temp,
+  goal,
 };
