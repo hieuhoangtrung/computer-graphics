@@ -6,7 +6,7 @@ const dist = 10;
 function handleCollisionWithEnemy() {
   if (
     worldObject.boo &&
-    camera.position.distanceTo(worldObject.boo.position) < dist
+    worldObject.marioMain.position.distanceTo(worldObject.boo.position) < dist
   ) {
     scene.remove(worldObject.boo);
     globalObject.powerdownAudio.play();
@@ -19,7 +19,7 @@ function handleCollisionWithEnemy() {
 function handleGetCoin() {
   if (
     worldObject.coin &&
-    camera.position.distanceTo(worldObject.coin.position) < dist
+    worldObject.marioMain.position.distanceTo(worldObject.coin.position) < dist
   ) {
     scene.remove(worldObject.coin);
     globalObject.coinAudio.play();
@@ -33,7 +33,7 @@ function handleGetMushroom() {
   const distance = 15;
   if (
     worldObject.mushroom &&
-    camera.position.distanceTo(worldObject.mushroom.position) < distance
+    worldObject.marioMain.position.distanceTo(worldObject.mushroom.position) < distance
   ) {
     scene.remove(worldObject.mushroom);
     globalObject.powerupAudio.play();

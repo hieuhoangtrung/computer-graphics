@@ -1,6 +1,7 @@
 import Stats from "./shared/stats.module";
 import { loadModels, addAnimatedMario, addCoins } from "./loader";
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { registerEvents } from "./registerEvent";
 import {
   handleCollisionWithEnemy,
@@ -17,7 +18,7 @@ import {
 } from './loadSceneElements';
 import {initSea,updateSea} from "./loadShaderOcean";
 import { initSky,shaderSky } from "./loadShaderSky"
- 
+
 // main three js objects
 const camera = new THREE.PerspectiveCamera(
   75,
@@ -28,7 +29,10 @@ const camera = new THREE.PerspectiveCamera(
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 const scene = new THREE.Scene();
-const controls = new PointerLockControls(camera, document.body);
+// const controls = new PointerLockControls(camera, document.body);
+const cameraControls = new OrbitControls(camera, renderer.domElement);
+cameraControls.target.set( 0, 50, 0 );
+cameraControls.update();
 const clock = new THREE.Clock();
 const stats = new Stats();
 const raycaster = new THREE.Raycaster(
@@ -37,6 +41,8 @@ const raycaster = new THREE.Raycaster(
   0,
   10
 );
+
+const temp = new THREE.Vector3;
 
 // global objects
 const velocity = new THREE.Vector3();
@@ -72,65 +78,45 @@ const animate = () => {
   const {
     dirLight,
     sun,
-    velocity,
     moveForward,
-    direction,
     moveRight,
     moveBackward,
     moveLeft,
     marioAnimationMixer,
   } = globalObject;
 
-  if (controls.isLocked) {
-    raycaster.ray.origin.copy(controls.getObject().position);
-    raycaster.ray.origin.y -= 10;
-    const intersections = raycaster.intersectObjects(
-      Object.values(worldObject)
-    );
-    const onObject = intersections.length > 0;
-    const delta = clock.getDelta();
-    const vDelta = delta * 10;
-    velocity.x -= velocity.x * 10.0 * vDelta;
-    velocity.z -= velocity.z * 10.0 * vDelta;
-
-    velocity.y -= 9.8 * 100.0 * vDelta; // 100.0 = mass
-
-    direction.z = Number(moveForward) - Number(moveBackward);
-    direction.x = Number(moveRight) - Number(moveLeft);
-    direction.normalize(); // this ensures consistent movements in all directions
-
-    if (moveForward || moveBackward) {
-      velocity.z -= direction.z * 40.0 * vDelta;
-    }
-    if (moveLeft || moveRight) {
-      velocity.x -= direction.x * 40.0 * vDelta;
-    }
-
-    if (onObject === true) {
-      velocity.y = Math.max(0, velocity.y);
-      globalObject.canJump = true;
-    }
-
-    controls.moveRight(-velocity.x * vDelta);
-    controls.moveForward(-velocity.z * vDelta);
-
-    controls.getObject().position.y += velocity.y * delta; // new behavior
-
-    if (controls.getObject().position.y < 10) {
-      velocity.y = 0;
-      controls.getObject().position.y = 10;
-
-      globalObject.canJump = true;
-    }
-    if (marioAnimationMixer) {
-      marioAnimationMixer.update(delta);
-    }
-
-    // handle collision;
-    handleCollisionWithEnemy();
-    handleGetCoin();
-    handleGetMushroom();
+  if (worldObject.marioMain) {
+    temp.set(worldObject.marioMain.position.x, worldObject.marioMain.position.y + 10, worldObject.marioMain.position.z - 30);
+    camera.position.lerp(temp, 1);
+    camera.lookAt( worldObject.marioMain .position );
   }
+
+    if (moveForward) {
+      worldObject.marioMain.translateZ( 1);
+    }
+
+    if (moveBackward) {
+      worldObject.marioMain.translateZ(-1);
+    }
+
+    if(moveLeft) {
+      worldObject.marioMain.rotation.y += Math.PI / 10;
+    }
+
+    if(moveRight) {
+      worldObject.marioMain.rotation.y -= Math.PI / 10;
+    }
+
+// animation
+  const delta = clock.getDelta();
+  if (marioAnimationMixer) {
+    marioAnimationMixer.update(delta);
+  }
+
+  // handle collision;
+  handleCollisionWithEnemy();
+  handleGetCoin();
+  handleGetMushroom();
 
   if (!isLoading) {
     var time = Date.now() * 0.000003;
@@ -197,7 +183,7 @@ const animate = () => {
 
     //ghost moving
     worldObject.movingGhost1.position.x += GhostMove;
-    
+
     //console.log(GhostMove);
     if (
       worldObject.movingGhost1.position.x >= 701 ||
@@ -209,7 +195,7 @@ const animate = () => {
       } else {
         worldObject.movingGhost1.rotation.y = THREE.Math.degToRad(270);
       }
-      
+
       //moving cloud
       /*
       worldObject.movingGhost1.position.x += GhostMove;
@@ -246,7 +232,7 @@ const init = () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
   renderer.toneMapping = THREE.ReinhardToneMapping;
-  scene.add(controls.getObject());
+  // scene.add(controls.getObject());
   document.body.appendChild(renderer.domElement);
   scene.background = new THREE.Color(0x87ceeb);
   const container = document.createElement("div");
@@ -278,7 +264,8 @@ export {
   scene,
   camera,
   renderer,
-  controls,
+  // controls,
   globalObject,
   worldObject,
+  temp,
 };

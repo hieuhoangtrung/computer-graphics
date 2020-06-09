@@ -85,41 +85,40 @@ const registerEvents = () => {
         }, 100);
         break;
       case 13:
-        controls.unlock();
+        // controls.unlock();
         break;
       case 27:
-        controls.isLocked ? controls.unlock() : controls.lock();
+        // controls.isLocked ? controls.unlock() : controls.lock();
         break;
       default:
         break;
     }
   };
 
-  const blocker = document.getElementById("blocker");
-  const instructions = document.getElementById("instructions");
+  // const blocker = document.getElementById("blocker");
+  // const instructions = document.getElementById("instructions");
 
-  instructions.addEventListener(
-    "click",
-    function () {
-      controls.lock();
-    },
-    false
-  );
+  // instructions.addEventListener(
+  //   "click",
+  //   function () {
+  //     // controls.lock();
+  //   },
+  //   false
+  // );
 
-  controls.addEventListener("lock", function () {
-    instructions.style.display = "none";
-    blocker.style.display = "none";
-  });
-
-  controls.addEventListener("unlock", function () {
-    blocker.style.display = "block";
-    instructions.style.display = "";
-  });
+  // controls.addEventListener("lock", function () {
+  //   instructions.style.display = "none";
+  //   blocker.style.display = "none";
+  // });
+  //
+  // controls.addEventListener("unlock", function () {
+  //   blocker.style.display = "block";
+  //   instructions.style.display = "";
+  // });
   document.addEventListener("keydown", onKeyDown, false);
   document.addEventListener("keyup", onKeyUp, false);
 
   const onWindowResize = () => {
-    console.log('window is resizing');
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);

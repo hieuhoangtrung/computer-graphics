@@ -20,7 +20,7 @@ import tree1 from "./models/Trees/tree_3.FBX";
 
 import { CSS2DObject } from "./shared/CSS2DRenderer";
 
-import { scene, camera, globalObject, worldObject } from "./scene";
+import { scene, camera, globalObject, worldObject, temp } from "./scene";
 import { ColladaLoader } from "three/examples/jsm/loaders/ColladaLoader";
 import coinFile from "./models/coin.dae";
 
@@ -46,10 +46,12 @@ function addAnimatedMario() {
       const action = globalObject.marioAnimationMixer.clipAction(animation);
       action.play();
     }
-    worldObject.marioMain.scale.set(1 / 2, 1 / 2, 1 / 2);
-    worldObject.marioMain.position.set(0, -1, -3);
-    worldObject.marioMain.rotation.y += Math.PI;
-    camera.add(worldObject.marioMain);
+    worldObject.marioMain.scale.set(5, 5, 5);
+    worldObject.marioMain.position.set(700, 62, 100);
+    // worldObject.marioMain.rotation.y += Math.PI;
+    // camera.add(worldObject.marioMain);
+    scene.add(worldObject.marioMain);
+
     updateScore(globalObject.score); /// need to check here
   });
 }
@@ -386,8 +388,8 @@ function updateScore(score) {
       specular: 0xffffff,
     });
     globalObject.scoreCounter = new THREE.Mesh(geometry, material);
-    globalObject.scoreCounter.position.set(-1.5, 2, -5);
-    globalObject.scoreCounter.scale.set(1 / 20, 1 / 20, 1 / 20);
+    globalObject.scoreCounter.position.set(0, 0, 0);
+    globalObject.scoreCounter.scale.set(1, 1, 1);
 
     camera.add(globalObject.scoreCounter);
   });
