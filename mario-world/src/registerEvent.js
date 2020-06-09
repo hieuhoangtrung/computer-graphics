@@ -29,16 +29,13 @@ const registerEvents = () => {
         globalObject.marioState = 2;
         break;
       case 32: // space
-        if (globalObject.canJump) {
-          globalObject.velocity.y += 100;
-          worldObject.marioMain.position.y += 1;
-          updateMarioAnimation(1);
-          globalObject.marioState = 1;
-          setTimeout(() => {
-            worldObject.marioMain.position.y -= 1;
-          }, 500);
-        }
-        globalObject.canJump = false;
+        globalObject.velocity.y += 100;
+        worldObject.marioMain.position.y += 30;
+        updateMarioAnimation(1);
+        globalObject.marioState = 1;
+        setTimeout(() => {
+          worldObject.marioMain.position.y -= 30;
+        }, 1000);
         break;
       default:
         break;
@@ -82,7 +79,7 @@ const registerEvents = () => {
         setTimeout(()=> {
           updateMarioAnimation(0);
           globalObject.marioState = 0;
-        }, 100);
+        }, 1000);
         break;
       case 13:
         // controls.unlock();
