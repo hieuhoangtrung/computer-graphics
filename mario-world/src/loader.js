@@ -293,12 +293,13 @@ function loadModels() {
         child.receiveShadow = true;
       }
     });
-    object.scale.set(1 / 20, 1 / 20, 1 / 20);
-    // object.position.set(130, 55, 25);
-    object.position.set(700, 70, 150);
-    worldObject.boo = object;
-    worldObject.boo.rotation.y += Math.PI;
+
     // add one more boo here
+    //CANNOT rotate in proper way
+    //object.position.set(700, 70, 150);
+    //worldObject.boo = object;
+    //worldObject.boo.rotation.y += Math.PI;
+
     object.scale.set(1 / 10, 1 / 10, 1 / 10);
     object.position.set(-700, 85, 700);
     object.rotation.y = THREE.Math.degToRad(90);
@@ -309,18 +310,28 @@ function loadModels() {
 
 
   //trees 
-  loader.load(tree1, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
+
+
+  const loadTrees = (name, x, y, z) => {
+    loader.load(tree1, function (object) {
+      object.traverse(function (child) {
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+        }
+      });
+      object.scale.set(5, 5, 5);
+      object.position.set(x, y, z);
+      worldObject[name] = object;
+      scene.add(object);
     });
-    object.scale.set(1 / 5, 1 / 5, 1 / 5);
-    object.position.set(700, 70, 80);
-    worldObject.tree1 = object;
-    scene.add(object);
-  });
+  };
+
+  loadTrees("tree1", 48, 57, 700);
+  loadTrees("tree2", 700, 57, 700);
+  loadTrees("tree3", -700, 57, -700);
+  loadTrees("tree4", -700, 57, 700);
+
   /*
   //cloud
   //var loader = new GLTFLoader();
