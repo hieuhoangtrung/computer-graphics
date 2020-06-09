@@ -82,10 +82,10 @@ const registerEvents = () => {
         }, 1000);
         break;
       case 13:
-        // controls.unlock();
+        globalObject.unlock();
         break;
       case 27:
-        // controls.isLocked ? controls.unlock() : controls.lock();
+        globalObject.isLocked ? globalObject.unlock() : globalObject.lock();
         break;
       default:
         break;
@@ -95,23 +95,25 @@ const registerEvents = () => {
   const blocker = document.getElementById("blocker");
   const instructions = document.getElementById("instructions");
 
-  // instructions.addEventListener(
-  //   "click",
-  //   function () {
-  //     // controls.lock();
-  //   },
-  //   false
-  // );
+  instructions.addEventListener(
+    "click",
+    function () {
+      globalObject.lock();
+      globalObject.isLocked = true;
+    },
+    false
+  );
+  globalObject.lock = function () {
+    instructions.style.display = "none";
+    blocker.style.display = "none";
+    globalObject.isLocked = true;
+  };
+  globalObject.unlock = function () {
+    blocker.style.display = "block";
+    instructions.style.display = "";
+    globalObject.isLocked = false
+  }
 
-  // controls.addEventListener("lock", function () {
-  //   instructions.style.display = "none";
-  //   blocker.style.display = "none";
-  // });
-  //
-  // controls.addEventListener("unlock", function () {
-  //   blocker.style.display = "block";
-  //   instructions.style.display = "";
-  // });
   document.addEventListener("keydown", onKeyDown, false);
   document.addEventListener("keyup", onKeyUp, false);
 

@@ -58,6 +58,7 @@ let score = 0;
 let isLoading = true;
 const marioState = 0;
 const goal = new THREE.Object3D;
+const isLocked = false;
 
 const globalObject = {
   velocity,
@@ -68,7 +69,8 @@ const globalObject = {
   moveRight,
   canJump,
   score,
-  marioState
+  marioState,
+  isLocked,
 };
 
 const worldObject = {};
@@ -85,14 +87,13 @@ const animate = () => {
     moveLeft,
     marioAnimationMixer,
   } = globalObject;
-
   if (worldObject.marioMain) {
     temp.set(worldObject.marioMain.position.x, worldObject.marioMain.position.y + 10, worldObject.marioMain.position.z - 30);
     temp.setFromMatrixPosition(goal.matrixWorld);
     camera.position.lerp(temp, 0.2);
     camera.lookAt(worldObject.marioMain.position );
   }
-
+  if(globalObject.isLocked) {
     if (moveForward) {
       worldObject.marioMain.translateZ( 1);
       // camera.translateZ( 1);
@@ -112,110 +113,112 @@ const animate = () => {
     }
 
 // animation
-  const delta = clock.getDelta();
-  if (marioAnimationMixer) {
-    marioAnimationMixer.update(delta);
-  }
-
-  // handle collision;
-  handleCollisionWithEnemy();
-  handleGetCoin();
-  handleGetMushroom();
-
-  if (!isLoading) {
-    var time = Date.now() * 0.000003;
-
-    var wall1x = +50 * Math.sin(time * 150);
-    var wall2x = -50 * Math.sin(time * 150);
-
-    worldObject.moveingwall1.position.set(-700 + wall1x, 33, 100);
-    worldObject.moveingwall2.position.set(-700 + wall2x, 33, 350);
-    worldObject.moveingwall3.position.set(-700 + wall1x, 33, 600);
-    worldObject.moveingbox1.position.set(352 + wall1x, 220, 700);
-    worldObject.moveingbox2.position.set(325 + wall1x, 220, 700);
-    worldObject.moveingbox3.position.set(175 + wall2x, 220, 700);
-    worldObject.moveingbox4.position.set(148 + wall2x, 220, 700);
-
-    var boxx = 390 * Math.sin(time * 100);
-    var boxz = 390 * Math.cos(time * 100);
-
-    worldObject.moveingbox5.position.set(boxx, 43, boxz);
-    worldObject.moveingbox6.position.set(boxx, 70, -boxz);
-    worldObject.moveingbox7.position.set(-boxx, 97, boxz);
-    worldObject.moveingbox8.position.set(-boxx, 124, -boxz);
-
-    //monsters moving
-    var moveSpeed = +55 * Math.sin(time * 200);
-    worldObject.movingMonster1.position.set(700, 267, -144 + moveSpeed);
-    worldObject.movingMonster2.position.set(700, 168, 50 + moveSpeed * -1);
-    worldObject.movingMonster3.position.set(705 + moveSpeed * -1.5, 61, 50);
-    worldObject.movingMonster4.position.set(705 + moveSpeed * 1.5, 61, 400);
-    worldObject.movingMonster5.position.set(-705 + moveSpeed * -1.5, 61, 225);
-    worldObject.movingMonster6.position.set(-705 + moveSpeed * 1.5, 61, 475);
-    //type I, z, forwards
-    if (moveSpeed + 0.01 > 55) {
-      worldObject.movingMonster1.rotation.z = THREE.Math.degToRad(180);
-    }
-    if (moveSpeed - 0.01 < -55) {
-      worldObject.movingMonster1.rotation.z = THREE.Math.degToRad(0);
-    }
-    //type II (reverse), z, backwards
-    if (moveSpeed + 0.01 > 55) {
-      worldObject.movingMonster2.rotation.z = THREE.Math.degToRad(0);
-    }
-    if (moveSpeed - 0.01 < -55) {
-      worldObject.movingMonster2.rotation.z = THREE.Math.degToRad(180);
-    }
-    //type III, x, right
-    if (moveSpeed + 0.01 > 55) {
-      worldObject.movingMonster3.rotation.z = THREE.Math.degToRad(90);
-      worldObject.movingMonster5.rotation.z = THREE.Math.degToRad(90);
-    }
-    if (moveSpeed - 0.01 < -55) {
-      worldObject.movingMonster3.rotation.z = THREE.Math.degToRad(270);
-      worldObject.movingMonster5.rotation.z = THREE.Math.degToRad(270);
-    }
-    //type IV, x, left
-    if (moveSpeed + 0.01 > 55) {
-      worldObject.movingMonster4.rotation.z = THREE.Math.degToRad(270);
-      worldObject.movingMonster6.rotation.z = THREE.Math.degToRad(270);
-    }
-    if (moveSpeed - 0.01 < -55) {
-      worldObject.movingMonster4.rotation.z = THREE.Math.degToRad(90);
-      worldObject.movingMonster6.rotation.z = THREE.Math.degToRad(90);
+    const delta = clock.getDelta();
+    if (marioAnimationMixer) {
+      marioAnimationMixer.update(delta);
     }
 
-    //ghost moving
-    worldObject.movingGhost1.position.x += GhostMove;
+    // handle collision;
+    handleCollisionWithEnemy();
+    handleGetCoin();
+    handleGetMushroom();
 
-    //console.log(GhostMove);
-    if (
-      worldObject.movingGhost1.position.x >= 701 ||
-      worldObject.movingGhost1.position.x <= -701
-    ) {
-      GhostMove = -GhostMove;
-      if (GhostMove > 0) {
-        worldObject.movingGhost1.rotation.y = THREE.Math.degToRad(90);
-      } else {
-        worldObject.movingGhost1.rotation.y = THREE.Math.degToRad(270);
+    if (!isLoading) {
+      var time = Date.now() * 0.000003;
+
+      var wall1x = +50 * Math.sin(time * 150);
+      var wall2x = -50 * Math.sin(time * 150);
+
+      worldObject.moveingwall1.position.set(-700 + wall1x, 33, 100);
+      worldObject.moveingwall2.position.set(-700 + wall2x, 33, 350);
+      worldObject.moveingwall3.position.set(-700 + wall1x, 33, 600);
+      worldObject.moveingbox1.position.set(352 + wall1x, 220, 700);
+      worldObject.moveingbox2.position.set(325 + wall1x, 220, 700);
+      worldObject.moveingbox3.position.set(175 + wall2x, 220, 700);
+      worldObject.moveingbox4.position.set(148 + wall2x, 220, 700);
+
+      var boxx = 390 * Math.sin(time * 100);
+      var boxz = 390 * Math.cos(time * 100);
+
+      worldObject.moveingbox5.position.set(boxx, 43, boxz);
+      worldObject.moveingbox6.position.set(boxx, 70, -boxz);
+      worldObject.moveingbox7.position.set(-boxx, 97, boxz);
+      worldObject.moveingbox8.position.set(-boxx, 124, -boxz);
+
+      //monsters moving
+      var moveSpeed = +55 * Math.sin(time * 200);
+      worldObject.movingMonster1.position.set(700, 267, -144 + moveSpeed);
+      worldObject.movingMonster2.position.set(700, 168, 50 + moveSpeed * -1);
+      worldObject.movingMonster3.position.set(705 + moveSpeed * -1.5, 61, 50);
+      worldObject.movingMonster4.position.set(705 + moveSpeed * 1.5, 61, 400);
+      worldObject.movingMonster5.position.set(-705 + moveSpeed * -1.5, 61, 225);
+      worldObject.movingMonster6.position.set(-705 + moveSpeed * 1.5, 61, 475);
+      //type I, z, forwards
+      if (moveSpeed + 0.01 > 55) {
+        worldObject.movingMonster1.rotation.z = THREE.Math.degToRad(180);
+      }
+      if (moveSpeed - 0.01 < -55) {
+        worldObject.movingMonster1.rotation.z = THREE.Math.degToRad(0);
+      }
+      //type II (reverse), z, backwards
+      if (moveSpeed + 0.01 > 55) {
+        worldObject.movingMonster2.rotation.z = THREE.Math.degToRad(0);
+      }
+      if (moveSpeed - 0.01 < -55) {
+        worldObject.movingMonster2.rotation.z = THREE.Math.degToRad(180);
+      }
+      //type III, x, right
+      if (moveSpeed + 0.01 > 55) {
+        worldObject.movingMonster3.rotation.z = THREE.Math.degToRad(90);
+        worldObject.movingMonster5.rotation.z = THREE.Math.degToRad(90);
+      }
+      if (moveSpeed - 0.01 < -55) {
+        worldObject.movingMonster3.rotation.z = THREE.Math.degToRad(270);
+        worldObject.movingMonster5.rotation.z = THREE.Math.degToRad(270);
+      }
+      //type IV, x, left
+      if (moveSpeed + 0.01 > 55) {
+        worldObject.movingMonster4.rotation.z = THREE.Math.degToRad(270);
+        worldObject.movingMonster6.rotation.z = THREE.Math.degToRad(270);
+      }
+      if (moveSpeed - 0.01 < -55) {
+        worldObject.movingMonster4.rotation.z = THREE.Math.degToRad(90);
+        worldObject.movingMonster6.rotation.z = THREE.Math.degToRad(90);
       }
 
-      //moving cloud
-      /*
+      //ghost moving
       worldObject.movingGhost1.position.x += GhostMove;
-    //console.log(GhostMove);
-    if (
-      worldObject.movingGhost1.position.x >= 801 ||
-      worldObject.movingGhost1.position.x <= -801
-    ) {
-      GhostMove = -GhostMove;
-      if (GhostMove > 0) {
-        worldObject.movingGhost1.rotation.y = THREE.Math.degToRad(90);
-      } else {
-        worldObject.movingGhost1.rotation.y = THREE.Math.degToRad(270);
-      }*/
+
+      //console.log(GhostMove);
+      if (
+        worldObject.movingGhost1.position.x >= 701 ||
+        worldObject.movingGhost1.position.x <= -701
+      ) {
+        GhostMove = -GhostMove;
+        if (GhostMove > 0) {
+          worldObject.movingGhost1.rotation.y = THREE.Math.degToRad(90);
+        } else {
+          worldObject.movingGhost1.rotation.y = THREE.Math.degToRad(270);
+        }
+
+        //moving cloud
+        /*
+        worldObject.movingGhost1.position.x += GhostMove;
+      //console.log(GhostMove);
+      if (
+        worldObject.movingGhost1.position.x >= 801 ||
+        worldObject.movingGhost1.position.x <= -801
+      ) {
+        GhostMove = -GhostMove;
+        if (GhostMove > 0) {
+          worldObject.movingGhost1.rotation.y = THREE.Math.degToRad(90);
+        } else {
+          worldObject.movingGhost1.rotation.y = THREE.Math.degToRad(270);
+        }*/
+      }
     }
   }
+
 
   var sunx = Math.sin(time * 30);
   var sunz = Math.cos(time * 30);
