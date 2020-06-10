@@ -61,19 +61,36 @@ function addAnimatedMario() {
   });
 }
 
-function addCoins() {
-  var loadingManager = new THREE.LoadingManager(function () {
-    scene.add(worldObject.coin);
-  });
+function  addCoins() {
+  addOneCoin("coin1",647, 60, 345);
+  addOneCoin("coin2",-700, 60, 50);
+  addOneCoin("coin3",0, 60, 750);
+  addOneCoin("coin4",773, 60, 772);
+  addOneCoin("coin5",-20, 60, 250);
+  addOneCoin("coin6",0, 60, 250);
+  addOneCoin("coin7",20, 60, 250);
+  addOneCoin("coin8",-20, 60, 300);
+  addOneCoin("coin9",0, 60, 300);
+  addOneCoin("coin10",20, 60, 300);
+  addOneCoin("coin11",-6, 60, -400);
+  addOneCoin("coin12",-642, 60, -674);
+  addOneCoin("coin13",700, 60, -700);
+  addOneCoin("coin14",750, 60, -750);
+  addOneCoin("coin15",650, 60, -650);
+}
 
-  var loader = new ColladaLoader(loadingManager);
+function addOneCoin(name, x , y , z ){
+  var loader = new ColladaLoader();
   loader.options.convertUpAxis = true;
   loader.load(coinFile, function (collada) {
-    worldObject.coin = collada.scene;
-    worldObject.coin.position.set(700, 60, 50);
-    worldObject.coin.scale.set(1, 1 , 1);
+    worldObject[name] = collada.scene;
+    worldObject[name].position.set(x, y, z);
+    worldObject[name].scale.set(1, 1 , 1);
+    scene.add(worldObject[name]);
   });
 }
+
+
 
 function updateMarioAnimation(index) {
   if (index !== globalObject.marioState) {
@@ -359,6 +376,7 @@ function loadModels() {
     };*/
 
   //mushroom
+  const loadMushroom = (name, x, y, z) => {
   loader.load(mushroom, function (object) {
     object.traverse(function (child) {
       if (child.isMesh) {
@@ -368,10 +386,25 @@ function loadModels() {
     });
     object.scale.set(1 / 2, 1 / 2, 1 / 2);
     //object.position.set(240, 40, 25);
-    object.position.set(700, 50, 180);
-    worldObject.mushroom = object;
+    // object.position.set(700, 50, 180);
+    object.position.set(x, y, z);
+    worldObject[name] = object;
     scene.add(object);
   });
+};
+
+loadMushroom("mushroom1", 700, 50, 180);
+loadMushroom("mushroom2", 500, 50, 680);
+loadMushroom("mushroom3", 50, 50, 50);
+loadMushroom("mushroom4", -50, 50, -50);
+loadMushroom("mushroom5", 0, 50, 0);
+loadMushroom("mushroom6", 50, 50, -50);
+loadMushroom("mushroom7", -50, 50, 50);
+loadMushroom("mushroom8", 750, 50, -200);
+loadMushroom("mushroom9", -650, 50, 700);
+loadMushroom("mushroom10", 293, 50, -515);
+loadMushroom("mushroom11", 364, 50, -134);
+loadMushroom("mushroom12", -424, 50, 12);
 }
 
 function updateScore(score) {

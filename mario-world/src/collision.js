@@ -17,27 +17,39 @@ function handleCollisionWithEnemy() {
 }
 
 function handleGetCoin() {
+  for (let index = 1; index < 16; index++) {
+    getOneCoin("coin"+index);
+  }
+}
+
+function getOneCoin(name) {
   if (
-    worldObject.coin &&
-    worldObject.marioMain.position.distanceTo(worldObject.coin.position) < dist
+    worldObject[name] &&
+    worldObject.marioMain.position.distanceTo(worldObject[name].position) < dist
   ) {
-    scene.remove(worldObject.coin);
+    scene.remove(worldObject[name]);
     globalObject.coinAudio.play();
-    delete worldObject.coin;
+    delete worldObject[name];
     globalObject.score++;
     updateScore(globalObject.score);
   }
 }
 
 function handleGetMushroom() {
-  const distance = 15;
+  for (let index = 1; index < 13; index++) {
+    getOneMush("mushroom"+index);
+  }
+}
+
+function getOneMush(name){
+  var distance = 10;
   if (
-    worldObject.mushroom &&
-    worldObject.marioMain.position.distanceTo(worldObject.mushroom.position) < distance
+    worldObject[name] &&
+    worldObject.marioMain.position.distanceTo(worldObject[name].position) < distance
   ) {
-    scene.remove(worldObject.mushroom);
+    scene.remove(worldObject[name]);
     globalObject.powerupAudio.play();
-    delete worldObject.mushroom;
+    delete worldObject[name];
     globalObject.score++;
     updateScore(globalObject.score);
   }
