@@ -88,7 +88,6 @@ const animate = () => {
     marioAnimationMixer,
   } = globalObject;
   if (worldObject.marioMain) {
-    temp.set(worldObject.marioMain.position.x, worldObject.marioMain.position.y + 10, worldObject.marioMain.position.z - 30);
     temp.setFromMatrixPosition(goal.matrixWorld);
     camera.position.lerp(temp, 0.2);
     camera.lookAt(worldObject.marioMain.position );

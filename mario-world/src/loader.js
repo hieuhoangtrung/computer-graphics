@@ -5,7 +5,6 @@ import { DDSLoader } from "three/examples/jsm/loaders/DDSLoader.js";
 
 import marioAnimatedFile from "./models/mario/scene.gltf";
 import star from "./models/Star.fbx";
-//import extraLife from "./models/Extra_Life.fbx";
 import boo from "./models/Boo.fbx";
 import fireflower from "./models/FireFlower.fbx";
 import goomba from "./models/Goomba.fbx";
@@ -14,13 +13,8 @@ import brickblock from "./models/BrickBlock/source/Brick Block.fbx";
 import smallCastle from "./models/Castle/Castle_Small.fbx";
 import mushroom from "./models/mushroom.fbx";
 import tree1 from "./models/Trees/tree_3.FBX";
-//import tree2 from "./models/Trees/TreeCartoon1_FBX/TreeCartoon1_FBX.fbx";
-//import cloud1 from "./models/LowPolyCloud/Treelow.fbx";
-//import cloud2 from "/models/LowPolyCloud/2/lowPolyCloud2.gltf";
 
-import { CSS2DObject } from "./shared/CSS2DRenderer";
-
-import {scene, camera, globalObject, worldObject, temp, goal} from "./scene";
+import {scene, globalObject, worldObject, goal} from "./scene";
 import { ColladaLoader } from "three/examples/jsm/loaders/ColladaLoader";
 import coinFile from "./models/coin.dae";
 
@@ -48,11 +42,6 @@ function addAnimatedMario() {
     }
     worldObject.marioMain.scale.set(10, 10, 10);
     worldObject.marioMain.position.set(700, 50, 100);
-    // temp.set(worldObject.marioMain.position.x, worldObject.marioMain.position.y + 10, worldObject.marioMain.position.z - 30);
-    // camera.position.lerp(temp, 1);
-    // camera.lookAt( worldObject.marioMain .position );
-    // camera.position.set(0. -10, - 10);
-    // worldObject.marioMain.add(camera);
     worldObject.marioMain.add(goal);
     goal.position.set(0, 5, -10);
     scene.add(worldObject.marioMain);
@@ -90,8 +79,6 @@ function addOneCoin(name, x , y , z ){
   });
 }
 
-
-
 function updateMarioAnimation(index) {
   if (index !== globalObject.marioState) {
     globalObject.marioAnimationMixer = new THREE.AnimationMixer(
@@ -105,7 +92,6 @@ function updateMarioAnimation(index) {
 }
 
 function loadModels() {
-  // self.threeOnEvent = new THREE.onEvent(scene,camera);
   const loader = new FBXLoader();
   const loadBrickBlocks = (name, x, y, z) => {
     loader.load(brickblock, function (object) {
@@ -261,33 +247,6 @@ function loadModels() {
   loadFlowers("flower_2", -180, 255, -700);
   loadFlowers("flower_3", -700, 155, -545);
 
-  /* not used model
-  //extraLife-mushroom
-  loader.load(extraLife, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 2, 1 / 2, 1 / 2);
-    object.position.set(754, 140, -592);
-    scene.add(object);
-  });
-
-  loader.load(mushroom, function (object) {
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-    object.scale.set(1 / 2, 1 / 2, 1 / 2);
-    object.position.set(-657, 240, -727);
-    scene.add(object);
-  });
-*/
-
   //monsters on the brick
   const loadGoombas = (name, r) => {
     loader.load(goomba, function (object) {
@@ -317,18 +276,10 @@ function loadModels() {
   loader.load(boo, function (object) {
     object.traverse(function (child) {
       if (child.isMesh) {
-        // child.material.map = texture;
-        // child.material.needsUpdate = true;
         child.castShadow = true;
         child.receiveShadow = true;
       }
     });
-
-    // add one more boo here
-    //CANNOT rotate in proper way
-    //object.position.set(700, 70, 150);
-    //worldObject.boo = object;
-    //worldObject.boo.rotation.y += Math.PI;
 
     object.scale.set(1 / 10, 1 / 10, 1 / 10);
     object.position.set(-700, 85, 700);
@@ -358,23 +309,6 @@ function loadModels() {
   loadTrees("tree3", -700, 57, -700);
   loadTrees("tree4", -700, 57, 700);
 
-  /*
-  //cloud
-  //var loader = new GLTFLoader();
-  loader.load(
-    // resource URL
-    '/models/LowPolyCloud/2/lowPolyCloud2.gltf',
-    // called when the resource is loaded
-    function ( gltf ) {
-      scene.add( gltf.scene );
-      gltf.animations; // Array<THREE.AnimationClip>
-      gltf.scene; // THREE.Group
-      gltf.scenes; // Array<THREE.Group>
-      gltf.cameras; // Array<THREE.Camera>
-      gltf.asset; // Object
-
-    };*/
-
   //mushroom
   const loadMushroom = (name, x, y, z) => {
   loader.load(mushroom, function (object) {
@@ -385,8 +319,6 @@ function loadModels() {
       }
     });
     object.scale.set(1 / 2, 1 / 2, 1 / 2);
-    //object.position.set(240, 40, 25);
-    // object.position.set(700, 50, 180);
     object.position.set(x, y, z);
     worldObject[name] = object;
     scene.add(object);
