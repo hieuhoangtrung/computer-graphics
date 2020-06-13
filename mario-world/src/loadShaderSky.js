@@ -5,9 +5,9 @@ import {scene} from "./scene"
 var sky = new Sky();
 var uniforms = sky.material.uniforms;
 
-function initSky(){
-  sky.scale.setScalar( 450000 );
-  scene.add( sky );
+function initSky() {
+  sky.scale.setScalar(450000);
+  scene.add(sky);
   var effectController = {
     turbidity: 10,
     rayleigh: 2,
@@ -16,7 +16,6 @@ function initSky(){
     luminance: 1,
     sun: ! true
   };
-
 
   function guiChanged() {
 
@@ -31,31 +30,31 @@ function initSky(){
 
 var gui = new GUI();
 
-gui.add( effectController, "turbidity", 1.0, 20.0, 0.1 ).onChange( guiChanged );
-gui.add( effectController, "rayleigh", 0.0, 4, 0.001 ).onChange( guiChanged );
-gui.add( effectController, "mieCoefficient", 0.0, 0.1, 0.001 ).onChange( guiChanged );
-gui.add( effectController, "mieDirectionalG", 0.0, 1, 0.001 ).onChange( guiChanged );
-gui.add( effectController, "luminance", 0.0, 2 ).onChange( guiChanged );
+gui.add(effectController, "turbidity", 1.0, 20.0, 0.1).onChange(guiChanged);
+gui.add(effectController, "rayleigh", 0.0, 4, 0.001).onChange(guiChanged);
+gui.add(effectController, "mieCoefficient", 0.0, 0.1, 0.001).onChange(guiChanged);
+gui.add(effectController, "mieDirectionalG", 0.0, 1, 0.001).onChange(guiChanged);
+gui.add(effectController, "luminance", 0.0, 2).onChange(guiChanged);
 // gui.add( effectController, "inclination", 0, 1, 0.0001 ).onChange( guiChanged );
 // gui.add( effectController, "azimuth", 0, 1, 0.0001 ).onChange( guiChanged );
 // gui.add( effectController, "sun" ).onChange( guiChanged );
 
 guiChanged();
-  
+
   // uniforms[ "turbidity" ].value = effectController.turbidity;
   // uniforms[ "rayleigh" ].value = effectController.rayleigh;
   // uniforms[ "mieCoefficient" ].value = effectController.mieCoefficient;
   // uniforms[ "mieDirectionalG" ].value = effectController.mieDirectionalG;
   // uniforms[ "luminance" ].value = effectController.luminance;
- 
+
 }
 
-function shaderSky(sun){
-  
+function shaderSky(sun) {
+
   // sun.position.x -= 2000;
   // sun.position.y -= 50;
-    
-  uniforms[ "sunPosition" ].value.copy( sun.position );
+
+  uniforms[ "sunPosition" ].value.copy(sun.position);
 }
 
 export { initSky,shaderSky}

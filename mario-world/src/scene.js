@@ -1,6 +1,5 @@
 import Stats from "./shared/stats.module";
 import { loadModels, addAnimatedMario, addCoins } from "./loader";
-import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { registerEvents } from "./registerEvent";
 import {
@@ -31,18 +30,12 @@ const renderer = new THREE.WebGLRenderer({ antialias: true });
 const scene = new THREE.Scene();
 // const controls = new PointerLockControls(camera, document.body);
 const cameraControls = new OrbitControls(camera, renderer.domElement);
-cameraControls.target.set( 0, 50, 0 );
+cameraControls.target.set(0, 50, 0);
 cameraControls.update();
 const clock = new THREE.Clock();
 const stats = new Stats();
-const raycaster = new THREE.Raycaster(
-  new THREE.Vector3(),
-  new THREE.Vector3(0, -1, 0),
-  0,
-  10
-);
 
-const temp = new THREE.Vector3;
+const temp = new THREE.Vector3();
 
 // global objects
 const velocity = new THREE.Vector3();
@@ -57,7 +50,7 @@ let GhostMove = 5;
 let score = 0;
 let isLoading = true;
 const marioState = 0;
-const goal = new THREE.Object3D;
+const goal = new THREE.Object3D();
 const isLocked = false;
 
 const globalObject = {
@@ -90,11 +83,11 @@ const animate = () => {
   if (worldObject.marioMain) {
     temp.setFromMatrixPosition(goal.matrixWorld);
     camera.position.lerp(temp, 0.2);
-    camera.lookAt(worldObject.marioMain.position );
+    camera.lookAt(worldObject.marioMain.position);
   }
   if(globalObject.isLocked) {
     if (moveForward) {
-      worldObject.marioMain.translateZ( 3);
+      worldObject.marioMain.translateZ(3);
       // camera.translateZ( 1);
     }
 
@@ -218,10 +211,8 @@ const animate = () => {
     }
   }
 
-
   var sunx = Math.sin(time * 30);
   var sunz = Math.cos(time * 30);
-
 
   sun.position.set(1500 * sunx, 1500*sunx, 1500 * sunz);
   dirLight.position.set(1500 * sunx, 1500*sunx, 1500 * sunz);

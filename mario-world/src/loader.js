@@ -18,6 +18,33 @@ import {scene, globalObject, worldObject, goal} from "./scene";
 import { ColladaLoader } from "three/examples/jsm/loaders/ColladaLoader";
 import coinFile from "./models/coin.dae";
 
+function updateScore(score) {
+  var loader = new THREE.FontLoader();
+  loader.load("helvetiker_regular.typeface.json", function (f) {
+    var font = f;
+    if (globalObject.scoreCounter) {
+      worldObject.marioMain.remove(globalObject.scoreCounter);
+    }
+
+    var geometry = new THREE.TextGeometry("SCORE: " + score, {
+      font: font,
+      size: 10, // font size
+      height: 0.1, // how much extrusion (how thick / deep are the letters)
+    });
+    geometry.computeBoundingBox();
+    var material = new THREE.MeshPhongMaterial({
+      color: 0xffffff,
+      specular: 0xffffff,
+    });
+    globalObject.scoreCounter = new THREE.Mesh(geometry, material);
+    globalObject.scoreCounter.position.set(1.5, 5, 0);
+    globalObject.scoreCounter.rotation.y += Math.PI;
+    globalObject.scoreCounter.scale.set(1/10, 1/10, 1/10);
+
+    worldObject.marioMain.add(globalObject.scoreCounter);
+  });
+}
+
 function addAnimatedMario() {
   var loader = new GLTFLoader();
 
@@ -50,6 +77,17 @@ function addAnimatedMario() {
   });
 }
 
+function addOneCoin(name, x , y , z) {
+  var loader = new ColladaLoader();
+  loader.options.convertUpAxis = true;
+  loader.load(coinFile, function (collada) {
+    worldObject[name] = collada.scene;
+    worldObject[name].position.set(x, y, z);
+    worldObject[name].scale.set(1, 1 , 1);
+    scene.add(worldObject[name]);
+  });
+}
+
 function  addCoins() {
   addOneCoin("coin1",647, 60, 345);
   addOneCoin("coin2",-700, 60, 50);
@@ -66,17 +104,6 @@ function  addCoins() {
   addOneCoin("coin13",700, 60, -700);
   addOneCoin("coin14",750, 60, -750);
   addOneCoin("coin15",650, 60, -650);
-}
-
-function addOneCoin(name, x , y , z ){
-  var loader = new ColladaLoader();
-  loader.options.convertUpAxis = true;
-  loader.load(coinFile, function (collada) {
-    worldObject[name] = collada.scene;
-    worldObject[name].position.set(x, y, z);
-    worldObject[name].scale.set(1, 1 , 1);
-    scene.add(worldObject[name]);
-  });
 }
 
 function updateMarioAnimation(index) {
@@ -337,33 +364,6 @@ loadMushroom("mushroom9", -650, 50, 700);
 loadMushroom("mushroom10", 293, 50, -515);
 loadMushroom("mushroom11", 364, 50, -134);
 loadMushroom("mushroom12", -424, 50, 12);
-}
-
-function updateScore(score) {
-  var loader = new THREE.FontLoader();
-  loader.load("helvetiker_regular.typeface.json", function (f) {
-    var font = f;
-    if (globalObject.scoreCounter) {
-      worldObject.marioMain.remove(globalObject.scoreCounter);
-    }
-
-    var geometry = new THREE.TextGeometry("SCORE: " + score, {
-      font: font,
-      size: 10, // font size
-      height: 0.1, // how much extrusion (how thick / deep are the letters)
-    });
-    geometry.computeBoundingBox();
-    var material = new THREE.MeshPhongMaterial({
-      color: 0xffffff,
-      specular: 0xffffff,
-    });
-    globalObject.scoreCounter = new THREE.Mesh(geometry, material);
-    globalObject.scoreCounter.position.set(1.5, 5, 0);
-    globalObject.scoreCounter.rotation.y += Math.PI;
-    globalObject.scoreCounter.scale.set(1/10, 1/10, 1/10);
-
-    worldObject.marioMain.add(globalObject.scoreCounter);
-  });
 }
 
 export {

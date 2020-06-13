@@ -1,0 +1,8 @@
+{
+  "name": "computer-graphics",
+  "version": "1.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^7.2.0"
+  }
+}

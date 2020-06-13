@@ -1,4 +1,4 @@
-import { camera, controls, renderer, worldObject, globalObject } from "./scene";
+import { camera, renderer, worldObject, globalObject } from "./scene";
 import { updateMarioAnimation } from "./loader";
 
 const registerEvents = () => {
@@ -85,6 +85,7 @@ const registerEvents = () => {
         globalObject.unlock();
         break;
       case 27:
+        // eslint-disable-next-line no-unused-expressions
         globalObject.isLocked ? globalObject.unlock() : globalObject.lock();
         break;
       default:

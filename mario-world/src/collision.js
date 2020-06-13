@@ -1,4 +1,4 @@
-import {camera, worldObject, scene, globalObject } from "./scene";
+import { worldObject, scene, globalObject } from "./scene";
 import {updateScore} from './loader';
 
 const dist = 15;
@@ -16,12 +16,6 @@ function handleCollisionWithEnemy() {
   }
 }
 
-function handleGetCoin() {
-  for (let index = 1; index < 16; index++) {
-    getOneCoin("coin"+index);
-  }
-}
-
 function getOneCoin(name) {
   if (
     worldObject[name] &&
@@ -35,13 +29,7 @@ function getOneCoin(name) {
   }
 }
 
-function handleGetMushroom() {
-  for (let index = 1; index < 13; index++) {
-    getOneMush("mushroom"+index);
-  }
-}
-
-function getOneMush(name){
+function getOneMush(name) {
   var distance = 10;
   if (
     worldObject[name] &&
@@ -52,6 +40,18 @@ function getOneMush(name){
     delete worldObject[name];
     globalObject.score++;
     updateScore(globalObject.score);
+  }
+}
+
+function handleGetCoin() {
+  for (let index = 1; index < 16; index++) {
+    getOneCoin("coin"+index);
+  }
+}
+
+function handleGetMushroom() {
+  for (let index = 1; index < 13; index++) {
+    getOneMush("mushroom"+index);
   }
 }
 
